@@ -1,0 +1,7 @@
+{
+  "name": "tainacan-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
