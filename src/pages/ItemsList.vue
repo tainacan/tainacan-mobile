@@ -7,7 +7,8 @@
     >
     </ion-loading>
     <ion-item v-for="item of items" :key="item.id">
-        <ion-label> {{ item.title }} </ion-label>
+        <ion-label v-if="item.title"> {{ item.title }} </ion-label>
+        <ion-label v-else>Item não possui título</ion-label>
     </ion-item>
     </base-layout>
 </template>
@@ -41,7 +42,7 @@ export default {
 
     created(){
         this.setOpen(true)
-        fetch(`https://museucasadahera.acervos.museus.gov.br/wp-json/tainacan/v2/collection/${this.collectionId}/items`)
+        fetch(`https://rcteste.tainacan.org/wp-json/tainacan/v2/collection/${this.collectionId}/items`)
             .then((response) => response.json())
             .then((data) => {
                 this.items = data.items;

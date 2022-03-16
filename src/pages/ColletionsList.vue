@@ -8,8 +8,9 @@
     </ion-loading>
         <ion-list>
             <ion-item v-for="collection of collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
-                <ion-thumbnail slot="start"> <!-- verificar se existe a imagem de fato -->
-                    <ion-img :src="collection.thumbnail.thumbnail[0]" :alt="collection.name"></ion-img>
+                <ion-thumbnail slot="start"> 
+                    <ion-img v-if="collection.thumbnail.thumbnail[0]" :src="collection.thumbnail.thumbnail[0]" :alt="collection.name"></ion-img>
+                    <ion-img v-else src="https://cdn.icon-icons.com/icons2/1506/PNG/512/emblemok_103757.png" :alt="collection.name"></ion-img>
                 </ion-thumbnail>
                 <ion-label> {{ collection.name }} </ion-label>
             </ion-item>
@@ -51,7 +52,7 @@ export default {
 
     created(){
         this.setOpen(true)
-        fetch("https://museucasadahera.acervos.museus.gov.br/wp-json/tainacan/v2/collections?perpage=4&orderby=modified")
+        fetch("https://rcteste.tainacan.org/wp-json/tainacan/v2/collections?perpage=4&orderby=modified")
         .then((response) => response.json())
         .then((data) => {
             this.collections = data;
