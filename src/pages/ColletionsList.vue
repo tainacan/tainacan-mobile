@@ -10,7 +10,7 @@
             <ion-item v-for="collection of collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
                 <ion-thumbnail slot="start"> 
                     <ion-img v-if="collection.thumbnail.thumbnail[0]" :src="collection.thumbnail.thumbnail[0]" :alt="collection.name"></ion-img>
-                    <ion-img v-else src="https://cdn.icon-icons.com/icons2/1506/PNG/512/emblemok_103757.png" :alt="collection.name"></ion-img>
+                    <ion-img v-else :src="image" :alt="collection.name"></ion-img>
                 </ion-thumbnail>
                 <ion-label> {{ collection.name }} </ion-label>
             </ion-item>
@@ -28,7 +28,7 @@ import {
     IonLabel,
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 export default {
     components: {
         IonList,
@@ -40,9 +40,10 @@ export default {
         BaseLayout
     },
     setup() {
+        const image = computed (() => require('../assets/placeholder_square_small.png'))
         const isOpenRef = ref(false);
         const setOpen = (state: boolean) => isOpenRef.value = state;
-        return { isOpenRef, setOpen }
+        return { image, isOpenRef, setOpen }
     },
     data() {
         return {
@@ -52,11 +53,7 @@ export default {
 
     created(){
         this.setOpen(true)
-<<<<<<< HEAD
         fetch("https://rcteste.tainacan.org/wp-json/tainacan/v2/collections?perpage=4&orderby=modified")
-=======
-        fetch("https://museucasadahera.acervos.museus.gov.br/wp-json/tainacan/v2/collections?perpage=4&orderby=modified")
->>>>>>> 7d57280a1235f0b4c6864010e4feac7f103b38fd
         .then((response) => response.json())
         .then((data) => {
             this.collections = data;
