@@ -42,8 +42,7 @@ export default {
 
     created(){
         this.setOpen(true)
-        fetch(`https://rcteste.tainacan.org/wp-json/tainacan/v2/collection/${this.collectionId}/items`)
-      //  fetch(`https://museucasadahera.acervos.museus.gov.br/wp-json/tainacan/v2/collection/${this.collectionId}/items`)
+        fetch(`https://rcteste.tainacan.org/wp-json/tainacan/v2/collection/${this.collectionId}/items?perpage=12&orderby=modified`)
             .then((response) => response.json())
             .then((data) => {
                 this.items = data.items;
