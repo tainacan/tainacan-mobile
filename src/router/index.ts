@@ -1,15 +1,20 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import ColletionsList from '../pages/ColletionsList.vue';//futuro login
+import MuseumsLogin from '../pages/MuseumsLogin.vue';
+
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/collections'
+    redirect: '/home'
+  },
+  {
+    path: '/home',
+    component: MuseumsLogin
   },
   {
     path: '/collections',
-    component: ColletionsList
+    component: () => import('../pages/ColletionsList.vue')
   },
   {
     path: '/collections/:id',
