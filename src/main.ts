@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import BaseLayout from './components/base/BaseLayout.vue';
 import router from './router';
-//import store from './store';
+import { createPinia } from 'pinia';
 
 import { IonicVue } from '@ionic/vue';
 
@@ -30,8 +30,8 @@ import './theme/core.css'; //importei do arquivo criado
 
 const app = createApp(App)
   .use(IonicVue)
-  .use(router);
- // .use(store);
+  .use(router)
+  .use(createPinia());
 
 app.component('base-layout', BaseLayout);
   

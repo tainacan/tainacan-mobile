@@ -6,7 +6,7 @@
     message="Carregando..."
     >
     </ion-loading>
-    <ion-item v-for="item of items" :key="item.id">
+    <ion-item v-for="item of collectionsStore.items" :key="item.id">
         <ion-label v-if="item.title"> {{ item.title }} </ion-label>
         <ion-label v-else>Item não possui título</ion-label>
     </ion-item>
@@ -14,6 +14,9 @@
 </template>
 
 <script lang="ts">
+import {
+    useCollectionsStore
+} from '../store/storeCollections';
 import {
     IonItem,
     IonLabel,
@@ -31,7 +34,8 @@ export default {
     setup() {
         const isOpenRef = ref(false);
         const setOpen = (state: boolean) => isOpenRef.value = state;
-        return { isOpenRef, setOpen }
+        let collectionsStore = useCollectionsStore();
+        return { isOpenRef, setOpen, collectionsStore }
     },
     data() {
         return {
@@ -40,14 +44,10 @@ export default {
         };
     },
 
-    created(){
+    async created(){
         this.setOpen(true)
-        fetch(`https://rcteste.tainacan.org/wp-json/tainacan/v2/collection/${this.collectionId}/items?perpage=12&orderby=modified`)
-            .then((response) => response.json())
-            .then((data) => {
-                this.items = data.items;
-                this.setOpen(false)
-            });
+        await this.collectionsStore.fetchItems(this.collectionId)
+        this.setOpen(false)
     },
 }
 </script>

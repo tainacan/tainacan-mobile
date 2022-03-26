@@ -7,7 +7,7 @@
     >
     </ion-loading>
         <ion-list>
-            <ion-item v-for="collection of collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
+            <ion-item v-for="collection of collectionsStore.collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
                 <ion-thumbnail slot="start"> 
                     <ion-img v-if="collection.thumbnail.thumbnail[0]" :src="collection.thumbnail.thumbnail[0]" :alt="collection.name"></ion-img>
                     <ion-img v-else :src="image" :alt="collection.name"></ion-img>
@@ -19,6 +19,9 @@
 </template>
 
 <script lang="ts">
+import {
+    useCollectionsStore
+} from '../store/storeCollections';
 import {
     IonList,
     IonItem,
@@ -43,24 +46,15 @@ export default {
         const image = computed (() => require('../assets/placeholder_square_small.png'))
         const isOpenRef = ref(false);
         const setOpen = (state: boolean) => isOpenRef.value = state;
-        return { image, isOpenRef, setOpen }
-    },
-    data() {
-        return {
-            collections: [],
-        };
+        let collectionsStore = useCollectionsStore();
+        return { image, isOpenRef, setOpen, collectionsStore }
     },
 
-    created(){
-        this.setOpen(true)
-        fetch("https://rcteste.tainacan.org/wp-json/tainacan/v2/collections?perpage=4&orderby=modified")
-        .then((response) => response.json())
-        .then((data) => {
-            this.collections = data;
-            this.setOpen(false)
-        });
+    async created(){
+        this.setOpen(true);
+        await this.collectionsStore.fetchCollections();
+        this.setOpen(false);
     },
-
 }
 </script>
 
