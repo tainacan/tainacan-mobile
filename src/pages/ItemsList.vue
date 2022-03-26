@@ -6,10 +6,11 @@
     message="Carregando..."
     >
     </ion-loading>
-    <ion-item v-for="item of collectionsStore.items" :key="item.id">
-        <ion-label v-if="item.title"> {{ item.title }} </ion-label>
-        <ion-label v-else>Item não possui título</ion-label>
-    </ion-item>
+    <ion-card v-for="item of collectionsStore.items" :key="item.id">
+        <ion-card-title v-if="item.title"> {{ item.title }} </ion-card-title>
+        <ion-card-title v-else>Item não possui título</ion-card-title>
+        <ion-card-content></ion-card-content>
+    </ion-card>
     </base-layout>
 </template>
 
@@ -18,16 +19,14 @@ import {
     useCollectionsStore
 } from '../store/storeCollections';
 import {
-    IonItem,
-    IonLabel,
+    IonCard,
     IonLoading,
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import { ref } from 'vue';
 export default {
     components: {
-        IonItem,
-        IonLabel,
+        IonCard,
         IonLoading,
         BaseLayout
     },
