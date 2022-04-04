@@ -9,7 +9,9 @@
     <ion-card v-for="item of collectionsStore.items" :key="item.id">
         <ion-card-title v-if="item.title"> {{ item.title }} </ion-card-title>
         <ion-card-title v-else>Item não possui título</ion-card-title>
-        <ion-card-content></ion-card-content>
+        <ion-card-content>
+             <ion-img :src="item.thumbnail.medium[0]" :alt="item.title"></ion-img>
+        </ion-card-content>
     </ion-card>
     </base-layout>
 </template>
