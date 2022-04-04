@@ -10,6 +10,9 @@
                 </ion-buttons>
                 <ion-title> {{ pageTitle }} </ion-title>
             </ion-toolbar>
+            <ion-toolbar>
+                <ion-title> Login: {{collectionsStore.userLogin }} Senha: {{collectionsStore.userPassword }} </ion-title>
+            </ion-toolbar>
         </ion-header>
         <ion-content>
             <slot />
@@ -18,6 +21,9 @@
 </template>
 
 <script>
+import {
+    useCollectionsStore
+} from '../../store/storeCollections';
 import {
     IonPage,
     IonHeader,
@@ -43,9 +49,11 @@ export default {
     },
     setup(){
         const image = computed (() => require('../../assets/logo.png'))
-            return {
-                image,
+        let collectionsStore = useCollectionsStore();
+        return {
+                image, collectionsStore,
             }
+        
     }
 }
 </script>

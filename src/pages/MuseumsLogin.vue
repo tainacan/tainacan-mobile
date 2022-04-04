@@ -14,6 +14,24 @@
                 v-model.trim="urlMuseum"
                 required = "true"></ion-input>
             </ion-item>
+            <ion-item>
+                <ion-input 
+                placeholder="Login"
+                id="userLogin"
+                type="text"
+                name="userLogin"
+                v-model="userLogin">
+                </ion-input>            
+            </ion-item>
+            <ion-item>
+                <ion-input 
+                placeholder="Senha"  
+                id="userPassword"
+                type="password"
+                name="userPassword"
+                v-model="userPassword">
+                </ion-input>
+            </ion-item>
         </ion-list>
             <ion-button @click="login">ACESSAR</ion-button>
         </form>
@@ -41,6 +59,8 @@ export default {
     data(){
         return {
             urlMuseum: '',
+            userLogin: '',
+            userPassword: '',
         }
     },
 
@@ -52,6 +72,8 @@ export default {
     methods: {
         login(){
             this.collectionsStore.urlMuseum = this.urlMuseum;
+            this.collectionsStore.userLogin = this.userLogin;
+            this.collectionsStore.userPassword = this.userPassword;
             this.$router.push('/collections');
         }
     }
