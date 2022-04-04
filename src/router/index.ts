@@ -19,6 +19,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/collections/:id',
     component: () => import('../pages/ItemsList.vue')
+  },
+  {
+    path: '/adminwebview',
+    component: () => import('../pages/AdminWebView.vue')
   }
 ]
 
