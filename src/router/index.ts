@@ -14,15 +14,23 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/collections',
-    component: () => import('../pages/ColletionsList.vue')
+    component: () => import('../pages/HomeCollectionItensList.vue') 
   },
   {
     path: '/collections/:id',
-    component: () => import('../pages/ItemsList.vue')
+    component: () => import('../pages/ItemsListbyCollection.vue')
   },
   {
-    path: '/adminwebview',
-    component: () => import('../pages/AdminWebView.vue')
+    path: '/collectionsitems',
+    component: () => import('../pages/HomeCollectionItensList.vue')//mudar
+  },
+  {
+    path: '/collectionsfull',
+    component: () => import('../pages/ColletionsFullList.vue')
+  },
+  {
+    path: '/itemsfull',
+    component: () => import('../pages/ItemsFullList.vue')
   }
 ]
 

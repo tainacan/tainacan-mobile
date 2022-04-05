@@ -38,6 +38,7 @@ export default {
         let collectionsStore = useCollectionsStore();
         return { isOpenRef, setOpen, collectionsStore }
     },
+
     data() {
         return {
             items: [],
@@ -47,7 +48,7 @@ export default {
 
     async created(){
         this.setOpen(true)
-        await this.collectionsStore.fetchItems(this.collectionId)
+        await this.collectionsStore.fetchItemsByCollection(this.collectionId)
         this.setOpen(false)
     },
 }

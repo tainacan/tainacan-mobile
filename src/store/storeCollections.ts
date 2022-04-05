@@ -34,10 +34,34 @@ const useCollectionsStore = defineStore('collections', {
           }
         },
         
-        async fetchItems(collectionId :string) {
+        async fetchItemsByCollection (collectionId :string) {
             try {
               this.items = [];
               const response = await axios.get(`https://${this.urlMuseum}/wp-json/tainacan/v2/collection/${collectionId}/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`);
+              this.items = response.data.items;
+            } catch (err) {
+              this.items = [];
+              console.error('Erro no carregamento das coleções:', err);
+              return err;
+            }
+          },
+
+          async fetchItems() {
+            try {
+              this.items = [];
+              const response = await axios.get(`https://${this.urlMuseum}/wp-json/tainacan/v2/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`);
+              this.items = response.data.items;
+            } catch (err) {
+              this.items = [];
+              console.error('Erro no carregamento das coleções:', err);
+              return err;
+            }
+          },
+
+          async fetchFullItems() {
+            try {
+              this.items = [];
+              const response = await axios.get(`https://${this.urlMuseum}/wp-json/tainacan/v2/items?perpage=20&orderby=modified&fetch_only=id,title,thumbnail`);
               this.items = response.data.items;
             } catch (err) {
               this.items = [];

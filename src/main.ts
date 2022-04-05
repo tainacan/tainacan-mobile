@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import BaseLayout from './components/base/BaseLayout.vue';
+import BaseCollectionList from './components/base/BaseCollectionList.vue';
+import BaseItemList from './components/base/BaseItemList.vue';
 import router from './router';
 import { createPinia } from 'pinia';
 
@@ -34,6 +36,8 @@ const app = createApp(App)
   .use(createPinia());
 
 app.component('base-layout', BaseLayout);
+app.component('base-collectionlist', BaseCollectionList);
+app.component('base-itemlist', BaseItemList);
   
 router.isReady().then(() => {
   app.mount('#app');
