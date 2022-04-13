@@ -38,10 +38,5 @@ export default {
         IonLabel,
         IonButton,
     },
-
- methods: {
-        openPage(){
-        }
- }
 }
 </script>

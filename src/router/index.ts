@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import MuseumsLogin from '../pages/MuseumsLogin.vue';
+import LoginForm from '../pages/LoginForm.vue';
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -10,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/home',
-    component: MuseumsLogin
+    component: LoginForm
   },
   {
     path: '/collections',

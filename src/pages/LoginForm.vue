@@ -1,5 +1,5 @@
 <template>  
-    <form>
+    <form @submit.prevent="login">
         <ion-list>
             <ion-item>
                 <ion-img width="10" height="10" alt="Logo Tainacan" :src="image" />
@@ -8,10 +8,10 @@
                 <ion-input 
                 placeholder="URL do Museu" 
                 autofocus="true" 
-                id="urlMuseum"
-                type="text"
-                name="urlMuseum"
-                v-model.trim="urlMuseum"
+                id="siteUrl"
+                type="url"
+                name="siteUrl"
+                v-model.trim="siteUrl"
                 required = "true"></ion-input>
             </ion-item>
             <ion-item>
@@ -20,7 +20,8 @@
                 id="userLogin"
                 type="text"
                 name="userLogin"
-                v-model="userLogin">
+                v-model="userLogin"
+                required = "true">
                 </ion-input>            
             </ion-item>
             <ion-item>
@@ -29,11 +30,12 @@
                 id="userPassword"
                 type="password"
                 name="userPassword"
-                v-model="userPassword">
+                v-model="userPassword"
+                required = "true">
                 </ion-input>
             </ion-item>
         </ion-list>
-            <ion-button @click="login">ACESSAR</ion-button>
+            <ion-button type="submit">ACESSAR</ion-button>
         </form>
 </template>
 
@@ -58,7 +60,7 @@ export default {
     },
     data(){
         return {
-            urlMuseum: '',
+            siteUrl: '',
             userLogin: '',
             userPassword: '',
         }
@@ -71,7 +73,7 @@ export default {
     },
     methods: {
         login(){
-            this.collectionsStore.urlMuseum = this.urlMuseum;
+            this.collectionsStore.siteUrl = this.siteUrl;
             this.collectionsStore.userLogin = this.userLogin;
             this.collectionsStore.userPassword = this.userPassword;
             this.$router.push('/collections');
