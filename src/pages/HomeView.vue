@@ -1,7 +1,5 @@
 <template>
     <base-layout>
-        <ion-button expand="block" @click="openPage">Acessar WordPress</ion-button>
-
         <ion-toolbar>
             <ion-label>Coleções</ion-label>
         </ion-toolbar>
@@ -20,8 +18,8 @@
 </template>
 
 <script>
-import BaseCollectionList from '@/components/base/BaseCollectionList.vue';
-import BaseItemList from '@/components/base/BaseItemList.vue';
+import BaseCollectionList from '@/components/CollectionList.vue';
+import BaseItemList from '@/components/ItemList.vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 
 

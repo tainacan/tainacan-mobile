@@ -40,9 +40,9 @@
 </template>
 
 <script lang="ts">
-import {
-    useCollectionsStore
-} from '../store/storeCollections';
+import { useCollectionsStore } from '../store/storeCollection';
+import { useUserStore } from '../store/storeUser';
+
 import {
     IonImg,
     IonList,
@@ -68,15 +68,17 @@ export default {
 
     setup(){
         const image = computed (() => require('../assets/logoLogin.png'));
-        let collectionsStore = useCollectionsStore();
-        return { image, collectionsStore }
+        let collectionStore = useCollectionsStore();
+        let userStore = useUserStore();
+        return { image, collectionStore, userStore }
     },
     methods: {
-        login(){
-            this.collectionsStore.siteUrl = this.siteUrl;
-            this.collectionsStore.userLogin = this.userLogin;
-            this.collectionsStore.userPassword = this.userPassword;
-            this.$router.push('/collections');
+        async login(){
+            await this.userStore.userLogin(this.siteUrl);
+            // this.collectionStore.siteUrl = this.siteUrl;
+            // this.collectionStore.userLogin = this.userLogin;
+            // this.collectionStore.userPassword = this.userPassword;
+            this.$router.push('/homeview');
         }
     }
 

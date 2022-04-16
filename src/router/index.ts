@@ -1,36 +1,42 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import LoginForm from '../pages/LoginForm.vue';
+import { useUserStore } from '../store/storeUser'
 
+import HomeView from '../pages/HomeView.vue';
+import LoginForm from '../pages/LoginForm.vue';
+import ItemsByCollection  from '../pages/ItemsByCollection.vue';
+import CollectionsFull from '../pages/ColletionsFull.vue';
+import ItemsFull from '../pages/ItemsFull.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/homeview'
   },
   {
-    path: '/home',
-    component: LoginForm
+    path: '/homeview',
+    component: HomeView,
+    name: 'homeview'
   },
   {
-    path: '/collections',
-    component: () => import('../pages/HomeCollectionItensList.vue') 
+    path: '/loginform',
+    component: LoginForm,
+    name: 'loginform'
   },
   {
-    path: '/collections/:id',
-    component: () => import('../pages/ItemsListbyCollection.vue')
-  },
-  {
-    path: '/collectionsitems',
-    component: () => import('../pages/HomeCollectionItensList.vue')//mudar
+    path: '/itemsbycollection/:id',
+    component: ItemsByCollection,
+    name: 'itemsbycollection'
   },
   {
     path: '/collectionsfull',
-    component: () => import('../pages/ColletionsFullList.vue')
+    component: CollectionsFull,
+    name: 'collectionsfull'
   },
   {
     path: '/itemsfull',
-    component: () => import('../pages/ItemsFullList.vue')
+    component: ItemsFull,
+    name: 'itemsfull'
   }
 ]
 
@@ -39,4 +45,12 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach(async(to, from, next) => {
+  const userStore = useUserStore();
+  await userStore.checkUserLogin();
+  if (to.name !== 'loginform' && !userStore.userIsLoggedIn) next({ name: 'loginform' })
+  else next()
+})
+
 export default router
+

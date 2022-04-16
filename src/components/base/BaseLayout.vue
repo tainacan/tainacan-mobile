@@ -11,7 +11,7 @@
                 <ion-title> {{ pageTitle }} </ion-title>
             </ion-toolbar>
             <ion-toolbar>
-                <ion-title> Login: {{collectionsStore.userLogin }} Senha: {{collectionsStore.userPassword }} </ion-title>
+                <ion-title> Login: {{collectionStore.userLogin }} Senha: {{collectionStore.userPassword }} </ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -23,7 +23,7 @@
 <script>
 import {
     useCollectionsStore
-} from '../../store/storeCollections';
+} from '../../store/storeCollection';
 import {
     IonPage,
     IonHeader,
@@ -49,9 +49,9 @@ export default {
     },
     setup(){
         const image = computed (() => require('../../assets/logo.png'))
-        let collectionsStore = useCollectionsStore();
+        let collectionStore = useCollectionsStore();
         return {
-                image, collectionsStore,
+                image, collectionStore,
             }
         
     }

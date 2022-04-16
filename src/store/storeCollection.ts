@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { useUserStore } from '../store/storeUser';
 
 const useCollectionsStore = defineStore('collections', {
     state () {
@@ -15,7 +16,8 @@ const useCollectionsStore = defineStore('collections', {
     actions: {
         async fetchCollections() {
           try {
-            const response = await axios.get(`${this.siteUrl}/wp-json/tainacan/v2/collections?perpage=4&orderby=modified`);
+            const userStore = useUserStore();
+            const response = await axios.get(`${userStore.userSiteUrl}/wp-json/tainacan/v2/collections?perpage=4&orderby=modified`);
             this.collections = response.data;
           } catch (err) {
             this.collections = [];
@@ -25,7 +27,8 @@ const useCollectionsStore = defineStore('collections', {
         },
         async fetchFullCollections() {
           try {
-            const response = await axios.get(`${this.siteUrl}/wp-json/tainacan/v2/collections`);
+            const userStore = useUserStore();
+            const response = await axios.get(`${userStore.userSiteUrl}/wp-json/tainacan/v2/collections`);
             this.collections = response.data;
           } catch (err) {
             this.collections = [];
@@ -36,8 +39,9 @@ const useCollectionsStore = defineStore('collections', {
         
         async fetchItemsByCollection (collectionId :string) {
             try {
+              const userStore = useUserStore();
               this.items = [];
-              const response = await axios.get(`${this.siteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`);
+              const response = await axios.get(`${userStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`);
               this.items = response.data.items;
             } catch (err) {
               this.items = [];
@@ -48,8 +52,9 @@ const useCollectionsStore = defineStore('collections', {
 
           async fetchItems() {
             try {
+              const userStore = useUserStore();
               this.items = [];
-              const response = await axios.get(`${this.siteUrl}/wp-json/tainacan/v2/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`);
+              const response = await axios.get(`${userStore.userSiteUrl}/wp-json/tainacan/v2/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`);
               this.items = response.data.items;
             } catch (err) {
               this.items = [];
@@ -60,8 +65,9 @@ const useCollectionsStore = defineStore('collections', {
 
           async fetchFullItems() {
             try {
+              const userStore = useUserStore();
               this.items = [];
-              const response = await axios.get(`${this.siteUrl}/wp-json/tainacan/v2/items?perpage=20&orderby=modified&fetch_only=id,title,thumbnail`);
+              const response = await axios.get(`${userStore.userSiteUrl}/wp-json/tainacan/v2/items?perpage=20&orderby=modified&fetch_only=id,title,thumbnail`);
               this.items = response.data.items;
             } catch (err) {
               this.items = [];
