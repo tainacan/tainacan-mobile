@@ -24,7 +24,20 @@ const useUserStore = defineStore('users', {
             console.error('Erro no login:', err);
             return err;
           }
-        },    
+        },   
+        async userLogOff() {
+          try {
+            this.userIsLoggedIn = false;
+            this.userSiteUrl = null;
+            await store.set('userIsLoggedIn', false);
+            await store.set('userSiteUrl', null);
+          } catch (err) {
+            this.userIsLoggedIn = false;
+            await store.set('userIsLoggedIn', false);
+            console.error('Erro no login:', err);
+            return err;
+          }
+        },  
        async checkUserLogin() {
           await store.create();
           this.userIsLoggedIn = await store.get('userIsLoggedIn');

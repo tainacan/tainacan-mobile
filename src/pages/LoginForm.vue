@@ -1,42 +1,44 @@
 <template>  
-    <form @submit.prevent="login">
-        <ion-list>
-            <ion-item>
-                <ion-img width="10" height="10" alt="Logo Tainacan" :src="image" />
-            </ion-item>
-            <ion-item>
-                <ion-input 
-                placeholder="URL do Museu" 
-                autofocus="true" 
-                id="siteUrl"
-                type="url"
-                name="siteUrl"
-                v-model.trim="siteUrl"
-                required = "true"></ion-input>
-            </ion-item>
-            <ion-item>
-                <ion-input 
-                placeholder="Login"
-                id="userLogin"
-                type="text"
-                name="userLogin"
-                v-model="userLogin"
-                required = "true">
-                </ion-input>            
-            </ion-item>
-            <ion-item>
-                <ion-input 
-                placeholder="Senha"  
-                id="userPassword"
-                type="password"
-                name="userPassword"
-                v-model="userPassword"
-                required = "true">
-                </ion-input>
-            </ion-item>
-        </ion-list>
+    <ion-page>
+        <form @submit.prevent="login">
+            <ion-list>
+                <ion-item>
+                    <ion-img width="10" height="10" alt="Logo Tainacan" :src="image" />
+                </ion-item>
+                <ion-item>
+                    <ion-input 
+                    placeholder="URL do Museu" 
+                    autofocus="true" 
+                    id="siteUrl"
+                    type="url"
+                    name="siteUrl"
+                    v-model.trim="siteUrl"
+                    required = "true"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-input 
+                    placeholder="Login"
+                    id="userLogin"
+                    type="text"
+                    name="userLogin"
+                    v-model="userLogin"
+                    required = "true">
+                    </ion-input>            
+                </ion-item>
+                <ion-item>
+                    <ion-input 
+                    placeholder="Senha"  
+                    id="userPassword"
+                    type="password"
+                    name="userPassword"
+                    v-model="userPassword"
+                    required = "true">
+                    </ion-input>
+                </ion-item>
+            </ion-list>
             <ion-button type="submit">ACESSAR</ion-button>
         </form>
+    </ion-page>
 </template>
 
 <script lang="ts">
@@ -45,6 +47,7 @@ import { useUserStore } from '../store/storeUser';
 
 import {
     IonImg,
+    IonPage,
     IonList,
     IonItem,
     IonInput,
@@ -54,6 +57,7 @@ export default {
     props: ['pageTitle', 'pageDefaultBackLink'],
     components: {
         IonImg,
+        IonPage,
         IonList,
         IonItem,
         IonInput,
@@ -65,7 +69,6 @@ export default {
             userPassword: '',
         }
     },
-
     setup(){
         const image = computed (() => require('../assets/logoLogin.png'));
         let collectionStore = useCollectionsStore();
