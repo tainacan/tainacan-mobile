@@ -14,21 +14,10 @@ const useCollectionsStore = defineStore('collections', {
       },
 
     actions: {
-        async fetchCollections() {
+        async fetchCollections(perPage :string, orderBy :string) {
           try {
             const userStore = useUserStore();
-            const response = await axios.get(`${userStore.userSiteUrl}/wp-json/tainacan/v2/collections?perpage=4&orderby=modified`);
-            this.collections = response.data;
-          } catch (err) {
-            this.collections = [];
-            console.error('Erro no carregamento das coleções:', err);
-            return err;
-          }
-        },
-        async fetchFullCollections() {
-          try {
-            const userStore = useUserStore();
-            const response = await axios.get(`${userStore.userSiteUrl}/wp-json/tainacan/v2/collections`);
+            const response = await axios.get(`${userStore.userSiteUrl}/wp-json/tainacan/v2/collections?${perPage?"perpage="+perPage:""}&${orderBy?"orderby="+orderBy:""}`);
             this.collections = response.data;
           } catch (err) {
             this.collections = [];

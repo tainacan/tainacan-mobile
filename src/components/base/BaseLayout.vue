@@ -3,6 +3,9 @@
         <ion-header>
             <ion-toolbar>
                 <ion-img width="80" height="80" :src="image" />
+                <ion-button expand="block" @click="logOff">
+                    LogOff
+                </ion-button>
             </ion-toolbar>
             <ion-toolbar>
                 <ion-buttons slot="start">
@@ -24,6 +27,11 @@
 import {
     useCollectionsStore
 } from '../../store/storeCollection';
+
+import { 
+    useUserStore
+} from '../../store/storeUser';
+
 import {
     IonPage,
     IonHeader,
@@ -35,6 +43,7 @@ import {
     IonImg,
 } from '@ionic/vue';
 import { computed } from 'vue';
+
 export default {
     props: ['pageTitle', 'pageDefaultBackLink'],
     components: {
@@ -50,10 +59,17 @@ export default {
     setup(){
         const image = computed (() => require('../../assets/logo.png'))
         let collectionStore = useCollectionsStore();
+        let userStore = useUserStore();
         return {
-                image, collectionStore,
-            }
-        
+                image, collectionStore, userStore
+            }  
+    },
+    methods: {
+        async logOff(){
+            await this.userStore.userLogOff();
+            this.$router.go();
+        }
+
     }
 }
 </script>
