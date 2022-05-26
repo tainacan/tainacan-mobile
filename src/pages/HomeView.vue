@@ -33,8 +33,10 @@ import {
 } from '../store/storeCollection';
 
 import {
+    IonToolbar,
     IonLabel,
     IonButton,
+    IonLoading
 } from '@ionic/vue';
 
 import { ref } from 'vue';
@@ -44,8 +46,10 @@ export default {
         BaseCollectionList,
         BaseItemList,
         BaseLayout,
+        IonToolbar,
         IonLabel,
         IonButton,
+        IonLoading
     },
     setup() {
         const isOpenRef = ref(false);

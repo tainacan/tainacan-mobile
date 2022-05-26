@@ -23,6 +23,9 @@ import {
 import {
     IonCard,
     IonLoading,
+    IonCardTitle,
+    IonCardContent,
+    IonImg
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import { ref } from 'vue';
@@ -30,7 +33,10 @@ export default {
     components: {
         IonCard,
         IonLoading,
-        BaseLayout
+        BaseLayout,
+        IonCardTitle,
+        IonCardContent,
+        IonImg
     },
     setup() {
         const isOpenRef = ref(false);

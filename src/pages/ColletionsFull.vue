@@ -16,6 +16,7 @@
 <script>
 import BaseCollectionList from '@/components/CollectionList.vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
+import { IonLoading, IonToolbar, IonLabel } from '@ionic/vue';
 
 import {
     useCollectionsStore
@@ -27,6 +28,9 @@ export default {
     components: {
         BaseCollectionList,
         BaseLayout,
+        IonLoading,
+        IonToolbar,
+        IonLabel
     },
     setup() {
         const isOpenRef = ref(false);

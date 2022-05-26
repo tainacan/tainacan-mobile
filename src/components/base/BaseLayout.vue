@@ -39,6 +39,7 @@ import {
     IonTitle,
     IonContent,
     IonBackButton,
+    IonButton,
     IonButtons,
     IonImg,
 } from '@ionic/vue';
@@ -52,6 +53,7 @@ export default {
         IonToolbar,
         IonTitle,
         IonContent,
+        IonButton,
         IonBackButton,
         IonButtons,
         IonImg,

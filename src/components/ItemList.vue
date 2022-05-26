@@ -21,6 +21,9 @@ import {
 import {
     IonCard,
     IonLoading,
+    IonImg,
+    IonCardTitle,
+    IonCardContent
 } from '@ionic/vue';
 
 import { ref } from 'vue';
@@ -28,6 +31,9 @@ export default {
     components: {
         IonCard,
         IonLoading,
+        IonImg,
+        IonCardTitle,
+        IonCardContent
     },
     setup() {
         const isOpenRef = ref(false);
