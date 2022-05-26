@@ -2,10 +2,12 @@
     <ion-page>
         <ion-header>
             <ion-toolbar>
-                <ion-img width="80" height="80" :src="image" />
-                <ion-button expand="block" @click="logOff">
-                    LogOff
-                </ion-button>
+                <ion-img slot="start" :src="tainacanLogo" class="header__tainacan-logo" />
+                <ion-buttons slot="end">
+                    <ion-button @click="logOff" aria-label="Sair">
+                        <ion-icon slot="icon-only" :icon="logOutOutline"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
             </ion-toolbar>
             <ion-toolbar>
                 <ion-buttons slot="start">
@@ -27,7 +29,7 @@
 import {
     useCollectionsStore
 } from '../../store/storeCollection';
-
+import { logOutOutline } from "ionicons/icons";
 import { 
     useUserStore
 } from '../../store/storeUser';
@@ -38,6 +40,7 @@ import {
     IonToolbar,
     IonTitle,
     IonContent,
+    IonIcon,
     IonBackButton,
     IonButton,
     IonButtons,
@@ -53,17 +56,18 @@ export default {
         IonToolbar,
         IonTitle,
         IonContent,
+        IonIcon,
         IonButton,
         IonBackButton,
         IonButtons,
         IonImg,
     },
     setup(){
-        const image = computed (() => require('../../assets/logo.png'))
+        const tainacanLogo = computed (() => require('../../assets/logo.png'))
         let collectionStore = useCollectionsStore();
         let userStore = useUserStore();
         return {
-                image, collectionStore, userStore
+                tainacanLogo, collectionStore, userStore, logOutOutline
             }  
     },
     methods: {
@@ -75,3 +79,9 @@ export default {
     }
 }
 </script>
+
+<style>
+.header__tainacan-logo {
+    max-width: 65%;
+}
+</style>

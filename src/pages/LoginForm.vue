@@ -55,8 +55,9 @@
                             </ion-item>
                         </ion-list>
                         <br>
-                        <ion-button type="submit" expand="block">
+                        <ion-button type="submit" fill="clear">
                             Acessar acervo
+                            <ion-icon slot="end" :icon="arrowForwardOutline"></ion-icon>
                         </ion-button>
                     </form>
                 </ion-col>
@@ -68,6 +69,7 @@
 <script lang="ts">
 import { useCollectionsStore } from '../store/storeCollection';
 import { useUserStore } from '../store/storeUser';
+import { arrowForwardOutline } from "ionicons/icons";
 
 import {
     IonImg,
@@ -107,7 +109,7 @@ export default {
         const image = computed (() => require('../assets/logo_square.png'));
         let collectionStore = useCollectionsStore();
         let userStore = useUserStore();
-        return { image, collectionStore, userStore }
+        return { image, collectionStore, userStore, arrowForwardOutline }
     },
     methods: {
         async login(){
@@ -125,6 +127,14 @@ export default {
 <style>
 .login-form-content {
     --ion-background-color: var(--ion-color-step-950, #f2f2f2);
+}
+.login-form-content form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.login-form-content form ion-button {
+    margin-left: auto;
 }
 .login-form-content ion-row {
     height: 100%;
