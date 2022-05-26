@@ -28,7 +28,7 @@ export default {
         IonLabel,
     },
     setup() {
-        const image = computed (() => require('../assets/placeholder_square_small.png'))
+        const image = computed (() => require('../../assets/placeholder_square_small.png'))
         return { image }
     },
 }

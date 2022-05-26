@@ -1,8 +1,11 @@
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header collapse="fade">
             <ion-toolbar>
-                <ion-img slot="start" :src="tainacanLogo" class="header__tainacan-logo" />
+                <ion-buttons slot="start">
+                    <ion-back-button :default-href="pageDefaultBackLink"></ion-back-button>
+                </ion-buttons>
+                <ion-img :src="tainacanLogo" class="header__tainacan-logo" />
                 <ion-buttons slot="end">
                     <ion-button @click="logOff" aria-label="Sair">
                         <ion-icon slot="icon-only" :icon="logOutOutline"></ion-icon>
@@ -10,13 +13,10 @@
                 </ion-buttons>
             </ion-toolbar>
             <ion-toolbar>
-                <ion-buttons slot="start">
-                    <ion-back-button :default-href="pageDefaultBackLink"></ion-back-button>
-                </ion-buttons>
-                <ion-title> {{ pageTitle }} </ion-title>
+                <ion-title size="small"> {{ pageTitle }} </ion-title>
             </ion-toolbar>
         </ion-header>
-        <ion-content>
+        <ion-content fullscreen="true">
             <slot />
         </ion-content>
     </ion-page>

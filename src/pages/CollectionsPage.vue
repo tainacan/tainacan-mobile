@@ -9,13 +9,13 @@
             <ion-list-header>
                 Coleções
             </ion-list-header>
-            <collection-list :collections="collectionStore.collections"></collection-list>
+            <collections-list :collections="collectionStore.collections"></collections-list>
         </ion-list>
     </base-layout>
 </template>
 
 <script>
-import CollectionList from '@/components/CollectionList.vue';
+import CollectionsList from '@/components/lists/CollectionsList.vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import { IonLoading, IonListHeader, IonList } from '@ionic/vue';
 
@@ -27,7 +27,7 @@ import { ref } from 'vue';
 
 export default {
     components: {
-        CollectionList,
+        CollectionsList,
         BaseLayout,
         IonLoading,
         IonList,

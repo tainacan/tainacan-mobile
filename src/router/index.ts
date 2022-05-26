@@ -2,41 +2,41 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import { useUserStore } from '../store/storeUser'
 
-import HomeView from '../pages/HomeView.vue';
-import LoginForm from '../pages/LoginForm.vue';
-import ItemsByCollection  from '../pages/ItemsByCollection.vue';
-import CollectionsFull from '../pages/ColletionsFull.vue';
-import ItemsFull from '../pages/ItemsFull.vue';
+import HomePage from '../pages/HomePage.vue';
+import LoginPage from '../pages/LoginPage.vue';
+import CollectionPage  from '../pages/CollectionPage.vue';
+import CollectionsPage from '../pages/CollectionsPage.vue';
+import ItemsPage from '../pages/ItemsPage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/homeview'
+    redirect: '/home'
   },
   {
-    path: '/homeview',
-    component: HomeView,
-    name: 'homeview'
+    path: '/home',
+    component: HomePage,
+    name: 'home'
   },
   {
-    path: '/loginform',
-    component: LoginForm,
-    name: 'loginform'
+    path: '/login',
+    component: LoginPage,
+    name: 'login'
   },
   {
-    path: '/itemsbycollection/:id',
-    component: ItemsByCollection,
-    name: 'itemsbycollection'
+    path: '/collections/:id',
+    component: CollectionPage,
+    name: 'collection'
   },
   {
-    path: '/collectionsfull',
-    component: CollectionsFull,
-    name: 'collectionsfull'
+    path: '/collections',
+    component: CollectionsPage,
+    name: 'collections'
   },
   {
-    path: '/itemsfull',
-    component: ItemsFull,
-    name: 'itemsfull'
+    path: '/items',
+    component: ItemsPage,
+    name: 'items'
   }
 ]
 
@@ -48,7 +48,7 @@ const router = createRouter({
 router.beforeEach(async(to, from, next) => {
   const userStore = useUserStore();
   await userStore.checkUserLogin();
-  if (to.name !== 'loginform' && !userStore.userIsLoggedIn) next({ name: 'loginform' })
+  if (to.name !== 'login' && !userStore.userIsLoggedIn) next({ name: 'login' })
   else next()
 })
 

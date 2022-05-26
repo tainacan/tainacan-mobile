@@ -2,8 +2,8 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import BaseLayout from './components/base/BaseLayout.vue';
-import CollectionList from './components/CollectionList.vue';
-import ItemList from './components/ItemList.vue';
+import CollectionList from './components/lists/CollectionsList.vue';
+import ItemList from './components/lists/ItemsList.vue';
 import router from './router';
 import { createPinia } from 'pinia';
 

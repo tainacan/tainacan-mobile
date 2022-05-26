@@ -16,7 +16,7 @@
 <script lang="ts">
 import {
     useCollectionsStore
-} from '../store/storeCollection';
+} from '../../store/storeCollection';
 import {
     IonCard,
     IonLoading,

@@ -9,17 +9,17 @@
             <ion-list-header>
                 Coleções
             </ion-list-header>
-            <collection-list :collections="collectionStore.collections"></collection-list>
+            <collections-list :collections="collectionStore.collections"></collections-list>
         </ion-list>
-        <ion-button fill="clear" size="small" routerLink="/collectionsfull">
+        <ion-button fill="clear" size="small" routerLink="/collections">
             Acessar lista completa de coleções
         </ion-button>
         <ion-list>
             <ion-list-header>
                 Items
             </ion-list-header>
-            <item-list></item-list>
-            <ion-button fill="clear" size="small" routerLink="/itemsfull">
+            <items-list></items-list>
+            <ion-button fill="clear" size="small" routerLink="/items">
                 Acessar lista completa de itens
             </ion-button>
         </ion-list>
@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import CollectionList from '@/components/CollectionList.vue';
-import ItemList from '@/components/ItemList.vue';
+import CollectionsList from '@/components/lists/CollectionsList.vue';
+import ItemsList from '@/components/lists/ItemsList.vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 
 import {
@@ -46,8 +46,8 @@ import { ref } from 'vue';
 
 export default {
     components: {
-        CollectionList,
-        ItemList,
+        CollectionsList,
+        ItemsList,
         BaseLayout,
         IonList,
         IonListHeader,

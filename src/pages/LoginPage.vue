@@ -117,7 +117,7 @@ export default {
             // this.collectionStore.siteUrl = this.siteUrl;
             // this.collectionStore.userLogin = this.userLogin;
             // this.collectionStore.userPassword = this.userPassword;
-            this.$router.push('/homeview');
+            this.$router.push('/home');
         }
     }
 
