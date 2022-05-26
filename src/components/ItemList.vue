@@ -1,8 +1,7 @@
 <template>
     <ion-loading
-    :is-open="isOpenRef"
-    cssClass="my-custom-class"
-    message="Carregando..."
+            :is-open="isLoading"
+            message="Carregando..."
     >
     </ion-loading>
     <ion-card v-for="item of collectionStore.items" :key="item.id">
@@ -36,10 +35,10 @@ export default {
         IonCardContent
     },
     setup() {
-        const isOpenRef = ref(false);
-        const setOpen = (state: boolean) => isOpenRef.value = state;
+        const isLoading = ref(false);
+        const setOpen = (state: boolean) => isLoading.value = state;
         let collectionStore = useCollectionsStore();
-        return { isOpenRef, setOpen, collectionStore }
+        return { isLoading, setOpen, collectionStore }
     },
     data() {
         return {

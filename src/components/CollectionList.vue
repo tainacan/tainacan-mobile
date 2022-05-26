@@ -1,19 +1,16 @@
 <template>
-    <ion-list>
-        <ion-item v-for="collection of collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
-            <ion-thumbnail slot="start"> 
-                <ion-img v-if="collection.thumbnail.thumbnail[0]" :src="collection.thumbnail.thumbnail[0]" :alt="collection.name"></ion-img>
-                <ion-img v-else :src="image" :alt="collection.name"></ion-img>
-            </ion-thumbnail>
-            <ion-label> {{ collection.name }} </ion-label>
-        </ion-item>
-    </ion-list> 
+    <ion-item v-for="collection of collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
+        <ion-thumbnail slot="start"> 
+            <ion-img v-if="collection.thumbnail.thumbnail[0]" :src="collection.thumbnail.thumbnail[0]" :alt="collection.name"></ion-img>
+            <ion-img v-else :src="image" :alt="collection.name"></ion-img>
+        </ion-thumbnail>
+        <ion-label> {{ collection.name }} </ion-label>
+    </ion-item>
 </template>
 
 <script lang="ts">
 
 import {
-    IonList,
     IonItem,
     IonImg,
     IonThumbnail,
@@ -25,7 +22,6 @@ export default {
         "collections"
     ],
     components: {
-        IonList,
         IonItem,
         IonImg,
         IonThumbnail,

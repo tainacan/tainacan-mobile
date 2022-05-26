@@ -1,31 +1,34 @@
 <template>
     <ion-loading
-    :is-open="isOpenRef"
-    cssClass="my-custom-class"
-    message="Carregando..."
+        :is-open="isLoading"
+        message="Carregando..."
     >
     </ion-loading>
     <base-layout>
-        <ion-toolbar>
-            <ion-label>Coleções</ion-label>
-        </ion-toolbar>
-        <base-collection-list :collections="collectionStore.collections"></base-collection-list>
-        <ion-button expand="block" routerLink="/collectionsfull">
+        <ion-list>
+            <ion-list-header>
+                Coleções
+            </ion-list-header>
+            <collection-list :collections="collectionStore.collections"></collection-list>
+        </ion-list>
+        <ion-button fill="clear" size="small" routerLink="/collectionsfull">
             Acessar lista completa de coleções
         </ion-button>
-        <ion-toolbar>
-            <ion-label>Items</ion-label>
-        </ion-toolbar>
-        <base-item-list></base-item-list>
-        <ion-button expand="block" routerLink="/itemsfull">
-            Acessar lista completa de itens
-        </ion-button>
+        <ion-list>
+            <ion-list-header>
+                Items
+            </ion-list-header>
+            <item-list></item-list>
+            <ion-button fill="clear" size="small" routerLink="/itemsfull">
+                Acessar lista completa de itens
+            </ion-button>
+        </ion-list>
     </base-layout>
 </template>
 
 <script>
-import BaseCollectionList from '@/components/CollectionList.vue';
-import BaseItemList from '@/components/ItemList.vue';
+import CollectionList from '@/components/CollectionList.vue';
+import ItemList from '@/components/ItemList.vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 
 import {
@@ -33,29 +36,29 @@ import {
 } from '../store/storeCollection';
 
 import {
-    IonToolbar,
-    IonLabel,
     IonButton,
-    IonLoading
+    IonLoading,
+    IonList,
+    IonListHeader,
 } from '@ionic/vue';
 
 import { ref } from 'vue';
 
 export default {
     components: {
-        BaseCollectionList,
-        BaseItemList,
+        CollectionList,
+        ItemList,
         BaseLayout,
-        IonToolbar,
-        IonLabel,
+        IonList,
+        IonListHeader,
         IonButton,
         IonLoading
     },
     setup() {
-        const isOpenRef = ref(false);
-        const setOpen = (state) => isOpenRef.value = state;
+        const isLoading = ref(false);
+        const setOpen = (state) => isLoading.value = state;
         let collectionStore = useCollectionsStore();
-        return { collectionStore, isOpenRef, setOpen }
+        return { collectionStore, isLoading, setOpen }
     },
     async created(){
         this.setOpen(true);

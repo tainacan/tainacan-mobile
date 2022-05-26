@@ -1,22 +1,23 @@
 <template>
     <ion-loading
-    :is-open="isOpenRef"
-    cssClass="my-custom-class"
-    message="Carregando..."
+            :is-open="isLoading"
+            message="Carregando..."
     >
     </ion-loading>
     <base-layout>
-        <ion-toolbar>
-            <ion-label>Coleções</ion-label>
-        </ion-toolbar>
-        <base-collection-list :collections="collectionStore.collections"></base-collection-list>
+        <ion-list>
+            <ion-list-header>
+                Coleções
+            </ion-list-header>
+            <collection-list :collections="collectionStore.collections"></collection-list>
+        </ion-list>
     </base-layout>
 </template>
 
 <script>
-import BaseCollectionList from '@/components/CollectionList.vue';
+import CollectionList from '@/components/CollectionList.vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
-import { IonLoading, IonToolbar, IonLabel } from '@ionic/vue';
+import { IonLoading, IonListHeader, IonList } from '@ionic/vue';
 
 import {
     useCollectionsStore
@@ -26,17 +27,17 @@ import { ref } from 'vue';
 
 export default {
     components: {
-        BaseCollectionList,
+        CollectionList,
         BaseLayout,
         IonLoading,
-        IonToolbar,
-        IonLabel
+        IonList,
+        IonListHeader
     },
     setup() {
-        const isOpenRef = ref(false);
-        const setOpen = (state) => isOpenRef.value = state;
+        const isLoading = ref(false);
+        const setOpen = (state) => isLoading.value = state;
         let collectionStore = useCollectionsStore();
-        return { collectionStore, isOpenRef, setOpen }
+        return { collectionStore, isLoading, setOpen }
     },
     async created(){
         this.setOpen(true);

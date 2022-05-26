@@ -15,9 +15,6 @@
                 </ion-buttons>
                 <ion-title> {{ pageTitle }} </ion-title>
             </ion-toolbar>
-            <ion-toolbar>
-                <ion-title> Login: {{collectionStore.userLogin }} Senha: {{collectionStore.userPassword }} </ion-title>
-            </ion-toolbar>
         </ion-header>
         <ion-content>
             <slot />
