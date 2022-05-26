@@ -25,8 +25,8 @@
 <script>
 import { logOutOutline } from "ionicons/icons";
 import { 
-    useUserStore
-} from '../../store/storeUser';
+    useWpStore
+} from '../../store/storeWp';
 
 import {
     IonPage,
@@ -58,17 +58,17 @@ export default {
     },
     setup(){
         const tainacanLogo = computed (() => require('../../assets/logo.png'))
-        let userStore = useUserStore();
+        let wpStore = useWpStore();
 
         return {
             tainacanLogo,
-            userStore,
+            wpStore,
             logOutOutline
         }  
     },
     methods: {
         async logOff(){
-            await this.userStore.userLogOff();
+            await this.wpStore.userLogOff();
             this.$router.go();
         }
     }

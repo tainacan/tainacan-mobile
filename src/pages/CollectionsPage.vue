@@ -9,7 +9,7 @@
             <ion-list-header>
                 Coleções
             </ion-list-header>
-            <collections-list :collections="collectionStore.collections"></collections-list>
+            <collections-list :collections="tainacanStore.collections"></collections-list>
         </ion-list>
     </base-layout>
 </template>
@@ -20,8 +20,8 @@ import BaseLayout from '@/components/base/BaseLayout.vue';
 import { IonLoading, IonListHeader, IonList } from '@ionic/vue';
 
 import {
-    useCollectionsStore
-} from '../store/storeCollection';
+    useTainacanStore
+} from '../store/storeTainacan';
 
 import { ref } from 'vue';
 
@@ -36,12 +36,12 @@ export default {
     setup() {
         const isLoading = ref(false);
         const setOpen = (state) => isLoading.value = state;
-        let collectionStore = useCollectionsStore();
-        return { collectionStore, isLoading, setOpen }
+        let tainacanStore = useTainacanStore();
+        return { tainacanStore, isLoading, setOpen }
     },
     async created(){
         this.setOpen(true);
-        await this.collectionStore.fetchCollections();
+        await this.tainacanStore.fetchCollections();
         this.setOpen(false);
     },
 }

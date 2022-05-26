@@ -67,8 +67,8 @@
 </template>
 
 <script lang="ts">
-import { useCollectionsStore } from '../store/storeCollection';
-import { useUserStore } from '../store/storeUser';
+import { useTainacanStore } from '../store/storeTainacan';
+import { useWpStore } from '../store/storeWp';
 import { arrowForwardOutline } from "ionicons/icons";
 
 import {
@@ -107,16 +107,16 @@ export default {
     },
     setup(){
         const image = computed (() => require('../assets/logo_square.png'));
-        let collectionStore = useCollectionsStore();
-        let userStore = useUserStore();
-        return { image, collectionStore, userStore, arrowForwardOutline }
+        let tainacanStore = useTainacanStore();
+        let wpStore = useWpStore();
+        return { image, tainacanStore, wpStore, arrowForwardOutline }
     },
     methods: {
         async login(){
-            await this.userStore.userLogin(this.siteUrl);
-            // this.collectionStore.siteUrl = this.siteUrl;
-            // this.collectionStore.userLogin = this.userLogin;
-            // this.collectionStore.userPassword = this.userPassword;
+            await this.wpStore.userLogin(this.siteUrl);
+            // this.tainacanStore.siteUrl = this.siteUrl;
+            // this.tainacanStore.userLogin = this.userLogin;
+            // this.tainacanStore.userPassword = this.userPassword;
             this.$router.push('/home');
         }
     }

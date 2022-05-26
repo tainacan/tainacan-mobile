@@ -9,7 +9,7 @@
             <ion-list-header>
                 Coleções
             </ion-list-header>
-            <collections-list :collections="collectionStore.collections"></collections-list>
+            <collections-list :collections="tainacanStore.collections"></collections-list>
         </ion-list>
         <ion-button fill="clear" size="small" routerLink="/collections">
             Acessar lista completa de coleções
@@ -18,7 +18,7 @@
             <ion-list-header>
                 Items
             </ion-list-header>
-            <items-list :items="collectionStore.items"></items-list>
+            <items-list :items="tainacanStore.items"></items-list>
             <ion-button fill="clear" size="small" routerLink="/items">
                 Acessar lista completa de itens
             </ion-button>
@@ -28,8 +28,8 @@
 
 <script lang="ts">
 import {
-    useCollectionsStore
-} from '../store/storeCollection';
+    useTainacanStore
+} from '../store/storeTainacan';
 import { ref } from 'vue';
 
 import CollectionsList from '@/components/lists/CollectionsList.vue';
@@ -56,18 +56,18 @@ export default {
         const isLoading = ref(false);
         const setIsLoading = (state: boolean) => isLoading.value = state;
 
-        let collectionStore = useCollectionsStore();
+        let tainacanStore = useTainacanStore();
 
         return {
-            collectionStore,
+            tainacanStore,
             isLoading,
             setIsLoading
         }
     },
     async created() {
         this.setIsLoading(true);
-        await this.collectionStore.fetchCollections("4", "modified");
-        await this.collectionStore.fetchItems();
+        await this.tainacanStore.fetchCollections("4", "modified");
+        await this.tainacanStore.fetchItems();
         this.setIsLoading(false);
     }
 }

@@ -5,14 +5,14 @@
             message="Carregando..."
         >
         </ion-loading>
-        <items-list :items="collectionStore.collectionItems"></items-list>
+        <items-list :items="tainacanStore.collectionItems"></items-list>
     </base-layout>
 </template>
 
 <script lang="ts">
 import {
-    useCollectionsStore
-} from '../store/storeCollection';
+    useTainacanStore
+} from '../store/storeTainacan';
 import { useRoute } from "vue-router";
 import { ref } from 'vue';
 
@@ -34,11 +34,11 @@ export default {
         const setIsLoading = (state: boolean) => isLoading.value = state;
         const route = useRoute();
 
-        let collectionStore = useCollectionsStore();
+        let tainacanStore = useTainacanStore();
 
         return {
             isLoading,
-            collectionStore,
+            tainacanStore,
             setIsLoading,
             items: [],
             collectionId: route.params.id,
@@ -46,7 +46,7 @@ export default {
     },
     async created() {
         this.setIsLoading(true)
-        await this.collectionStore.fetchItemsByCollection(this.collectionId)
+        await this.tainacanStore.fetchItemsByCollection(this.collectionId)
         this.setIsLoading(false)
     },
 }

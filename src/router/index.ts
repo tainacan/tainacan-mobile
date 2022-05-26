@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import { useUserStore } from '../store/storeUser'
+import { useWpStore } from '../store/storeWp'
 
 import HomePage from '../pages/HomePage.vue';
 import LoginPage from '../pages/LoginPage.vue';
@@ -46,9 +46,9 @@ const router = createRouter({
 })
 
 router.beforeEach(async(to, from, next) => {
-  const userStore = useUserStore();
-  await userStore.checkUserLogin();
-  if (to.name !== 'login' && !userStore.userIsLoggedIn) next({ name: 'login' })
+  const wpStore = useWpStore();
+  await wpStore.checkUserLogin();
+  if (to.name !== 'login' && !wpStore.userIsLoggedIn) next({ name: 'login' })
   else next()
 })
 

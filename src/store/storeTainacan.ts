@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { useUserStore } from "../store/storeUser";
+import { useWpStore } from "./storeWp";
 
-const useCollectionsStore = defineStore("collections", {
+const useTainacanStore = defineStore("tainacan", {
   state() {
     return {
       collections: [],
@@ -17,9 +17,9 @@ const useCollectionsStore = defineStore("collections", {
   actions: {
     async fetchCollections(perPage: string, orderBy: string) {
       try {
-        const userStore = useUserStore();
+        const wpStore = useWpStore();
         const response = await axios.get(
-          `${userStore.userSiteUrl}/wp-json/tainacan/v2/collections?${
+          `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collections?${
             perPage ? "perpage=" + perPage : ""
           }&${orderBy ? "orderby=" + orderBy : ""}`
         );
@@ -33,10 +33,10 @@ const useCollectionsStore = defineStore("collections", {
 
     async fetchItemsByCollection(collectionId: string) {
       try {
-        const userStore = useUserStore();
+        const wpStore = useWpStore();
         this.collectionItems = [];
         const response = await axios.get(
-          `${userStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`
+          `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`
         );
         this.collectionItems = response.data.items;
       } catch (err) {
@@ -48,10 +48,10 @@ const useCollectionsStore = defineStore("collections", {
 
     async fetchItems() {
       try {
-        const userStore = useUserStore();
+        const wpStore = useWpStore();
         this.items = [];
         const response = await axios.get(
-          `${userStore.userSiteUrl}/wp-json/tainacan/v2/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`
+          `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`
         );
         this.items = response.data.items;
       } catch (err) {
@@ -62,4 +62,4 @@ const useCollectionsStore = defineStore("collections", {
     },
   },
 });
-export { useCollectionsStore };
+export { useTainacanStore };

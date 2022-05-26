@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage' ;
 
 const store = new Storage();
 
-const useUserStore = defineStore('users', {
+const useWpStore = defineStore('wp', {
     state () {
         return {
             userIsLoggedIn: false,
@@ -46,5 +46,5 @@ const useUserStore = defineStore('users', {
     }
 })
 export {
-    useUserStore
+    useWpStore
 }

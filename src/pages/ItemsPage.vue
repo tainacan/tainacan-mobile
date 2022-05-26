@@ -5,14 +5,14 @@
                 message="Carregando..."
         >
         </ion-loading>
-        <items-list :items="collectionStore.items"></items-list>
+        <items-list :items="tainacanStore.items"></items-list>
     </base-layout>
 </template>
 
 <script lang="ts">
 import {
-    useCollectionsStore
-} from '../store/storeCollection';
+    useTainacanStore
+} from '../store/storeTainacan';
 import {
     IonLoading
 } from '@ionic/vue';
@@ -30,8 +30,8 @@ export default {
     setup() {
         const isLoading = ref(false);
         const setOpen = (state: boolean) => isLoading.value = state;
-        let collectionStore = useCollectionsStore();
-        return { isLoading, setOpen, collectionStore }
+        let tainacanStore = useTainacanStore();
+        return { isLoading, setOpen, tainacanStore }
     },
     data() {
         return {
@@ -42,7 +42,7 @@ export default {
 
     async created(){
         this.setOpen(true)
-        await this.collectionStore.fetchItems()
+        await this.tainacanStore.fetchItems()
         this.setOpen(false)
     },
 }
