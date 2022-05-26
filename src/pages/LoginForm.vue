@@ -1,43 +1,67 @@
 <template>  
     <ion-page>
-        <form @submit.prevent="login">
-            <ion-list>
-                <ion-item>
-                    <ion-img width="10" height="10" alt="Logo Tainacan" :src="image" />
-                </ion-item>
-                <ion-item>
-                    <ion-input 
-                    placeholder="URL do Museu" 
-                    autofocus="true" 
-                    id="siteUrl"
-                    type="url"
-                    name="siteUrl"
-                    v-model.trim="siteUrl"
-                    required = "true"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-input 
-                    placeholder="Login"
-                    id="userLogin"
-                    type="text"
-                    name="userLogin"
-                    v-model="userLogin"
-                    required = "true">
-                    </ion-input>            
-                </ion-item>
-                <ion-item>
-                    <ion-input 
-                    placeholder="Senha"  
-                    id="userPassword"
-                    type="password"
-                    name="userPassword"
-                    v-model="userPassword"
-                    required = "true">
-                    </ion-input>
-                </ion-item>
-            </ion-list>
-            <ion-button type="submit">ACESSAR</ion-button>
-        </form>
+        <ion-content class="login-form-content" fullscreen>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+                <ion-col>
+                    <ion-img class="login-form-content__tainacan-logo" alt="Logo Tainacan" :src="image" />
+                    <form @submit.prevent="login">
+                        <ion-list class="ion-no-margin" inset>
+                            <ion-item>
+                                <ion-label position="floating">
+                                    URL do Site do Acervo
+                                </ion-label>
+                                <ion-input 
+                                        placeholder="https://my-tainacan-museum.com" 
+                                        autofocus="true" 
+                                        id="siteUrl"
+                                        type="url"
+                                        name="siteUrl"
+                                        v-model.trim="siteUrl"
+                                        required="true"
+                                        autocomplete="url"
+                                        enterkeyhint="next">
+                                </ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">
+                                    Nome do usuário
+                                </ion-label>
+                                <ion-input 
+                                        placeholder="seu nome de usuário aqui"
+                                        id="userLogin"
+                                        type="text"
+                                        name="userLogin"
+                                        v-model="userLogin"
+                                        required="true"
+                                        autocomplete="username"
+                                        enterkeyhint="next"
+                                        inputmode="url">
+                                </ion-input>            
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">
+                                    Senha do usuário
+                                </ion-label>
+                                <ion-input 
+                                        placeholder="sua senha de usuário aqui"  
+                                        id="userPassword"
+                                        type="password"
+                                        name="userPassword"
+                                        v-model="userPassword"
+                                        required="true"
+                                        autocomplete="new-password"
+                                        enterkeyhint="done">
+                                </ion-input>
+                            </ion-item>
+                        </ion-list>
+                        <br>
+                        <ion-button type="submit" expand="block">
+                            Acessar acervo
+                        </ion-button>
+                    </form>
+                </ion-col>
+            </ion-row>
+        </ion-content>
     </ion-page>
 </template>
 
@@ -50,7 +74,12 @@ import {
     IonPage,
     IonList,
     IonItem,
+    IonButton,
     IonInput,
+    IonLabel,
+    IonRow,
+    IonCol,
+    IonContent
 } from '@ionic/vue';
 import { computed } from 'vue';
 export default {
@@ -60,7 +89,12 @@ export default {
         IonPage,
         IonList,
         IonItem,
+        IonButton,
         IonInput,
+        IonLabel,
+        IonRow,
+        IonCol,
+        IonContent
     },
     data(){
         return {
@@ -70,7 +104,7 @@ export default {
         }
     },
     setup(){
-        const image = computed (() => require('../assets/logoLogin.png'));
+        const image = computed (() => require('../assets/logo_square.png'));
         let collectionStore = useCollectionsStore();
         let userStore = useUserStore();
         return { image, collectionStore, userStore }
@@ -88,3 +122,16 @@ export default {
 }
 </script>
 
+<style>
+.login-form-content {
+    --ion-background-color: var(--ion-color-step-950, #f2f2f2);
+}
+.login-form-content ion-row {
+    height: 100%;
+}
+.login-form-content__tainacan-logo {
+    max-width: 250px;
+    padding: 2rem;
+    margin: 0.5rem auto;
+}
+</style>
