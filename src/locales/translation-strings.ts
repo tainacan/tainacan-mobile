@@ -14,7 +14,9 @@ export const translationStrings = {
         placeholder_user_name: 'your user name',
         label_user_password: 'User password',
         placeholder_user_password: 'your password here',
-        label_access_archive: 'Access archive'
+        label_access_archive: 'Access archive',
+        label_item_without_title: 'Item without title',
+        label_collection_without_name: 'Collection without name'
     },
     pt: {
         collections: "Coleções",
@@ -31,6 +33,8 @@ export const translationStrings = {
         placeholder_user_name: 'seu nome de usuário aqui',
         label_user_password: 'Senha do usuário',
         placeholder_user_password: 'sua senha de usuário aqui',
-        label_access_archive: 'Acessar acervo'
+        label_access_archive: 'Acessar acervo',
+        label_item_without_title: 'Item sem título',
+        label_collection_without_name: 'Coleção sem nome'
     }
 }

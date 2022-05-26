@@ -1,7 +1,7 @@
 <template>
     <ion-item class="collection-list-item" v-for="collection of collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
         <ion-thumbnail slot="start"> 
-            <ion-img :src="(collection.thumbnail && collection.thumbnail.thumbnail && collection.thumbnail.thumbnail[0]) ? collection.thumbnail.thumbnail[0] : thumbnailPlaceholder" :alt="collection.name ? collection.name : 'Imagem de coleção sem nome'"></ion-img>
+            <ion-img :src="(collection.thumbnail && collection.thumbnail.thumbnail && collection.thumbnail.thumbnail[0]) ? collection.thumbnail.thumbnail[0] : thumbnailPlaceholder" :alt="collection.name ? collection.name : $('label_collection_without_name')"></ion-img>
         </ion-thumbnail>
         <ion-label> {{ collection.name ? collection.name : 'Coleção sem nome' }} </ion-label>
     </ion-item>
