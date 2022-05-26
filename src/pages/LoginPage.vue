@@ -8,10 +8,10 @@
                         <ion-list class="ion-no-margin" inset>
                             <ion-item>
                                 <ion-label position="floating">
-                                    URL do Site do Acervo
+                                    {{ $t('label_site_url') }}
                                 </ion-label>
                                 <ion-input 
-                                        placeholder="https://my-tainacan-museum.com" 
+                                        :placeholder="$t('placeholder_site_url')" 
                                         autofocus="true" 
                                         id="siteUrl"
                                         type="url"
@@ -24,10 +24,10 @@
                             </ion-item>
                             <ion-item>
                                 <ion-label position="floating">
-                                    Nome do usuário
+                                    {{ $t('label_user_name') }}
                                 </ion-label>
                                 <ion-input 
-                                        placeholder="seu nome de usuário aqui"
+                                        :placeholder="$t('placeholder_user_name')"
                                         id="userLogin"
                                         type="text"
                                         name="userLogin"
@@ -40,10 +40,10 @@
                             </ion-item>
                             <ion-item>
                                 <ion-label position="floating">
-                                    Senha do usuário
+                                    {{ $t('label_user_password') }}
                                 </ion-label>
                                 <ion-input 
-                                        placeholder="sua senha de usuário aqui"  
+                                        :placeholder="$t('placeholder_user_password')" 
                                         id="userPassword"
                                         type="password"
                                         name="userPassword"
@@ -56,7 +56,7 @@
                         </ion-list>
                         <br>
                         <ion-button type="submit" fill="clear">
-                            Acessar acervo
+                            {{ $t('label_access_archive') }}
                             <ion-icon slot="end" :icon="arrowForwardOutline"></ion-icon>
                         </ion-button>
                     </form>

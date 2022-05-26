@@ -2,25 +2,25 @@
     <base-layout>
         <ion-loading
             :is-open="isLoading"
-            message="Carregando..."
+            :message="$t('label_loading')"
         >
         </ion-loading>
         <ion-list>
             <ion-list-header>
-                Coleções
+                {{ $t('collections') }}
             </ion-list-header>
             <collections-list :collections="tainacanStore.collections"></collections-list>
         </ion-list>
         <ion-button fill="clear" size="small" routerLink="/collections">
-            Acessar lista completa de coleções
+            {{ $t('label_view_all_collections') }}
         </ion-button>
         <ion-list>
             <ion-list-header>
-                Items
+                {{ $t('items') }}
             </ion-list-header>
             <items-list :items="tainacanStore.items"></items-list>
             <ion-button fill="clear" size="small" routerLink="/items">
-                Acessar lista completa de itens
+                 {{ $t('label_view_all_items') }}
             </ion-button>
         </ion-list>
     </base-layout>

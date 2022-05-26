@@ -29,11 +29,21 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 import './theme/core.css'; //importei do arquivo criado
 
+/* Translation */
+import { createI18n } from 'vue-i18n';
+import { translationStrings } from './locales/translation-strings';
+
+const i18n = createI18n({
+  locale: 'en', // set locale
+  fallbackLocale: 'en', // set fallback locale
+  messages: translationStrings, // set locale messages
+  })
 
 const app = createApp(App)
   .use(IonicVue)
   .use(router)
-  .use(createPinia());
+  .use(createPinia())
+  .use(i18n);
 
 app.component('base-layout', BaseLayout);
 app.component('base-collectionlist', CollectionList);

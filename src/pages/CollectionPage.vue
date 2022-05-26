@@ -1,8 +1,8 @@
 <template>
-    <base-layout page-title="Collection" page-default-back-link="/collections">
+    <base-layout :page-title="$t('collection')" page-default-back-link="/collections">
         <ion-loading
             :is-open="isLoading"
-            message="Carregando..."
+            :message="$t('label_loading')"
         >
         </ion-loading>
         <items-list :items="tainacanStore.collectionItems"></items-list>

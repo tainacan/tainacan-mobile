@@ -1,14 +1,11 @@
 <template>
-    <base-layout page-title="Collections list" page-default-back-link="/">
+    <base-layout :page-title="$t('label_collections_list')" page-default-back-link="/">
         <ion-loading
                 :is-open="isLoading"
-                message="Carregando..."
+                :message="$t('label_loading')"
         >
         </ion-loading>
         <ion-list>
-            <ion-list-header>
-                Coleções
-            </ion-list-header>
             <collections-list :collections="tainacanStore.collections"></collections-list>
         </ion-list>
     </base-layout>
@@ -17,7 +14,7 @@
 <script>
 import CollectionsList from '@/components/lists/CollectionsList.vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
-import { IonLoading, IonListHeader, IonList } from '@ionic/vue';
+import { IonLoading, IonList } from '@ionic/vue';
 
 import {
     useTainacanStore
@@ -30,8 +27,7 @@ export default {
         CollectionsList,
         BaseLayout,
         IonLoading,
-        IonList,
-        IonListHeader
+        IonList
     },
     setup() {
         const isLoading = ref(false);
