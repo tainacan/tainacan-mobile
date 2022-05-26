@@ -1,10 +1,10 @@
 <template>
-    <ion-loading
-            :is-open="isLoading"
-            message="Carregando..."
-    >
-    </ion-loading>
-    <base-layout>
+    <base-layout page-title="Collections list" page-default-back-link="/">
+        <ion-loading
+                :is-open="isLoading"
+                message="Carregando..."
+        >
+        </ion-loading>
         <ion-list>
             <ion-list-header>
                 Coleções

@@ -1,10 +1,10 @@
 <template>
-    <ion-loading
-        :is-open="isLoading"
-        message="Carregando..."
-    >
-    </ion-loading>
     <base-layout>
+        <ion-loading
+            :is-open="isLoading"
+            message="Carregando..."
+        >
+        </ion-loading>
         <ion-list>
             <ion-list-header>
                 Coleções
@@ -18,7 +18,7 @@
             <ion-list-header>
                 Items
             </ion-list-header>
-            <items-list></items-list>
+            <items-list :items="collectionStore.items"></items-list>
             <ion-button fill="clear" size="small" routerLink="/items">
                 Acessar lista completa de itens
             </ion-button>
@@ -26,23 +26,21 @@
     </base-layout>
 </template>
 
-<script>
-import CollectionsList from '@/components/lists/CollectionsList.vue';
-import ItemsList from '@/components/lists/ItemsList.vue';
-import BaseLayout from '@/components/base/BaseLayout.vue';
-
+<script lang="ts">
 import {
     useCollectionsStore
 } from '../store/storeCollection';
+import { ref } from 'vue';
 
+import CollectionsList from '@/components/lists/CollectionsList.vue';
+import ItemsList from '@/components/lists/ItemsList.vue';
+import BaseLayout from '@/components/base/BaseLayout.vue';
 import {
     IonButton,
     IonLoading,
     IonList,
     IonListHeader,
 } from '@ionic/vue';
-
-import { ref } from 'vue';
 
 export default {
     components: {
@@ -56,15 +54,22 @@ export default {
     },
     setup() {
         const isLoading = ref(false);
-        const setOpen = (state) => isLoading.value = state;
+        const setIsLoading = (state: boolean) => isLoading.value = state;
+
         let collectionStore = useCollectionsStore();
-        return { collectionStore, isLoading, setOpen }
+
+        return {
+            collectionStore,
+            isLoading,
+            setIsLoading
+        }
     },
-    async created(){
-        this.setOpen(true);
+    async created() {
+        this.setIsLoading(true);
         await this.collectionStore.fetchCollections("4", "modified");
-        this.setOpen(false);
-    },
+        await this.collectionStore.fetchItems();
+        this.setIsLoading(false);
+    }
 }
 
 </script>

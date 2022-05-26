@@ -23,9 +23,6 @@
 </template>
 
 <script>
-import {
-    useCollectionsStore
-} from '../../store/storeCollection';
 import { logOutOutline } from "ionicons/icons";
 import { 
     useUserStore
@@ -61,18 +58,19 @@ export default {
     },
     setup(){
         const tainacanLogo = computed (() => require('../../assets/logo.png'))
-        let collectionStore = useCollectionsStore();
         let userStore = useUserStore();
+
         return {
-                tainacanLogo, collectionStore, userStore, logOutOutline
-            }  
+            tainacanLogo,
+            userStore,
+            logOutOutline
+        }  
     },
     methods: {
         async logOff(){
             await this.userStore.userLogOff();
             this.$router.go();
         }
-
     }
 }
 </script>

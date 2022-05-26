@@ -1,17 +1,11 @@
 <template>
     <base-layout page-title="Items List" page-default-back-link="/collections">
-    <ion-loading
-            :is-open="isLoading"
-            message="Carregando..."
-    >
-    </ion-loading>
-    <ion-card v-for="item of collectionStore.items" :key="item.id">
-        <ion-card-title v-if="item.title"> {{ item.title }} </ion-card-title>
-        <ion-card-title v-else>Item não possui título</ion-card-title>
-        <ion-card-content>
-             <ion-img :src="item.thumbnail.medium[0]" :alt="item.title"></ion-img>
-        </ion-card-content>
-    </ion-card>
+        <ion-loading
+                :is-open="isLoading"
+                message="Carregando..."
+        >
+        </ion-loading>
+        <items-list :items="collectionStore.items"></items-list>
     </base-layout>
 </template>
 
@@ -20,22 +14,18 @@ import {
     useCollectionsStore
 } from '../store/storeCollection';
 import {
-    IonCard,
-    IonLoading,
-    IonCardTitle,
-    IonCardContent,
-    IonImg
+    IonLoading
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import { ref } from 'vue';
+
+import ItemsList from '../components/lists/ItemsList.vue';
+
 export default {
     components: {
-        IonCard,
         IonLoading,
-        BaseLayout,
-        IonCardTitle,
-        IonCardContent,
-        IonImg
+        ItemsList,
+        BaseLayout
     },
     setup() {
         const isLoading = ref(false);
@@ -52,7 +42,7 @@ export default {
 
     async created(){
         this.setOpen(true)
-        await this.collectionStore.fetchFullItems()
+        await this.collectionStore.fetchItems()
         this.setOpen(false)
     },
 }

@@ -1,17 +1,11 @@
 <template>
-    <base-layout page-title="Items List" page-default-back-link="/collections">
-    <ion-loading
+    <base-layout page-title="Collection" page-default-back-link="/collections">
+        <ion-loading
             :is-open="isLoading"
             message="Carregando..."
-    >
-    </ion-loading>
-    <ion-card v-for="item of collectionStore.items" :key="item.id">
-        <ion-card-title v-if="item.title"> {{ item.title }} </ion-card-title>
-        <ion-card-title v-else>Item não possui título</ion-card-title>
-        <ion-card-content>
-             <ion-img :src="item.thumbnail.medium[0]" :alt="item.title"></ion-img>
-        </ion-card-content>
-    </ion-card>
+        >
+        </ion-loading>
+        <items-list :items="collectionStore.collectionItems"></items-list>
     </base-layout>
 </template>
 
@@ -19,42 +13,41 @@
 import {
     useCollectionsStore
 } from '../store/storeCollection';
-import {
-    IonCard,
-    IonLoading,
-    IonCardTitle,
-    IonCardContent,
-    IonImg
-} from '@ionic/vue';
-import BaseLayout from '@/components/base/BaseLayout.vue';
+import { useRoute } from "vue-router";
 import { ref } from 'vue';
+
+import {
+    IonLoading
+} from '@ionic/vue';
+
+import BaseLayout from '@/components/base/BaseLayout.vue';
+import ItemsList from '@/components/lists/ItemsList.vue';
+
 export default {
     components: {
-        IonCard,
-        IonLoading,
         BaseLayout,
-        IonCardTitle,
-        IonCardContent,
-        IonImg
+        ItemsList,
+        IonLoading
     },
     setup() {
         const isLoading = ref(false);
-        const setOpen = (state: boolean) => isLoading.value = state;
+        const setIsLoading = (state: boolean) => isLoading.value = state;
+        const route = useRoute();
+
         let collectionStore = useCollectionsStore();
-        return { isLoading, setOpen, collectionStore }
-    },
 
-    data() {
         return {
+            isLoading,
+            collectionStore,
+            setIsLoading,
             items: [],
-            collectionId: this.$route.params.id,
-        };
+            collectionId: route.params.id,
+        }
     },
-
-    async created(){
-        this.setOpen(true)
+    async created() {
+        this.setIsLoading(true)
         await this.collectionStore.fetchItemsByCollection(this.collectionId)
-        this.setOpen(false)
+        this.setIsLoading(false)
     },
 }
 </script>

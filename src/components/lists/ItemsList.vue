@@ -1,56 +1,42 @@
 <template>
-    <ion-loading
-            :is-open="isLoading"
-            message="Carregando..."
-    >
-    </ion-loading>
-    <ion-card v-for="item of collectionStore.items" :key="item.id">
-        <ion-card-title v-if="item.title"> {{ item.title }} </ion-card-title>
-        <ion-card-title v-else>Item não possui título</ion-card-title>
-        <ion-card-content>
-             <ion-img :src="item.thumbnail.medium[0]" :alt="item.title"></ion-img>
-        </ion-card-content>
-    </ion-card>
+    <ion-row>
+        <ion-col size="6" v-for="item of items" :key="item.id">
+            <ion-card button color="light" >
+                <ion-img :src="(item.thumbnail && item.thumbnail.medium && item.thumbnail.medium[0]) ? item.thumbnail.medium[0] : thumbnailPlaceholder" :alt="item.title ? item.title : 'Imagem de item sem título'"></ion-img>
+                <ion-card-header>
+                    <ion-card-title v-if="item.title"> {{ item.title ? item.title : 'Item sem título' }} </ion-card-title>
+                </ion-card-header>
+            </ion-card>
+        </ion-col>
+    </ion-row>
 </template>
 
 <script lang="ts">
 import {
-    useCollectionsStore
-} from '../../store/storeCollection';
-import {
+    IonCardHeader,
+    IonRow,
+    IonCol,
     IonCard,
-    IonLoading,
     IonImg,
-    IonCardTitle,
-    IonCardContent
+    IonCardTitle
 } from '@ionic/vue';
 
-import { ref } from 'vue';
+import { computed } from 'vue';
 export default {
+    props: [
+        "items"
+    ],
     components: {
+        IonCardHeader,
+        IonRow,
+        IonCol,
         IonCard,
-        IonLoading,
         IonImg,
-        IonCardTitle,
-        IonCardContent
+        IonCardTitle
     },
     setup() {
-        const isLoading = ref(false);
-        const setOpen = (state: boolean) => isLoading.value = state;
-        let collectionStore = useCollectionsStore();
-        return { isLoading, setOpen, collectionStore }
-    },
-    data() {
-        return {
-            items: [],
-            collectionId: this.$route.params.id,
-        };
-    },
-
-    async created(){
-        this.setOpen(true)
-        await this.collectionStore.fetchItems()
-        this.setOpen(false)
-    },
+        const thumbnailPlaceholder = computed (() => require('../../assets/placeholder_square_small.png'));
+        return { thumbnailPlaceholder }
+    }
 }
 </script>
