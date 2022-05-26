@@ -66,7 +66,7 @@ export default {
     },
     async created() {
         this.setIsLoading(true);
-        await this.tainacanStore.fetchCollections("4", "modified");
+        await this.tainacanStore.fetchCollections({ perPage: "4", orderBy: "modified" });
         await this.tainacanStore.fetchItems();
         this.setIsLoading(false);
     }

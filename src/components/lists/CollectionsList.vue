@@ -1,5 +1,5 @@
 <template>
-    <ion-item v-for="collection of collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
+    <ion-item class="collection-list-item" v-for="collection of collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
         <ion-thumbnail slot="start"> 
             <ion-img :src="(collection.thumbnail && collection.thumbnail.thumbnail && collection.thumbnail.thumbnail[0]) ? collection.thumbnail.thumbnail[0] : thumbnailPlaceholder" :alt="collection.name ? collection.name : 'Imagem de coleção sem nome'"></ion-img>
         </ion-thumbnail>
@@ -33,3 +33,11 @@ export default {
 }
 </script>
 
+<style>
+.collection-list-item {
+    --border-color: var(--ion-color-step-900, #e6e6e6);
+}
+.collection-list-item ion-img {
+    --border-radius: 4px;
+}
+</style>

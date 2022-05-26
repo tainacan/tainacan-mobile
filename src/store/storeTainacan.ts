@@ -15,44 +15,72 @@ const useTainacanStore = defineStore("tainacan", {
   },
 
   actions: {
-    async fetchCollections(perPage: string, orderBy: string) {
+    async fetchCollections(params: { perPage: string, orderBy: string }) {
       try {
         const wpStore = useWpStore();
-        const response = await axios.get(
-          `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collections?${
-            perPage ? "perpage=" + perPage : ""
-          }&${orderBy ? "orderby=" + orderBy : ""}`
-        );
+
+        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collections?`;
+
+        if (params && params.perPage)
+          endpoint += '&perpage=' + params.perPage;
+  
+        if (params && params.orderBy)
+          endpoint += '&orderby=' + params.orderBy;
+
+        const response = await axios.get(endpoint);
+
         this.collections = response.data;
+
       } catch (err) {
         this.collections = [];
+
         console.error("Erro no carregamento das coleções:", err);
+
         return err;
       }
     },
 
-    async fetchItemsByCollection(collectionId: string) {
+    async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string }) {
       try {
         const wpStore = useWpStore();
         this.collectionItems = [];
-        const response = await axios.get(
-          `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`
-        );
+
+        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail`;
+
+        if (params && params.perPage)
+          endpoint += '&perpage=' + params.perPage;
+  
+        if (params && params.orderBy)
+          endpoint += '&orderby=' + params.orderBy;
+
+        const response = await axios.get(endpoint);
+
         this.collectionItems = response.data.items;
+
       } catch (err) {
         this.collectionItems = [];
+
         console.error("Erro no carregamento dos items da coleção:", err);
+
         return err;
       }
     },
 
-    async fetchItems() {
+    async fetchItems(params: { perPage: string, orderBy: string }) {
       try {
         const wpStore = useWpStore();
         this.items = [];
-        const response = await axios.get(
-          `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?perpage=12&orderby=modified&fetch_only=id,title,thumbnail`
-        );
+        
+        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?fetch_only=id,title,thumbnail`;
+
+        if (params && params.perPage)
+          endpoint += '&perpage=' + params.perPage;
+  
+        if (params && params.orderBy)
+          endpoint += '&orderby=' + params.orderBy;
+
+        const response = await axios.get(endpoint);
+
         this.items = response.data.items;
       } catch (err) {
         this.items = [];

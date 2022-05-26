@@ -12,8 +12,8 @@
                     </ion-button>
                 </ion-buttons>
             </ion-toolbar>
-            <ion-toolbar>
-                <ion-title size="small"> {{ pageTitle }} </ion-title>
+            <ion-toolbar v-if="pageTitle">
+                <ion-title> {{ pageTitle }} </ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content fullscreen="true">
