@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "tainacan-mobile",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
