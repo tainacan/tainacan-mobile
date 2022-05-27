@@ -9,16 +9,13 @@
         >
         </ion-loading>
         <items-list :items="tainacanStore.collectionItems"></items-list>
-        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-            <ion-fab-button>
-                <ion-icon :icon="add"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-list side="top" class="collection-page-actions">
-                <ion-button size="small">Criar um novo item</ion-button>
-                <ion-button size="small">Criar item com anexos selecionados</ion-button>
-                <ion-button size="small">Criar itens a partir de uma seleção</ion-button>
-            </ion-fab-list>
-        </ion-fab>
+        <ion-button 
+                class="add-items-button"
+                color="primary"
+                @click="openActionSheet()">
+            <ion-icon :icon="add"></ion-icon>
+            &nbsp;{{ $t('label_add_items') }}
+        </ion-button>
     </base-layout>
 </template>
 
@@ -28,15 +25,15 @@ import {
 } from '../store/storeTainacan';
 import { useRoute } from "vue-router";
 import { ref } from 'vue';
-import { add } from "ionicons/icons";
+import { add, documentOutline, documentAttachOutline, documentsOutline } from "ionicons/icons";
 
 import {
     IonLoading,
     IonRefresher,
     IonRefresherContent,
-    IonFab,
     IonIcon,
-    IonFabList
+    IonButton,
+    actionSheetController
 } from '@ionic/vue';
 
 import BaseLayout from '@/components/base/BaseLayout.vue';
@@ -49,9 +46,8 @@ export default {
         IonLoading,
         IonRefresher,
         IonRefresherContent,
-        IonFab,
         IonIcon,
-        IonFabList
+        IonButton
     },
     setup() {
         const isLoading = ref(false);
@@ -66,6 +62,54 @@ export default {
             if (event && event.target)
                 event.target.complete();
         }
+        const actionSheetLabels = ref({
+            header: '',
+            button1: '',
+            button2: '',
+            button3: '',
+            cancel: ''
+        });
+        const setActionSheetLabels = (newLabels: any) => actionSheetLabels.value = newLabels;
+        const openActionSheet = async () => {
+            const actionSheet = await actionSheetController.create({
+                header: actionSheetLabels.value.header,
+                cssClass: 'item-creation-action-sheet',
+                buttons: [
+                    {
+                        text: actionSheetLabels.value.button1,
+                        icon: documentsOutline,
+                        data: 'multiple-items',  
+                        handler: () => {
+                            console.log('Vários iteeeens')
+                        },
+                    },
+                    {
+                        text: actionSheetLabels.value.button2,
+                        icon: documentAttachOutline,
+                        data: 'multiple-attachments',
+                        handler: () => {
+                            console.log('Item com vários anexos')
+                        },
+                    },
+                    {
+                        text: actionSheetLabels.value.button3,
+                        icon: documentOutline,
+                        data: 'single item',
+                        handler: () => {
+                            console.log('Item simples')
+                        },
+                    },
+                    {
+                        text: actionSheetLabels.value.cancel,
+                        role: 'cancel'
+                    },
+                ],
+            });
+            await actionSheet.present();
+
+            const { role, data } = await actionSheet.onDidDismiss();
+            console.log('onDidDismiss resolved with role and data', role, data);
+        }
 
         let tainacanStore = useTainacanStore();
 
@@ -75,11 +119,23 @@ export default {
             setIsLoading,
             loadItemsByCollection,
             doRefresh,
+            openActionSheet,
             collectionId,
-            add
+            add,
+            actionSheetLabels,
+            setActionSheetLabels
         }
     },
     async created() {
+       
+        this.setActionSheetLabels({
+            header: this.$t('info_create_items'),
+            button1: this.$t('label_option_multiple_items'),
+            button2: this.$t('label_option_multiple_attachments'),
+            button3: this.$t('label_option_single_item'),
+            cancel: this.$t('label_cancel')
+        });
+
         this.setIsLoading(true);
         await this.loadItemsByCollection();
         this.setIsLoading(false);
@@ -88,8 +144,15 @@ export default {
 </script>
 
 <style>
-.collection-page-actions {
-    right: 0;
-    align-items: flex-end;
+.add-items-button {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    height: 52px;
+    --padding-start: 24px;
+    --padding-bottom: 16px;
+    --padding-top: 16px;
+    --padding-end: 24px;
+    --border-radius: 18px;
 }
 </style>

@@ -19,7 +19,13 @@ export const translationStrings = {
         label_collection_without_name: 'Collection without name',
         total_of_published_items: 'Total of {0} published items',
         label_last_modified_collections: 'Last modified collections',
-        label_last_modified_items: 'Last modified itens'
+        label_last_modified_items: 'Last modified itens',
+        label_add_items: 'Add items',
+        info_create_items: 'Create new items in this collection',
+        label_option_multiple_items: 'Multiple items from file selection',
+        label_option_multiple_attachments: 'Single item with document and attachments from file selection',
+        label_option_single_item: 'Single empty item',
+        label_cancel: 'Cancel'
     },
     pt: {
         collections: "Coleções",
@@ -41,6 +47,12 @@ export const translationStrings = {
         label_collection_without_name: 'Coleção sem nome',
         total_of_published_items: 'Total de {0} itens públicos',
         label_last_modified_collections: 'Coleções alteradas recentemente',
-        label_last_modified_items: 'Itens alterados recentemente'
+        label_last_modified_items: 'Itens alterados recentemente',
+        label_add_items: 'Adicionar itens',
+        info_create_items: 'Crie novos itens nesta coleção',
+        label_option_multiple_items: 'Vários itens a partir de uma seleção de arquivos',
+        label_option_multiple_attachments: 'Um item com documento e anexos provenientes de ums seleção de aquivos',
+        label_option_single_item: 'Um item vazio',
+        label_cancel: 'Cancelar'
     }
 }
