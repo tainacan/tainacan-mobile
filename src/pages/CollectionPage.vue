@@ -1,5 +1,8 @@
 <template>
     <base-layout :page-title="$t('collection')" page-default-back-link="/collections">
+        <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
         <ion-loading
             :is-open="isLoading"
             :message="$t('label_loading')"
@@ -17,7 +20,9 @@ import { useRoute } from "vue-router";
 import { ref } from 'vue';
 
 import {
-    IonLoading
+    IonLoading,
+    IonRefresher,
+    IonRefresherContent
 } from '@ionic/vue';
 
 import BaseLayout from '@/components/base/BaseLayout.vue';
@@ -27,12 +32,23 @@ export default {
     components: {
         BaseLayout,
         ItemsList,
-        IonLoading
+        IonLoading,
+        IonRefresher,
+        IonRefresherContent
     },
     setup() {
         const isLoading = ref(false);
         const setIsLoading = (state: boolean) => isLoading.value = state;
         const route = useRoute();
+        const collectionId = route.params.id + '';
+        const loadItemsByCollection = async () => {
+            await tainacanStore.fetchItemsByCollection(collectionId, { perPage: '24', orderBy: 'modified'});
+        }
+        const doRefresh = async (event: any) => {
+            await loadItemsByCollection();
+            if (event && event.target)
+                event.target.complete();
+        }
 
         let tainacanStore = useTainacanStore();
 
@@ -40,14 +56,15 @@ export default {
             isLoading,
             tainacanStore,
             setIsLoading,
-            items: [],
-            collectionId: route.params.id,
+            loadItemsByCollection,
+            doRefresh,
+            collectionId
         }
     },
     async created() {
-        this.setIsLoading(true)
-        await this.tainacanStore.fetchItemsByCollection(this.collectionId)
-        this.setIsLoading(false)
+        this.setIsLoading(true);
+        await this.loadItemsByCollection();
+        this.setIsLoading(false);
     },
 }
 </script>

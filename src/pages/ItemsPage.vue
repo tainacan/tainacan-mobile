@@ -5,6 +5,9 @@
                 :message="$t('label_loading')"
         >
         </ion-loading>
+        <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
         <items-list :items="tainacanStore.items"></items-list>
     </base-layout>
 </template>
@@ -14,7 +17,9 @@ import {
     useTainacanStore
 } from '../store/storeTainacan';
 import {
-    IonLoading
+    IonLoading,
+    IonRefresher,
+    IonRefresherContent
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import { ref } from 'vue';
@@ -25,25 +30,37 @@ export default {
     components: {
         IonLoading,
         ItemsList,
-        BaseLayout
+        BaseLayout,
+        IonRefresher,
+        IonRefresherContent
     },
     setup() {
         const isLoading = ref(false);
-        const setOpen = (state: boolean) => isLoading.value = state;
+        const setIsLoading = (state: boolean) => isLoading.value = state;
+
+        const loadItems = async () => {
+            await tainacanStore.fetchItems({ perPage: '24', orderBy: 'modified'});
+        }
+        const doRefresh = async (event: any) => {
+            await loadItems();
+            if (event && event.target)
+                event.target.complete();
+        }
+
         let tainacanStore = useTainacanStore();
-        return { isLoading, setOpen, tainacanStore }
-    },
-    data() {
         return {
-            items: [],
-            collectionId: this.$route.params.id,
-        };
+            isLoading,
+            setIsLoading,
+            tainacanStore,
+            doRefresh,
+            loadItems
+        }
     },
 
     async created(){
-        this.setOpen(true)
-        await this.tainacanStore.fetchItems()
-        this.setOpen(false)
+        this.setIsLoading(true)
+        await this.loadItems();
+        this.setIsLoading(false)
     },
 }
 </script>

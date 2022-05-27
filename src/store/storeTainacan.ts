@@ -5,6 +5,10 @@ import { useWpStore } from "./storeWp";
 const useTainacanStore = defineStore("tainacan", {
   state() {
     return {
+      homeCollections: [],
+      totalHomeCollections: 0,
+      homeItems: [],
+      totalHomeItems: 0,
       collections: [],
       totalCollections: 0,
       collectionItems: [],
@@ -44,12 +48,32 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
+    async fetchHomeCollections() {
+      try {
+        const wpStore = useWpStore();
+
+        const endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collections?perpage=4&orderby=modified`;
+
+        const response = await axios.get(endpoint);
+
+        this.homeCollections = response.data;
+        this.totalHomeCollections = response.headers['x-wp-total'];
+
+      } catch (err) {
+        this.homeCollections = [];
+        this.totalHomeCollections = 0;
+        console.error("Erro no carregamento das coleções da home:", err);
+
+        return err;
+      }
+    },
+
     async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string }) {
       try {
         const wpStore = useWpStore();
         this.collectionItems = [];
 
-        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail`;
+        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
 
         if (params && params.perPage)
           endpoint += '&perpage=' + params.perPage;
@@ -71,16 +95,33 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
+    async fetchHomeItems() {
+      try {
+        const wpStore = useWpStore();
+        
+        const endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
+
+        const response = await axios.get(endpoint);
+        this.homeItems = response.data.items;
+        this.totalHomeItems = response.headers['x-wp-total'];
+
+      } catch (err) {
+        this.homeItems = [];
+        this.totalHomeItems = 0;
+        console.error("Erro no carregamento dos items da home:", err);
+        return err;
+      }
+    },
+
     async fetchItems(params: { perPage: string, orderBy: string }) {
       try {
         const wpStore = useWpStore();
-        this.items = [];
         
         let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?fetch_only=id,title,thumbnail`;
 
         if (params && params.perPage)
           endpoint += '&perpage=' + params.perPage;
-  
+
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
 

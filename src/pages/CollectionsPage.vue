@@ -5,16 +5,24 @@
                 :message="$t('label_loading')"
         >
         </ion-loading>
+        <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
         <ion-list>
             <collections-list :collections="tainacanStore.collections"></collections-list>
         </ion-list>
     </base-layout>
 </template>
 
-<script>
+<script lang="ts">
 import CollectionsList from '@/components/lists/CollectionsList.vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
-import { IonLoading, IonList } from '@ionic/vue';
+import {
+    IonLoading,
+    IonList,
+    IonRefresher,
+    IonRefresherContent
+} from '@ionic/vue';
 
 import {
     useTainacanStore
@@ -27,18 +35,37 @@ export default {
         CollectionsList,
         BaseLayout,
         IonLoading,
-        IonList
+        IonList,
+        IonRefresher,
+        IonRefresherContent
     },
     setup() {
         const isLoading = ref(false);
-        const setOpen = (state) => isLoading.value = state;
+        const setIsLoading = (state: boolean) => isLoading.value = state;
+        
+        const loadCollections = async () => {
+            await tainacanStore.fetchCollections({ perPage: '24', orderBy: 'modified'});
+        }
+        const doRefresh = async (event: any) => {
+            await loadCollections();
+            if (event && event.target)
+                event.target.complete();
+        }
+
         let tainacanStore = useTainacanStore();
-        return { tainacanStore, isLoading, setOpen }
+        
+        return {
+            tainacanStore,
+            isLoading,
+            setIsLoading,
+            doRefresh,
+            loadCollections
+        }
     },
     async created(){
-        this.setOpen(true);
-        await this.tainacanStore.fetchCollections();
-        this.setOpen(false);
+        this.setIsLoading(true);
+        await this.loadCollections();
+        this.setIsLoading(false);
     },
 }
 

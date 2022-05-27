@@ -1,5 +1,8 @@
 <template>
     <base-layout>
+        <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
         <ion-loading
             :is-open="isLoading"
             :message="$t('label_loading')"
@@ -7,28 +10,28 @@
         </ion-loading>
         <ion-list>
             <ion-list-header>
-                {{ $t('collections') }}
+                {{ $t('label_last_modified_collections') }}
             </ion-list-header>
-            <collections-list :collections="tainacanStore.collections"></collections-list>
+            <collections-list :collections="tainacanStore.homeCollections"></collections-list>
         </ion-list>
         <ion-button
-                v-if="tainacanStore.collections.length < tainacanStore.totalCollections"
+                v-if="tainacanStore.homeCollections.length < tainacanStore.totalHomeCollections"
                 fill="clear"
                 size="small"
                 routerLink="/collections">
-            {{ $t('label_view_all_collections', [tainacanStore.totalCollections]) }}
+            {{ $t('label_view_all_collections', [tainacanStore.totalHomeCollections]) }}
         </ion-button>
         <ion-list>
             <ion-list-header>
-                {{ $t('items') }}
+                {{ $t('label_last_modified_items') }}
             </ion-list-header>
-            <items-list :items="tainacanStore.items"></items-list>
+            <items-list :items="tainacanStore.homeItems"></items-list>
             <ion-button 
-                    v-if="tainacanStore.items.length < tainacanStore.totalItems"
+                    v-if="tainacanStore.homeItems.length < tainacanStore.totalHomeItems"
                     fill="clear"
                     size="small"
                     routerLink="/items">
-                {{ $t('label_view_all_items', [tainacanStore.totalItems]) }}
+                {{ $t('label_view_all_items', [tainacanStore.totalHomeItems]) }}
             </ion-button>
         </ion-list>
     </base-layout>
@@ -47,7 +50,9 @@ import {
     IonButton,
     IonLoading,
     IonList,
-    IonListHeader
+    IonListHeader,
+    IonRefresher,
+    IonRefresherContent
 } from '@ionic/vue';
 
 export default {
@@ -58,24 +63,36 @@ export default {
         IonList,
         IonListHeader,
         IonButton,
-        IonLoading
+        IonLoading,
+        IonRefresher,
+        IonRefresherContent
     },
     setup() {
         const isLoading = ref(false);
         const setIsLoading = (state: boolean) => isLoading.value = state;
+        const loadCollectionsAndItems = async () => {
+            await tainacanStore.fetchHomeCollections();
+            await tainacanStore.fetchHomeItems();
+        }
+        const doRefresh = async (event: any) => {
+            await loadCollectionsAndItems();
+            if (event && event.target)
+                event.target.complete();
+        }
 
         let tainacanStore = useTainacanStore();
 
         return {
             tainacanStore,
             isLoading,
-            setIsLoading
+            setIsLoading,
+            loadCollectionsAndItems,
+            doRefresh
         }
     },
     async created() {
         this.setIsLoading(true);
-        await this.tainacanStore.fetchCollections({ perPage: "4", orderBy: "modified" });
-        await this.tainacanStore.fetchItems();
+        await this.loadCollectionsAndItems();
         this.setIsLoading(false);
     }
 }
