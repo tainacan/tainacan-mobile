@@ -1,5 +1,7 @@
 <template>
-    <base-layout :page-title="$t('collection')" page-default-back-link="/collections">
+    <base-layout
+            :page-title="(collectionObject && collectionObject.name) ? collectionObject.name : $t('collection')" 
+            page-default-back-link="/collections">
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
@@ -23,8 +25,7 @@
 import {
     useTainacanStore
 } from '../store/storeTainacan';
-import { useRoute } from "vue-router";
-import { ref } from 'vue';
+import { ref, defineComponent } from 'vue';
 import { add, documentOutline, documentAttachOutline, documentsOutline } from "ionicons/icons";
 
 import {
@@ -39,7 +40,7 @@ import {
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import ItemsList from '@/components/lists/ItemsList.vue';
 
-export default {
+export default defineComponent({
     components: {
         BaseLayout,
         ItemsList,
@@ -49,13 +50,15 @@ export default {
         IonIcon,
         IonButton
     },
-    setup() {
+    props: {
+        id: String,
+        collection: String
+    },
+    setup(props) {
         const isLoading = ref(false);
         const setIsLoading = (state: boolean) => isLoading.value = state;
-        const route = useRoute();
-        const collectionId = route.params.id + '';
         const loadItemsByCollection = async () => {
-            await tainacanStore.fetchItemsByCollection(collectionId, { perPage: '24', orderBy: 'modified'});
+            await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '24', orderBy: 'modified'});
         }
         const doRefresh = async (event: any) => {
             await loadItemsByCollection();
@@ -111,6 +114,8 @@ export default {
             console.log('onDidDismiss resolved with role and data', role, data);
         }
 
+        const collectionObject = props.collection ? JSON.parse(props.collection + '') : false;
+        
         let tainacanStore = useTainacanStore();
 
         return {
@@ -120,10 +125,10 @@ export default {
             loadItemsByCollection,
             doRefresh,
             openActionSheet,
-            collectionId,
             add,
             actionSheetLabels,
-            setActionSheetLabels
+            setActionSheetLabels,
+            collectionObject
         }
     },
     async created() {
@@ -140,7 +145,7 @@ export default {
         await this.loadItemsByCollection();
         this.setIsLoading(false);
     },
-}
+});
 </script>
 
 <style>

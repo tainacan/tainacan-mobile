@@ -1,5 +1,9 @@
 <template>
-    <ion-item class="collection-list-item" v-for="collection of collections" :key="collection.id" :router-link="`/collections/${collection.id}`">
+    <ion-item
+            class="collection-list-item"
+            v-for="collection of collections"
+            :key="collection.id"
+            @click="goToCollectionPage(collection)">
         <ion-thumbnail slot="start"> 
             <ion-img :src="(collection.thumbnail && collection.thumbnail.thumbnail && collection.thumbnail.thumbnail[0]) ? collection.thumbnail.thumbnail[0] : thumbnailPlaceholder" :alt="collection.name ? collection.name : $('label_collection_without_name')"></ion-img>
         </ion-thumbnail>
@@ -31,6 +35,7 @@ import {
     IonLabel,
     IonIcon
 } from '@ionic/vue';
+import { useRouter } from "vue-router";
 import { lockClosedOutline, readerOutline, trashOutline } from 'ionicons/icons';
 import { computed } from 'vue';
 
@@ -47,7 +52,23 @@ export default {
     },
     setup() {
         const thumbnailPlaceholder = computed (() => require('../../assets/placeholder_square_small.png'))
-        return { thumbnailPlaceholder, lockClosedOutline, readerOutline, trashOutline }
+        const router = useRouter();
+        const goToCollectionPage = (collection: any) => {
+            router .push({
+                name: 'collection',
+                params: {
+                    id: collection.id,
+                    collection: JSON.stringify(collection)
+                }
+            });
+        }
+        return {
+            thumbnailPlaceholder,
+            lockClosedOutline,
+            readerOutline,
+            trashOutline,
+            goToCollectionPage
+        }
     },
 }
 </script>

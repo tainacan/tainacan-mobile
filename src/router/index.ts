@@ -26,7 +26,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/collections/:id',
     component: CollectionPage,
-    name: 'collection'
+    name: 'collection',
+    props: true
   },
   {
     path: '/collections',

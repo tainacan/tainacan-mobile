@@ -1,6 +1,6 @@
 <template>
     <ion-row class="items-list-container">
-        <ion-col size="4" v-for="(item, index) of items" :key="index">
+        <ion-col size="4" v-for="item of items" :key="item.id">
             <ion-card button color="light" >
                 <ion-img :src="(item.thumbnail && item.thumbnail['tainacan-medium'] && item.thumbnail['tainacan-medium'][0]) ? item.thumbnail['tainacan-medium'][0] : thumbnailPlaceholder" :alt="(item.thumbnail_alt ? item.thumbnail_alt : (item.title ? item.title : 'Imagem de item sem título'))"></ion-img>
                 <ion-card-header>
