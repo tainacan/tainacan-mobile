@@ -9,6 +9,16 @@
         >
         </ion-loading>
         <items-list :items="tainacanStore.collectionItems"></items-list>
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+            <ion-fab-button>
+                <ion-icon :icon="add"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-list side="top" class="collection-page-actions">
+                <ion-button size="small">Criar um novo item</ion-button>
+                <ion-button size="small">Criar item com anexos selecionados</ion-button>
+                <ion-button size="small">Criar itens a partir de uma seleção</ion-button>
+            </ion-fab-list>
+        </ion-fab>
     </base-layout>
 </template>
 
@@ -18,11 +28,15 @@ import {
 } from '../store/storeTainacan';
 import { useRoute } from "vue-router";
 import { ref } from 'vue';
+import { add } from "ionicons/icons";
 
 import {
     IonLoading,
     IonRefresher,
-    IonRefresherContent
+    IonRefresherContent,
+    IonFab,
+    IonIcon,
+    IonFabList
 } from '@ionic/vue';
 
 import BaseLayout from '@/components/base/BaseLayout.vue';
@@ -34,7 +48,10 @@ export default {
         ItemsList,
         IonLoading,
         IonRefresher,
-        IonRefresherContent
+        IonRefresherContent,
+        IonFab,
+        IonIcon,
+        IonFabList
     },
     setup() {
         const isLoading = ref(false);
@@ -58,7 +75,8 @@ export default {
             setIsLoading,
             loadItemsByCollection,
             doRefresh,
-            collectionId
+            collectionId,
+            add
         }
     },
     async created() {
@@ -68,3 +86,10 @@ export default {
     },
 }
 </script>
+
+<style>
+.collection-page-actions {
+    right: 0;
+    align-items: flex-end;
+}
+</style>
