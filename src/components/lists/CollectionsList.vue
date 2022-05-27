@@ -3,7 +3,23 @@
         <ion-thumbnail slot="start"> 
             <ion-img :src="(collection.thumbnail && collection.thumbnail.thumbnail && collection.thumbnail.thumbnail[0]) ? collection.thumbnail.thumbnail[0] : thumbnailPlaceholder" :alt="collection.name ? collection.name : $('label_collection_without_name')"></ion-img>
         </ion-thumbnail>
-        <ion-label> {{ collection.name ? collection.name : 'Coleção sem nome' }} </ion-label>
+        <ion-label>
+            <h2>
+                {{ collection.name ? collection.name : $t('label_collection_without_name') }}&nbsp;
+                <span v-if="collection.status === 'private'">
+                    <ion-icon :icon="lockClosedOutline"></ion-icon>
+                </span>
+                <span v-else-if="collection.status === 'draft'">
+                    <ion-icon :icon="readerOutline"></ion-icon>
+                </span>
+                <span v-else-if="collection.status === 'trash'">
+                    <ion-icon :icon="trashOutline"></ion-icon>
+                </span>
+            </h2>
+            <p v-if="collection.total_items">
+                {{ $t('total_of_published_items', [collection.total_items.publish]) }}
+            </p>
+        </ion-label>
     </ion-item>
 </template>
 
@@ -13,7 +29,9 @@ import {
     IonImg,
     IonThumbnail,
     IonLabel,
+    IonIcon
 } from '@ionic/vue';
+import { lockClosedOutline, readerOutline, trashOutline } from 'ionicons/icons';
 import { computed } from 'vue';
 
 export default {
@@ -25,10 +43,11 @@ export default {
         IonImg,
         IonThumbnail,
         IonLabel,
+        IonIcon
     },
     setup() {
         const thumbnailPlaceholder = computed (() => require('../../assets/placeholder_square_small.png'))
-        return { thumbnailPlaceholder }
+        return { thumbnailPlaceholder, lockClosedOutline, readerOutline, trashOutline }
     },
 }
 </script>

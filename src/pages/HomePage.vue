@@ -11,16 +11,24 @@
             </ion-list-header>
             <collections-list :collections="tainacanStore.collections"></collections-list>
         </ion-list>
-        <ion-button fill="clear" size="small" routerLink="/collections">
-            {{ $t('label_view_all_collections') }}
+        <ion-button
+                v-if="tainacanStore.collections.length < tainacanStore.totalCollections"
+                fill="clear"
+                size="small"
+                routerLink="/collections">
+            {{ $t('label_view_all_collections', [tainacanStore.totalCollections]) }}
         </ion-button>
         <ion-list>
             <ion-list-header>
                 {{ $t('items') }}
             </ion-list-header>
             <items-list :items="tainacanStore.items"></items-list>
-            <ion-button fill="clear" size="small" routerLink="/items">
-                 {{ $t('label_view_all_items') }}
+            <ion-button 
+                    v-if="tainacanStore.items.length < tainacanStore.totalItems"
+                    fill="clear"
+                    size="small"
+                    routerLink="/items">
+                {{ $t('label_view_all_items', [tainacanStore.totalItems]) }}
             </ion-button>
         </ion-list>
     </base-layout>
@@ -39,7 +47,7 @@ import {
     IonButton,
     IonLoading,
     IonList,
-    IonListHeader,
+    IonListHeader
 } from '@ionic/vue';
 
 export default {

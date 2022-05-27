@@ -1,9 +1,9 @@
 export const translationStrings = {
     en: {
         collections: 'Collections',
-        label_view_all_collections: 'View all collections',
+        label_view_all_collections: 'View all {0} collections',
         items: 'Items',
-        label_view_all_items: 'View all items',
+        label_view_all_items: 'View all {0} items',
         label_loading: 'Loading...',
         label_items_list: 'Items list',
         label_collections_list: 'Collections list',
@@ -16,13 +16,16 @@ export const translationStrings = {
         placeholder_user_password: 'your password here',
         label_access_archive: 'Access archive',
         label_item_without_title: 'Item without title',
-        label_collection_without_name: 'Collection without name'
+        label_collection_without_name: 'Collection without name',
+        total_of_published_items: 'Total of {0} published items',
+        label_last_modified_collections: 'Last modified collections',
+        label_last_modified_items: 'Last modified itens'
     },
     pt: {
         collections: "Coleções",
-        label_view_all_collections: "Ver todas as coleções",
+        label_view_all_collections: "Ver todas as {0} coleções",
         items: 'Itens',
-        label_view_all_items: 'Ver todos os itens',
+        label_view_all_items: 'Ver todos os {0} itens',
         label_loading: 'Carregando...',
         label_items_list: 'Lista de itens',
         label_collections_list: 'Lista de coleções',
@@ -35,6 +38,9 @@ export const translationStrings = {
         placeholder_user_password: 'sua senha de usuário aqui',
         label_access_archive: 'Acessar acervo',
         label_item_without_title: 'Item sem título',
-        label_collection_without_name: 'Coleção sem nome'
+        label_collection_without_name: 'Coleção sem nome',
+        total_of_published_items: 'Total de {0} itens públicos',
+        label_last_modified_collections: 'Coleções alteradas recentemente',
+        label_last_modified_items: 'Itens alterados recentemente'
     }
 }
