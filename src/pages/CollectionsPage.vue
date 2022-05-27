@@ -9,7 +9,7 @@
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <ion-list>
-            <collections-list :collections="tainacanStore.collections"></collections-list>
+            <collections-list :collections="tainacanStore.collections" :is-selection-mode="false"></collections-list>
         </ion-list>
     </base-layout>
 </template>

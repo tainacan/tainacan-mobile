@@ -3,7 +3,7 @@
             class="collection-list-item"
             v-for="collection of collections"
             :key="collection.id"
-            @click="goToCollectionPage(collection)">
+            @click="!isInSelectionMode ? goToCollectionPage(collection) : ''">
         <ion-thumbnail slot="start"> 
             <ion-img :src="(collection.thumbnail && collection.thumbnail.thumbnail && collection.thumbnail.thumbnail[0]) ? collection.thumbnail.thumbnail[0] : thumbnailPlaceholder" :alt="collection.name ? collection.name : $('label_collection_without_name')"></ion-img>
         </ion-thumbnail>
@@ -24,6 +24,11 @@
                 {{ $t('total_of_published_items', [collection.total_items.publish]) }}
             </p>
         </ion-label>
+        <ion-radio 
+                v-if="isInSelectionMode"
+                slot="end" 
+                :value="collection.id">
+        </ion-radio>
     </ion-item>
 </template>
 
@@ -33,24 +38,28 @@ import {
     IonImg,
     IonThumbnail,
     IonLabel,
-    IonIcon
+    IonIcon,
+    IonRadio
 } from '@ionic/vue';
 import { useRouter } from "vue-router";
 import { lockClosedOutline, readerOutline, trashOutline } from 'ionicons/icons';
-import { computed } from 'vue';
+import { computed, defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
     props: [
-        "collections"
+        "collections",
+        "isSelectionMode"
     ],
     components: {
         IonItem,
         IonImg,
         IonThumbnail,
         IonLabel,
-        IonIcon
+        IonIcon,
+        IonRadio
     },
-    setup() {
+    setup(props) {
+        const isInSelectionMode = computed(() => props.isSelectionMode);
         const thumbnailPlaceholder = computed (() => require('../../assets/placeholder_square_small.png'))
         const router = useRouter();
         const goToCollectionPage = (collection: any) => {
@@ -67,10 +76,11 @@ export default {
             lockClosedOutline,
             readerOutline,
             trashOutline,
-            goToCollectionPage
+            goToCollectionPage,
+            isInSelectionMode
         }
     },
-}
+})
 </script>
 
 <style>
