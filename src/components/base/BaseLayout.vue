@@ -78,5 +78,9 @@ export default {
 <style>
 .header__tainacan-logo {
     max-width: 65%;
+    height: 42px;
+}
+ion-img.header__tainacan-logo::part(image) {
+    width: auto;
 }
 </style>
