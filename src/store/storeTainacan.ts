@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import axios from "axios";
+import { defineStore } from "pinia";
 import { useWpStore } from "./storeWp";
 
 const useTainacanStore = defineStore("tainacan", {
@@ -13,6 +13,7 @@ const useTainacanStore = defineStore("tainacan", {
       totalCollections: 0,
       collectionItems: [],
       totalCollectionItems: 0,
+      nextCollectionsPage: 1,
       items: [],
       totalItems: 0,
       siteUrl: "",
@@ -68,10 +69,15 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
-    async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string }) {
+    async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string }, reset: boolean) {
       try {
+
+        if(reset){
+          this.collectionItems = [];
+          this.nextCollectionsPage = 1;
+        }
+ 
         const wpStore = useWpStore();
-        this.collectionItems = [];
 
         let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
 
@@ -81,17 +87,26 @@ const useTainacanStore = defineStore("tainacan", {
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
 
+        endpoint += '&paged=' + this.nextCollectionsPage;
+  
         const response = await axios.get(endpoint);
 
-        this.collectionItems = response.data.items;
+        this.collectionItems.push(...response.data.items);
         this.totalCollectionItems = response.headers['x-wp-total'];
 
+        if (!this.totalCollectionItems ||
+          this.totalCollectionItems === "0") {
+          return false;
+        } else {
+          this.nextCollectionsPage++;
+          return true;
+        }    
       } catch (err) {
         this.collectionItems = [];
         this.totalCollectionItems = 0;
         console.error("Erro no carregamento dos items da coleção:", err);
 
-        return err;
+        return false;
       }
     },
 

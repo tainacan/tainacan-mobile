@@ -11,6 +11,12 @@
         >
         </ion-loading>
         <items-list :items="tainacanStore.collectionItems"></items-list>
+            <ion-infinite-scroll ref="infiniteScroll" threshold="5%" @ionInfinite="loadItemsByCollection">
+                <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                >
+                </ion-infinite-scroll-content>
+         </ion-infinite-scroll>
         <ion-button 
                 class="add-items-button"
                 color="primary"
@@ -27,19 +33,17 @@ import {
 } from '../store/storeTainacan';
 import { ref, defineComponent } from 'vue';
 import { add, documentOutline, documentAttachOutline, documentsOutline } from "ionicons/icons";
-
 import {
     IonLoading,
     IonRefresher,
     IonRefresherContent,
     IonIcon,
     IonButton,
-    actionSheetController
+    actionSheetController,
+    IonInfiniteScroll
 } from '@ionic/vue';
-
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import ItemsList from '@/components/lists/ItemsList.vue';
-
 export default defineComponent({
     components: {
         BaseLayout,
@@ -48,7 +52,8 @@ export default defineComponent({
         IonRefresher,
         IonRefresherContent,
         IonIcon,
-        IonButton
+        IonButton,
+        IonInfiniteScroll
     },
     props: {
         id: String,
@@ -56,14 +61,22 @@ export default defineComponent({
     },
     setup(props) {
         const isLoading = ref(false);
+        const infiniteScroll = ref();
         const setIsLoading = (state: boolean) => isLoading.value = state;
-        const loadItemsByCollection = async () => {
-            await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '24', orderBy: 'modified'});
-        }
-        const doRefresh = async (event: any) => {
-            await loadItemsByCollection();
+        const loadItemsByCollection = async (event: any, reset: boolean) => {
+            let hasMoreItems = await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified'}, reset);
             if (event && event.target)
                 event.target.complete();
+            if (!hasMoreItems){
+                infiniteScroll.value.$el.disabled = true;
+            }
+        }
+        const doRefresh = async (event: any) => {
+            await loadItemsByCollection({}, true);
+            if (event && event.target){
+                event.target.complete();
+                infiniteScroll.value.$el.disabled = false;
+            }
         }
         const actionSheetLabels = ref({
             header: '',
@@ -109,15 +122,12 @@ export default defineComponent({
                 ],
             });
             await actionSheet.present();
-
             const { role, data } = await actionSheet.onDidDismiss();
             console.log('onDidDismiss resolved with role and data', role, data);
         }
-
         const collectionObject = props.collection ? JSON.parse(props.collection + '') : false;
         
         let tainacanStore = useTainacanStore();
-
         return {
             isLoading,
             tainacanStore,
@@ -128,7 +138,8 @@ export default defineComponent({
             add,
             actionSheetLabels,
             setActionSheetLabels,
-            collectionObject
+            collectionObject,
+            infiniteScroll
         }
     },
     async created() {
@@ -140,7 +151,6 @@ export default defineComponent({
             button3: this.$t('label_option_single_item'),
             cancel: this.$t('label_cancel')
         });
-
         this.setIsLoading(true);
         await this.loadItemsByCollection();
         this.setIsLoading(false);
