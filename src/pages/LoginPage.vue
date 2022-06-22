@@ -44,10 +44,10 @@
                                 </ion-label>
                                 <ion-input 
                                         :placeholder="$t('placeholder_user_password')" 
-                                        id="userPassword"
+                                        id="userToken"
                                         type="password"
-                                        name="userPassword"
-                                        v-model="userPassword"
+                                        name="userToken"
+                                        v-model="userToken"
                                         required="true"
                                         autocomplete="new-password"
                                         enterkeyhint="done">
@@ -72,6 +72,7 @@ import { useWpStore } from '../store/storeWp';
 import { arrowForwardOutline } from "ionicons/icons";
 
 import {
+    IonIcon,
     IonImg,
     IonPage,
     IonList,
@@ -87,6 +88,7 @@ import { computed } from 'vue';
 export default {
     props: ['pageTitle', 'pageDefaultBackLink'],
     components: {
+        IonIcon,
         IonImg,
         IonPage,
         IonList,
@@ -102,7 +104,7 @@ export default {
         return {
             siteUrl: '',
             userLogin: '',
-            userPassword: '',
+            userToken: '',
         }
     },
     setup(){
@@ -113,10 +115,7 @@ export default {
     },
     methods: {
         async login(){
-            await this.wpStore.userLogin(this.siteUrl);
-            // this.tainacanStore.siteUrl = this.siteUrl;
-            // this.tainacanStore.userLogin = this.userLogin;
-            // this.tainacanStore.userPassword = this.userPassword;
+            await this.wpStore.login(this.siteUrl, this.userLogin, this.userToken);
             this.$router.push('/home');
         }
     }

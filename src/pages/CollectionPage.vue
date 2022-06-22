@@ -38,7 +38,8 @@ import {
     IonIcon,
     IonButton,
     actionSheetController,
-    IonInfiniteScroll
+    IonInfiniteScroll,
+    IonInfiniteScrollContent
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import ItemsList from '@/components/lists/ItemsList.vue';
@@ -51,7 +52,8 @@ export default defineComponent({
         IonRefresherContent,
         IonIcon,
         IonButton,
-        IonInfiniteScroll
+        IonInfiniteScroll,
+        IonInfiniteScrollContent
     },
     props: {
         id: String,

@@ -8,33 +8,46 @@ const useWpStore = defineStore('wp', {
         return {
             userIsLoggedIn: false,
             userSiteUrl: '',
+            userLogin: '',
+            userToken: ''
          }
       },
 
     actions: {
-        async userLogin(userSiteUrl: string) {
+        async login(userSiteUrl: string, userLogin: string, userToken: string) {
           try {
             this.userIsLoggedIn = true;
             this.userSiteUrl = userSiteUrl;
+            this.userLogin = userLogin;
+            this.userToken = userToken;
             await store.set('userIsLoggedIn', true);
             await store.set('userSiteUrl', userSiteUrl);
+            await store.set('userLogin', userLogin);
+            await store.set('userToken', userToken);
           } catch (err) {
             this.userIsLoggedIn = false;
-            await store.set('userIsLoggedIn', false);
+            this.userSiteUrl = '';
+            this.userToken = '';
+            this.userLogin = '';
             console.error('Erro no login:', err);
             return err;
           }
         },   
-        async userLogOff() {
+        async logoff() {
           try {
             this.userIsLoggedIn = false;
-            this.userSiteUrl = null;
+            this.userSiteUrl = '';
+            this.userToken = '';
+            this.userToken = '';
             await store.set('userIsLoggedIn', false);
-            await store.set('userSiteUrl', null);
+            await store.set('userSiteUrl', '');
+            await store.set('userToken', '');
           } catch (err) {
             this.userIsLoggedIn = false;
-            await store.set('userIsLoggedIn', false);
-            console.error('Erro no login:', err);
+            this.userSiteUrl = '';
+            this.userToken = '';
+            this.userToken = '';
+            console.error('Erro no logoff:', err);
             return err;
           }
         },  
@@ -42,6 +55,8 @@ const useWpStore = defineStore('wp', {
           await store.create();
           this.userIsLoggedIn = await store.get('userIsLoggedIn');
           this.userSiteUrl = await store.get('userSiteUrl');
+          this.userLogin = await store.get('userLogin');
+          this.userToken = await store.get('userToken');
        }
     }
 })
