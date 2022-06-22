@@ -74,7 +74,7 @@ const useTainacanStore = defineStore("tainacan", {
       try {
         const wpStore = useWpStore();
 
-        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
+        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail`;
 
         if (params && params.perPage)
           endpoint += '&perpage=' + params.perPage;
@@ -82,7 +82,7 @@ const useTainacanStore = defineStore("tainacan", {
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
           
-        if(params.reset){
+        if (params.reset) {
           this.collectionItems = [];
           this.nextCollectionsPage = 1;
         }
