@@ -9,6 +9,12 @@
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <items-list :items="tainacanStore.items"></items-list>
+        <ion-infinite-scroll ref="infiniteScroll" threshold="5%" @ionInfinite="loadItems">
+            <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+             >
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
     </base-layout>
 </template>
 
@@ -19,44 +25,50 @@ import {
 import {
     IonLoading,
     IonRefresher,
-    IonRefresherContent
+    IonRefresherContent,
+    IonInfiniteScroll
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import { ref } from 'vue';
-
 import ItemsList from '../components/lists/ItemsList.vue';
-
 export default {
     components: {
         IonLoading,
         ItemsList,
         BaseLayout,
         IonRefresher,
-        IonRefresherContent
+        IonRefresherContent,
+        IonInfiniteScroll
     },
     setup() {
         const isLoading = ref(false);
         const setIsLoading = (state: boolean) => isLoading.value = state;
-
-        const loadItems = async () => {
-            await tainacanStore.fetchItems({ perPage: '24', orderBy: 'modified'});
-        }
-        const doRefresh = async (event: any) => {
-            await loadItems();
+        const infiniteScroll = ref();
+        const loadItems = async (event: any, reset: boolean) => {
+            let hasMoreItems = await tainacanStore.fetchItems({ perPage: '12', orderBy: 'modified', reset: reset});
             if (event && event.target)
                 event.target.complete();
+            if (!hasMoreItems){
+                infiniteScroll.value.$el.disabled = true;
+            }
         }
-
+        const doRefresh = async (event: any) => {
+            await loadItems({}, true);
+            if (event && event.target){
+                event.target.complete();
+                infiniteScroll.value.$el.disabled = false;
+            }
+        }
         let tainacanStore = useTainacanStore();
         return {
             isLoading,
             setIsLoading,
             tainacanStore,
             doRefresh,
-            loadItems
+            loadItems,
+            infiniteScroll
         }
     },
-
     async created(){
         this.setIsLoading(true)
         await this.loadItems();

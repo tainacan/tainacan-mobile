@@ -15,6 +15,7 @@ const useTainacanStore = defineStore("tainacan", {
       totalCollectionItems: 0,
       nextCollectionsPage: 1,
       items: [],
+      nextItemsPage: 1,
       totalItems: 0,
       siteUrl: "",
       userLogin: "",
@@ -69,14 +70,8 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
-    async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string }, reset: boolean) {
+    async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string, reset: boolean }) {
       try {
-
-        if(reset){
-          this.collectionItems = [];
-          this.nextCollectionsPage = 1;
-        }
- 
         const wpStore = useWpStore();
 
         let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
@@ -86,6 +81,11 @@ const useTainacanStore = defineStore("tainacan", {
   
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
+          
+        if(params.reset){
+          this.collectionItems = [];
+          this.nextCollectionsPage = 1;
+        }
 
         endpoint += '&paged=' + this.nextCollectionsPage;
   
@@ -104,6 +104,7 @@ const useTainacanStore = defineStore("tainacan", {
       } catch (err) {
         this.collectionItems = [];
         this.totalCollectionItems = 0;
+        this.nextCollectionsPage = 1;
         console.error("Erro no carregamento dos items da coleção:", err);
 
         return false;
@@ -128,7 +129,7 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
-    async fetchItems(params: { perPage: string, orderBy: string }) {
+    async fetchItems(params: { perPage: string, orderBy: string, reset: boolean }) {
       try {
         const wpStore = useWpStore();
         
@@ -140,13 +141,29 @@ const useTainacanStore = defineStore("tainacan", {
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
 
+        if(params.reset){
+          this.items = [];
+          this.nextItemsPage = 1;
+        }
+
+        endpoint += '&paged=' + this.nextItemsPage;
+
         const response = await axios.get(endpoint);
-        this.items = response.data.items;
+        this.items.push(...response.data.items);
         this.totalItems = response.headers['x-wp-total'];
+
+        if (!this.totalItems ||
+          this.totalItems === "0") {
+          return false;
+        } else {
+          this.nextItemsPage++;
+          return true;
+        } 
 
       } catch (err) {
         this.items = [];
         this.totalItems = 0;
+        this.nextItemsPage = 1;
         console.error("Erro no carregamento dos items:", err);
         return err;
       }

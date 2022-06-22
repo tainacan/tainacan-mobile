@@ -13,10 +13,10 @@
         <items-list :items="tainacanStore.collectionItems"></items-list>
             <ion-infinite-scroll ref="infiniteScroll" threshold="5%" @ionInfinite="loadItemsByCollection">
                 <ion-infinite-scroll-content
-                loadingSpinner="bubbles"
+                    loadingSpinner="bubbles"
                 >
                 </ion-infinite-scroll-content>
-         </ion-infinite-scroll>
+            </ion-infinite-scroll>
         <ion-button 
                 class="add-items-button"
                 color="primary"
@@ -64,10 +64,10 @@ export default defineComponent({
         const infiniteScroll = ref();
         const setIsLoading = (state: boolean) => isLoading.value = state;
         const loadItemsByCollection = async (event: any, reset: boolean) => {
-            let hasMoreItems = await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified'}, reset);
+            let hasMoreCollections = await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset});
             if (event && event.target)
                 event.target.complete();
-            if (!hasMoreItems){
+            if (!hasMoreCollections){
                 infiniteScroll.value.$el.disabled = true;
             }
         }
