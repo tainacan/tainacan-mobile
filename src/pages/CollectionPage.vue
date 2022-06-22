@@ -12,9 +12,7 @@
         </ion-loading>
         <items-list :items="tainacanStore.collectionItems"></items-list>
             <ion-infinite-scroll ref="infiniteScroll" threshold="5%" @ionInfinite="loadItemsByCollection">
-                <ion-infinite-scroll-content
-                    loadingSpinner="bubbles"
-                >
+                <ion-infinite-scroll-content>
                 </ion-infinite-scroll-content>
             </ion-infinite-scroll>
         <ion-button 

@@ -10,9 +10,7 @@
         </ion-refresher>
         <items-list :items="tainacanStore.items"></items-list>
         <ion-infinite-scroll ref="infiniteScroll" threshold="5%" @ionInfinite="loadItems">
-            <ion-infinite-scroll-content
-                loadingSpinner="bubbles"
-             >
+            <ion-infinite-scroll-content>
             </ion-infinite-scroll-content>
         </ion-infinite-scroll>
     </base-layout>
