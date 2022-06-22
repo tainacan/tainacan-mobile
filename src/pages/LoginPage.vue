@@ -40,7 +40,7 @@
                             </ion-item>
                             <ion-item>
                                 <ion-label position="floating">
-                                    {{ $t('label_user_password') }}
+                                    {{ $t('label_user_password') }}*
                                 </ion-label>
                                 <ion-input 
                                         :placeholder="$t('placeholder_user_password')" 
@@ -52,6 +52,7 @@
                                         autocomplete="new-password"
                                         enterkeyhint="done">
                                 </ion-input>
+                                <ion-note>{{ $t('info_application_password') }} <a id="open-explanation-modal">{{ $t('label_learn_more_here') }}</a></ion-note>
                             </ion-item>
                         </ion-list>
                         <br>
@@ -62,6 +63,7 @@
                     </form>
                 </ion-col>
             </ion-row>
+            <app-password-modal />
         </ion-content>
     </ion-page>
 </template>
@@ -70,6 +72,7 @@
 import { useTainacanStore } from '../store/storeTainacan';
 import { useWpStore } from '../store/storeWp';
 import { arrowForwardOutline } from "ionicons/icons";
+import AppPasswordModal from '../components/modals/AppPasswordModal.vue';
 
 import {
     IonIcon,
@@ -82,7 +85,8 @@ import {
     IonLabel,
     IonRow,
     IonCol,
-    IonContent
+    IonContent,
+    IonNote
 } from '@ionic/vue';
 import { computed } from 'vue';
 export default {
@@ -98,7 +102,9 @@ export default {
         IonLabel,
         IonRow,
         IonCol,
-        IonContent
+        IonContent,
+        IonNote,
+        AppPasswordModal
     },
     data(){
         return {
