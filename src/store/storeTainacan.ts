@@ -13,7 +13,7 @@ const useTainacanStore = defineStore("tainacan", {
       totalCollections: 0,
       collectionItems: [],
       totalCollectionItems: 0,
-      nextCollectionsPage: 1,
+      nextItemsByCollectionPage: 1,
       items: [],
       nextItemsPage: 1,
       totalItems: 0,
@@ -88,10 +88,10 @@ const useTainacanStore = defineStore("tainacan", {
           
         if (params.reset) {
           this.collectionItems = [];
-          this.nextCollectionsPage = 1;
+          this.nextItemsByCollectionPage = 1;
         }
 
-        endpoint += '&paged=' + this.nextCollectionsPage;
+        endpoint += '&paged=' + this.nextItemsByCollectionPage;
   
         const response = await axios.get(endpoint);
 
@@ -102,13 +102,13 @@ const useTainacanStore = defineStore("tainacan", {
           this.totalCollectionItems === "0") {
           return false;
         } else {
-          this.nextCollectionsPage++;
+          this.nextItemsByCollectionPage++;
           return true;
         }    
       } catch (err) {
         this.collectionItems = [];
         this.totalCollectionItems = 0;
-        this.nextCollectionsPage = 1;
+        this.nextItemsByCollectionPage = 1;
         console.error("Erro no carregamento dos items da coleção:", err);
 
         return false;
