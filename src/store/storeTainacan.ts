@@ -78,9 +78,13 @@ const useTainacanStore = defineStore("tainacan", {
 
         if (params && params.perPage)
           endpoint += '&perpage=' + params.perPage;
+        else
+          endpoint += '&perpage=12';
   
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
+        else
+          endpoint += '&orderby=modified';
           
         if (params.reset) {
           this.collectionItems = [];
