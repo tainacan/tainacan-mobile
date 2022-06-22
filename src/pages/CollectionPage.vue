@@ -150,7 +150,7 @@ export default defineComponent({
             cancel: this.$t('label_cancel')
         });
         this.setIsLoading(true);
-        await this.loadItemsByCollection();
+        await this.loadItemsByCollection({}, true);
         this.setIsLoading(false);
     },
 });
