@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import axios from "axios";
+import { defineStore } from "pinia";
 import { useWpStore } from "./storeWp";
 
 const useTainacanStore = defineStore("tainacan", {
@@ -13,7 +13,9 @@ const useTainacanStore = defineStore("tainacan", {
       totalCollections: 0,
       collectionItems: [],
       totalCollectionItems: 0,
+      nextItemsByCollectionPage: 1,
       items: [],
+      nextItemsPage: 1,
       totalItems: 0,
       siteUrl: "",
       userLogin: "",
@@ -68,30 +70,48 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
-    async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string }) {
+    async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string, reset: boolean }) {
       try {
         const wpStore = useWpStore();
-        this.collectionItems = [];
 
-        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
+        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail`;
 
         if (params && params.perPage)
           endpoint += '&perpage=' + params.perPage;
+        else
+          endpoint += '&perpage=12';
   
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
+        else
+          endpoint += '&orderby=modified';
+          
+        if (params.reset) {
+          this.collectionItems = [];
+          this.nextItemsByCollectionPage = 1;
+        }
 
+        endpoint += '&paged=' + this.nextItemsByCollectionPage;
+  
         const response = await axios.get(endpoint);
 
-        this.collectionItems = response.data.items;
+        this.collectionItems.push(...response.data.items);
         this.totalCollectionItems = response.headers['x-wp-total'];
 
+        if (!this.totalCollectionItems ||
+          this.totalCollectionItems === "0") {
+          return false;
+        } else {
+          this.nextItemsByCollectionPage++;
+          return true;
+        }    
       } catch (err) {
         this.collectionItems = [];
         this.totalCollectionItems = 0;
+        this.nextItemsByCollectionPage = 1;
         console.error("Erro no carregamento dos items da coleção:", err);
 
-        return err;
+        return false;
       }
     },
 
@@ -113,7 +133,7 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
-    async fetchItems(params: { perPage: string, orderBy: string }) {
+    async fetchItems(params: { perPage: string, orderBy: string, reset: boolean }) {
       try {
         const wpStore = useWpStore();
         
@@ -125,13 +145,29 @@ const useTainacanStore = defineStore("tainacan", {
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
 
+        if(params.reset){
+          this.items = [];
+          this.nextItemsPage = 1;
+        }
+
+        endpoint += '&paged=' + this.nextItemsPage;
+
         const response = await axios.get(endpoint);
-        this.items = response.data.items;
+        this.items.push(...response.data.items);
         this.totalItems = response.headers['x-wp-total'];
+
+        if (!this.totalItems ||
+          this.totalItems === "0") {
+          return false;
+        } else {
+          this.nextItemsPage++;
+          return true;
+        } 
 
       } catch (err) {
         this.items = [];
         this.totalItems = 0;
+        this.nextItemsPage = 1;
         console.error("Erro no carregamento dos items:", err);
         return err;
       }
