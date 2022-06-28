@@ -44,6 +44,7 @@ import {
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import ItemsList from '@/components/lists/ItemsList.vue';
+import { InAppBrowserEvent } from '@awesome-cordova-plugins/in-app-browser';
 
 export default defineComponent({
     components: {
@@ -116,8 +117,18 @@ export default defineComponent({
                         icon: documentOutline,
                         data: 'single item',
                         handler: () => {
-                            console.log('Item simples')
-                            wpStore.openAppBrowser('/collections/' + props.id + '/items/new');
+                            wpStore.openInAppBrowser('/collections/' + props.id + '/items/new');
+                            wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
+                                if (event &&
+                                    event.data &&
+                                    event.data.type === 'item_updated' &&
+                                    event.data.item &&
+                                    event.data.item.status !== 'auto-draft'
+                                ) {
+                                    wpStore.hideInAppBrowser();
+                                    loadItemsByCollection({}, true);
+                                }
+                            });
                         },
                     },
                     {

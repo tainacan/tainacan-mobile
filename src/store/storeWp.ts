@@ -3,8 +3,10 @@ import axios from "axios";
 import { Storage } from "@ionic/storage";
 import {
   InAppBrowser,
+  InAppBrowserEvent,
+  InAppBrowserEventType,
   InAppBrowserObject,
-  InAppBrowserEvent
+  InAppBrowserOriginal
 } from "@awesome-cordova-plugins/in-app-browser/index";
 
 const store = new Storage();
@@ -89,32 +91,38 @@ const useWpStore = defineStore("wp", {
       this.userLogin = await store.get("userLogin");
       this.userToken = await store.get("userToken");
     },
-    createInAppBrowser() {
-      let tainacanAdminUrl = this.userSiteUrl + "/wp-admin/admin.php?page=tainacan_admin&mobileAppMode=true";
+    createInAppBrowser(url = '',extraParams = 'location=no,fullscreen=no,zoom=no') {
+      let tainacanAdminUrl = this.userSiteUrl + "/wp-admin/admin.php?page=tainacan_admin&mobileAppMode=true&itemEditionMode=true" + url;
       if (!this.userIsLoggedIn && this.authorizationURL) 
         tainacanAdminUrl = this.authorizationURL + "?app_name=TainacanMobileApp&success_url=" + tainacanAdminUrl;
         
-      const anInAppBrowser = InAppBrowser.create(tainacanAdminUrl);
+      const anInAppBrowser = InAppBrowser.create(tainacanAdminUrl, '_blank', extraParams);
       this.inAppBrowser = anInAppBrowser;
     },
-    openAppBrowser(url: string) {
-      const inAppBrowserScript = `
-            window.addEventListener('hashchange', function() {
-              console.log(window.location.hash);
-            });
+    openInAppBrowser(url: string) {
+
+      if (!this.inAppBrowser || !this.inAppBrowser.executeScript)
+        this.createInAppBrowser('#' + url, 'hidden=yes,location=no,fullscreen=no,zoom=no');
+      else {
+        const urlRedirectionScript = `
             window.history.replaceState(
               null,
               null,
-              '${this.userSiteUrl}/wp-admin/admin.php?mobileAppMode=true&page=tainacan_admin#${url}'
+              '${this.userSiteUrl}/wp-admin/admin.php?page=tainacan_admin&mobileAppMode=true&itemEditionMode=true#${url}'
             );
             window.history.go(0);
             `;
-      if (!this.inAppBrowser || !this.inAppBrowser.executeScript)
-        this.createInAppBrowser();
-
-      this.inAppBrowser.executeScript({ code: inAppBrowserScript });
+        this.inAppBrowser.executeScript({ code: urlRedirectionScript });
+      }
       this.inAppBrowser.show();
     },
+    hideInAppBrowser() {
+      if (this.inAppBrowser && this.inAppBrowser.hide)
+        this.inAppBrowser.hide();
+    },
+    listenEventInAppBrowser(event: any) {
+      this.inAppBrowser.on('message').subscribe(event);
+    }
   },
 });
 export { useWpStore };

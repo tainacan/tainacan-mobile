@@ -95,11 +95,8 @@ export default {
     },
     methods: {
         async openLoginForm() {
-            await this.wpStore.fetchApplicationAuthorization(
-                this.siteUrl,
-                "_self",
-                "location=no"
-            );
+            this.wpStore.userSiteUrl = this.siteUrl;
+            await this.wpStore.fetchApplicationAuthorization(this.siteUrl);
             if (this.wpStore.authorizationURL) {
                 this.wpStore.createInAppBrowser();
                 this.wpStore.inAppBrowser
@@ -108,6 +105,7 @@ export default {
             }
         },
         async handleBrowserLoadStop(event: InAppBrowserEvent) {
+            console.log(event)
             if (
                 event.url &&
                 typeof event.url == "string" &&
@@ -115,16 +113,17 @@ export default {
                 event.url.split("?").length >= 2
             ) {
                 const params = new URLSearchParams(event.url.split("?")[1]);
-                if (params.get("page") === "tainacan_admin") {
+     
+                if ( params.get("page") === "tainacan_admin" ) {
                     const userLogin = params.get("user_login");
                     let userToken = params.get("password");
-
+                    console.log(userToken)
                     if (
                         typeof userToken == "string" &&
                         userToken.indexOf("#") >= 0
                     )
                         userToken = userToken.split("#")[0];
-                    
+                    console.log(userToken, userLogin)
                     if (!!userLogin && !!userToken) {
                         this.wpStore.inAppBrowser.hide();
 
