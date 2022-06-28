@@ -52,7 +52,8 @@ export default {
         const setSearch = (value: string) => search.value = value; 
         const infiniteScroll = ref();
         const loadItems = async (event: any, reset: boolean) => {
-            let hasMoreItems = await tainacanStore.fetchItems({ perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
+            await tainacanStore.fetchItems({ perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
+            let hasMoreItems = tainacanStore.totalItems && tainacanStore.totalItems !== 0;
             if (event && event.target)
                 event.target.complete();
             if (!hasMoreItems){

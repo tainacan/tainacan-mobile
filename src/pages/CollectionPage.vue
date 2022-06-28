@@ -71,7 +71,8 @@ export default defineComponent({
         const setIsLoading = (state: boolean) => isLoading.value = state;
         const setSearch = (value: string) => search.value = value;
         const loadItemsByCollection = async (event: any, reset: boolean) => {
-            let hasMoreCollectionsItems = await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
+            await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
+            let hasMoreCollectionsItems = tainacanStore.totalCollectionItems && tainacanStore.totalCollectionItems !== 0;
             if (event && event.target)
                 event.target.complete();
             if (!hasMoreCollectionsItems){
