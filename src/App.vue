@@ -18,7 +18,6 @@ export default defineComponent({
     mounted() {
         const device: DevicePlugin = Device;
         device.getLanguageCode().then((res) => {
-            console.log("Default lang", res.value);
             if (res.value.includes("-")) {
                 const language = res.value.split("-")[0];
                 this.$i18n.locale = language;

@@ -29,6 +29,7 @@
 import {
     useTainacanStore
 } from '../store/storeTainacan';
+import { useWpStore } from '../store/storeWp';
 import { ref, defineComponent } from 'vue';
 import { add, documentOutline, documentAttachOutline, documentsOutline } from "ionicons/icons";
 import {
@@ -43,6 +44,7 @@ import {
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import ItemsList from '@/components/lists/ItemsList.vue';
+
 export default defineComponent({
     components: {
         BaseLayout,
@@ -78,6 +80,8 @@ export default defineComponent({
                 infiniteScroll.value.$el.disabled = false;
             }
         }
+
+        const wpStore = useWpStore();
         const actionSheetLabels = ref({
             header: '',
             button1: '',
@@ -113,6 +117,7 @@ export default defineComponent({
                         data: 'single item',
                         handler: () => {
                             console.log('Item simples')
+                            wpStore.openAppBrowser('/collections/' + props.id + '/items/new');
                         },
                     },
                     {
@@ -131,6 +136,7 @@ export default defineComponent({
         return {
             isLoading,
             tainacanStore,
+            wpStore,
             setIsLoading,
             loadItemsByCollection,
             doRefresh,
