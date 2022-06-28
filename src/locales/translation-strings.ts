@@ -25,7 +25,8 @@ export const translationStrings = {
         label_option_multiple_items: 'Multiple items from file selection',
         label_option_multiple_attachments: 'Single item with document and attachments from file selection',
         label_option_single_item: 'Single empty item',
-        label_cancel: 'Cancel'
+        label_cancel: 'Cancel',
+        label_search: 'Search'
     },
     pt: {
         collections: "Coleções",
@@ -53,6 +54,7 @@ export const translationStrings = {
         label_option_multiple_items: 'Vários itens a partir de uma seleção de arquivos',
         label_option_multiple_attachments: 'Um item com documento e anexos provenientes de ums seleção de aquivos',
         label_option_single_item: 'Um item vazio',
-        label_cancel: 'Cancelar'
+        label_cancel: 'Cancelar',
+        label_search: 'Buscar'
     }
 }

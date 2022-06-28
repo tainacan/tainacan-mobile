@@ -5,6 +5,9 @@
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
+        <ion-toolbar>
+             <ion-searchbar :placeholder="this.$t('label_search')" @ionChange="handleSearch($event)" @ionCancel="handleCancelSearch=($event)"></ion-searchbar>
+        </ion-toolbar>
         <ion-loading
             :is-open="isLoading"
             :message="$t('label_loading')"
@@ -38,7 +41,9 @@ import {
     IonIcon,
     IonButton,
     actionSheetController,
-    IonInfiniteScroll
+    IonInfiniteScroll,
+    IonToolbar,
+    IonSearchbar
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import ItemsList from '@/components/lists/ItemsList.vue';
@@ -51,7 +56,9 @@ export default defineComponent({
         IonRefresherContent,
         IonIcon,
         IonButton,
-        IonInfiniteScroll
+        IonInfiniteScroll,
+        IonToolbar,
+        IonSearchbar
     },
     props: {
         id: String,
@@ -59,15 +66,32 @@ export default defineComponent({
     },
     setup(props) {
         const isLoading = ref(false);
+        const search = ref();
         const infiniteScroll = ref();
         const setIsLoading = (state: boolean) => isLoading.value = state;
+        const setSearch = (value: string) => search.value = value;
         const loadItemsByCollection = async (event: any, reset: boolean) => {
-            let hasMoreCollections = await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset});
+            let hasMoreCollections = await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
             if (event && event.target)
                 event.target.complete();
             if (!hasMoreCollections){
                 infiniteScroll.value.$el.disabled = true;
             }
+        }
+        const handleSearch = async (event: any) => {
+            let search = event && event.detail && event.detail.value;
+            if(search) {
+                setSearch(search);
+                await loadItemsByCollection(null, true);
+            } else {
+                setSearch('');
+            }
+        }
+        const handleCancelSearch = async (event: any) => {
+            if (event.cancelable) {
+                event.preventDefault();
+            }
+            loadItemsByCollection(null, true);
         }
         const doRefresh = async (event: any) => {
             await loadItemsByCollection({}, true);
@@ -137,7 +161,9 @@ export default defineComponent({
             actionSheetLabels,
             setActionSheetLabels,
             collectionObject,
-            infiniteScroll
+            infiniteScroll,
+            handleSearch,
+            handleCancelSearch
         }
     },
     async created() {
