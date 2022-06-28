@@ -5,6 +5,9 @@
                 :message="$t('label_loading')"
         >
         </ion-loading>
+        <ion-toolbar>
+             <ion-searchbar :placeholder="$t('label_search')" @ionChange="handleSearch($event)" @ionCancel="handleCancelSearch($event)"></ion-searchbar>
+        </ion-toolbar>
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
@@ -24,7 +27,9 @@ import {
     IonLoading,
     IonRefresher,
     IonRefresherContent,
-    IonInfiniteScroll
+    IonInfiniteScroll,
+    IonToolbar,
+    IonSearchbar
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import { ref } from 'vue';
@@ -36,19 +41,38 @@ export default {
         BaseLayout,
         IonRefresher,
         IonRefresherContent,
-        IonInfiniteScroll
+        IonInfiniteScroll,
+        IonToolbar,
+        IonSearchbar
     },
     setup() {
         const isLoading = ref(false);
+        const search = ref();
         const setIsLoading = (state: boolean) => isLoading.value = state;
+        const setSearch = (value: string) => search.value = value; 
         const infiniteScroll = ref();
         const loadItems = async (event: any, reset: boolean) => {
-            let hasMoreItems = await tainacanStore.fetchItems({ perPage: '12', orderBy: 'modified', reset: reset});
+            let hasMoreItems = await tainacanStore.fetchItems({ perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
             if (event && event.target)
                 event.target.complete();
             if (!hasMoreItems){
                 infiniteScroll.value.$el.disabled = true;
             }
+        }
+        const handleSearch = async (event: any) => {
+            let search = event && event.detail && event.detail.value;
+            if(search) {
+                setSearch(search);
+                await loadItems(null, true);
+            } else {
+                setSearch('');
+            }
+        }
+        const handleCancelSearch = async (event: any) => {
+            if (event.cancelable) {
+                event.preventDefault();
+            }
+            loadItems(null, true);
         }
         const doRefresh = async (event: any) => {
             await loadItems({}, true);
@@ -64,7 +88,9 @@ export default {
             tainacanStore,
             doRefresh,
             loadItems,
-            infiniteScroll
+            infiniteScroll,
+            handleSearch,
+            handleCancelSearch
         }
     },
     async created(){

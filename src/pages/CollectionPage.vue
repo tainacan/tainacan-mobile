@@ -6,7 +6,7 @@
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <ion-toolbar>
-             <ion-searchbar :placeholder="this.$t('label_search')" @ionChange="handleSearch($event)" @ionCancel="handleCancelSearch=($event)"></ion-searchbar>
+             <ion-searchbar :placeholder="$t('label_search')" @ionChange="handleSearch($event)" @ionCancel="handleCancelSearch($event)"></ion-searchbar>
         </ion-toolbar>
         <ion-loading
             :is-open="isLoading"
@@ -71,10 +71,10 @@ export default defineComponent({
         const setIsLoading = (state: boolean) => isLoading.value = state;
         const setSearch = (value: string) => search.value = value;
         const loadItemsByCollection = async (event: any, reset: boolean) => {
-            let hasMoreCollections = await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
+            let hasMoreCollectionsItems = await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
             if (event && event.target)
                 event.target.complete();
-            if (!hasMoreCollections){
+            if (!hasMoreCollectionsItems){
                 infiniteScroll.value.$el.disabled = true;
             }
         }

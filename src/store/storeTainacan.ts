@@ -136,7 +136,7 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
-    async fetchItems(params: { perPage: string, orderBy: string, reset: boolean }) {
+    async fetchItems(params: { perPage: string, orderBy: string, reset?: boolean, search?: string }) {
       try {
         const wpStore = useWpStore();
         
@@ -148,6 +148,9 @@ const useTainacanStore = defineStore("tainacan", {
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
 
+          if (params && params.search && params.search !== '')
+          endpoint += '&search=' + params.search
+          
         if(params.reset){
           this.items = [];
           this.nextItemsPage = 1;
