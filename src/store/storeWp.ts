@@ -3,10 +3,7 @@ import axios from "axios";
 import { Storage } from "@ionic/storage";
 import {
   InAppBrowser,
-  InAppBrowserEvent,
-  InAppBrowserEventType,
   InAppBrowserObject,
-  InAppBrowserOriginal
 } from "@awesome-cordova-plugins/in-app-browser/index";
 
 const store = new Storage();
