@@ -36,6 +36,7 @@ const useWpStore = defineStore("wp", {
         this.userSiteUrl = "";
         this.userToken = "";
         this.userLogin = "";
+        delete this.inAppBrowser;
         console.error("Erro no login:", err);
         return err;
       }
@@ -46,6 +47,7 @@ const useWpStore = defineStore("wp", {
         this.userSiteUrl = "";
         this.userToken = "";
         this.userToken = "";
+        delete this.inAppBrowser;
         await store.set("userIsLoggedIn", false);
         await store.set("userSiteUrl", "");
         await store.set("userToken", "");
@@ -54,6 +56,7 @@ const useWpStore = defineStore("wp", {
         this.userSiteUrl = "";
         this.userToken = "";
         this.userToken = "";
+        delete this.inAppBrowser;
         console.error("Erro no logoff:", err);
         return err;
       }
@@ -88,8 +91,8 @@ const useWpStore = defineStore("wp", {
       this.userLogin = await store.get("userLogin");
       this.userToken = await store.get("userToken");
     },
-    createInAppBrowser(url = '',extraParams = 'location=yes,hideurlbar=yes,fullscreen=no,zoom=no,hardwareback=no,toolbarcolor=#ffffff') {
-      let tainacanAdminUrl = this.userSiteUrl + "/wp-admin/admin.php?page=tainacan_admin&mobileAppMode=true&itemEditionMode=true" + url;
+    createInAppBrowser(url = '',extraParams = 'location=no,fullscreen=no,zoom=no,hardwareback=yes') {
+      let tainacanAdminUrl = this.userSiteUrl + "/wp-admin/admin.php" + url;
       if (!this.userIsLoggedIn && this.authorizationURL) 
         tainacanAdminUrl = this.authorizationURL + "?app_name=TainacanMobileApp&success_url=" + tainacanAdminUrl;
         
@@ -99,22 +102,26 @@ const useWpStore = defineStore("wp", {
     openInAppBrowser(url: string) {
 
       if (!this.inAppBrowser || !this.inAppBrowser.executeScript)
-        this.createInAppBrowser('#' + url, 'hidden=yes,location=yes,hideurlbar=yes,fullscreen=no,zoom=no,hardwareback=no,toolbarcolor=#ffffff');
-      else {
-        const urlRedirectionScript = `
-          try {
-            window.history.replaceState(
-              null,
-              null,
-              '${this.userSiteUrl}/wp-admin/admin.php?page=tainacan_admin&mobileAppMode=true&itemEditionMode=true#${url}'
-            );
-            window.history.go(0);
-          } catch(err){
-            console.log('catch', err);
-          }
-            `;
-        this.inAppBrowser.executeScript({ code: urlRedirectionScript });
-      }
+        this.createInAppBrowser(url, 'hidden=yes,location=no,fullscreen=no,zoom=no,hardwareback=yes');
+
+      const urlRedirectionScript = `
+        try {
+          window.history.replaceState(
+            null,
+            null,
+            '${this.userSiteUrl}/wp-admin/admin.php?page=tainacan_mobile_app'
+          );
+          window.history.pushState(
+            null,
+            null,
+            '${this.userSiteUrl}/wp-admin/admin.php${url}'
+          );
+          window.history.go(0);
+        } catch(err){
+          console.log('catch', err);
+        }`;
+      this.inAppBrowser.executeScript({ code: urlRedirectionScript });
+      
       this.inAppBrowser.show();
     },
     hideInAppBrowser() {
@@ -123,9 +130,21 @@ const useWpStore = defineStore("wp", {
     },
     listenEventInAppBrowser(event: any) {
       this.inAppBrowser.on('message').subscribe(event);
-      this.inAppBrowser.on('exit').subscribe((anEvent: any) => {
+      this.inAppBrowser.on('exit').subscribe(() => {
         delete this.inAppBrowser;
-      })
+      });
+      this.inAppBrowser.on("loadstop").subscribe((event: any) => {
+        if (
+            event.url &&
+            typeof event.url == "string" &&
+            event.url.split("?") &&
+            event.url.split("?").length >= 2
+        ) {
+            const params = event.url.split("?")[1];
+            if ( params.indexOf("tainacan_mobile_app") >= 0)
+              this.inAppBrowser.hide(); 
+        }
+      });
     }
   },
 });

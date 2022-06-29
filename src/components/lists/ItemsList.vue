@@ -41,7 +41,7 @@ export default {
         const thumbnailPlaceholder = computed (() => require('../../assets/placeholder_square_small.png'));
         
         const openItemEdition = function(item: any) {
-            wpStore.openInAppBrowser('/collections/' + item.collection_id + '/items/' + item.id + '/edit');
+            wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true&itemEditionMode=true#/collections/' + item.collection_id + '/items/' + item.id + '/edit');
             wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
                 if (event &&
                     event.data &&

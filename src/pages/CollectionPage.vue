@@ -117,7 +117,7 @@ export default defineComponent({
                         icon: documentOutline,
                         data: 'single item',
                         handler: () => {
-                            wpStore.openInAppBrowser('/collections/' + props.id + '/items/new');
+                            wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true&itemEditionMode=true#/collections/' + props.id + '/items/new');
                             wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
                                 if (event &&
                                     event.data &&
