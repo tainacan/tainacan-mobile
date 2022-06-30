@@ -13,9 +13,9 @@
             :message="$t('label_loading')"
         >
         </ion-loading>
-        <ion-spinner v-if="isSearching" name="bubbles"></ion-spinner>
+        <ion-spinner v-if="isSearching"></ion-spinner>
         <div 
-            v-if="!isSearching && (!tainacanStore.totalCollectionItems || tainacanStore.totalCollectionItems == '0')" 
+            v-if="!isLoading && !isSearching && (!tainacanStore.totalCollectionItems || tainacanStore.totalCollectionItems == '0')" 
             class="results-not-found"
         >
             <span> {{$t('label_no_results_found')}} </span>
@@ -196,15 +196,18 @@ export default defineComponent({
 </script>
 
 <style>
-.add-items-button {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    height: 52px;
-    --padding-start: 24px;
-    --padding-bottom: 16px;
-    --padding-top: 16px;
-    --padding-end: 24px;
-    --border-radius: 18px;
-}
+    .add-items-button {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        height: 52px;
+        --padding-start: 24px;
+        --padding-bottom: 16px;
+        --padding-top: 16px;
+        --padding-end: 24px;
+        --border-radius: 18px;
+    }
+    ion-spinner {
+        margin-top: 2rem;
+    }
 </style>

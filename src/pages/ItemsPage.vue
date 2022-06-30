@@ -11,8 +11,8 @@
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
-        <ion-spinner v-if="isSearching" name="bubbles"></ion-spinner>
-        <div v-if="!isSearching && (!tainacanStore.totalItems || tainacanStore.totalItems == '0')" class="results-not-found">
+        <ion-spinner v-if="isSearching"></ion-spinner>
+        <div v-if="!isLoading && !isSearching && (!tainacanStore.totalItems || tainacanStore.totalItems == '0')" class="results-not-found">
             <span> {{$t('label_no_results_found')}} </span>
         </div>
         <items-list :items="tainacanStore.items"></items-list>
@@ -112,3 +112,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+    ion-spinner {
+        margin-top: 2rem;
+    }
+</style>
