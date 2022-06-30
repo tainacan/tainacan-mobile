@@ -29,6 +29,7 @@
 import {
     useTainacanStore
 } from '../store/storeTainacan';
+import { useWpStore } from '../store/storeWp';
 import { ref, defineComponent } from 'vue';
 import { add, documentOutline, documentAttachOutline, documentsOutline } from "ionicons/icons";
 import {
@@ -38,10 +39,13 @@ import {
     IonIcon,
     IonButton,
     actionSheetController,
-    IonInfiniteScroll
+    IonInfiniteScroll,
+    IonInfiniteScrollContent
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import ItemsList from '@/components/lists/ItemsList.vue';
+import { InAppBrowserEvent } from '@awesome-cordova-plugins/in-app-browser';
+
 export default defineComponent({
     components: {
         BaseLayout,
@@ -51,7 +55,8 @@ export default defineComponent({
         IonRefresherContent,
         IonIcon,
         IonButton,
-        IonInfiniteScroll
+        IonInfiniteScroll,
+        IonInfiniteScrollContent
     },
     props: {
         id: String,
@@ -76,6 +81,8 @@ export default defineComponent({
                 infiniteScroll.value.$el.disabled = false;
             }
         }
+
+        const wpStore = useWpStore();
         const actionSheetLabels = ref({
             header: '',
             button1: '',
@@ -110,7 +117,18 @@ export default defineComponent({
                         icon: documentOutline,
                         data: 'single item',
                         handler: () => {
-                            console.log('Item simples')
+                            wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true&itemEditionMode=true#/collections/' + props.id + '/items/new');
+                            wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
+                                if (event &&
+                                    event.data &&
+                                    event.data.type === 'item_updated' &&
+                                    event.data.item &&
+                                    event.data.item.status !== 'auto-draft'
+                                ) {
+                                    wpStore.hideInAppBrowser();
+                                    loadItemsByCollection({}, true);
+                                }
+                            });
                         },
                     },
                     {
@@ -129,6 +147,7 @@ export default defineComponent({
         return {
             isLoading,
             tainacanStore,
+            wpStore,
             setIsLoading,
             loadItemsByCollection,
             doRefresh,

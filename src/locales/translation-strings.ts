@@ -12,8 +12,8 @@ export const translationStrings = {
         placeholder_site_url: 'https://my-tainacan-archive.com',
         label_user_name: 'User name',
         placeholder_user_name: 'your user name',
-        label_user_password: 'User password',
-        placeholder_user_password: 'your password here',
+        label_user_password: 'User application password',
+        placeholder_user_password: 'your application password here',
         label_access_archive: 'Access archive',
         label_item_without_title: 'Item without title',
         label_collection_without_name: 'Collection without name',
@@ -25,7 +25,9 @@ export const translationStrings = {
         label_option_multiple_items: 'Multiple items from file selection',
         label_option_multiple_attachments: 'Single item with document and attachments from file selection',
         label_option_single_item: 'Single empty item',
-        label_cancel: 'Cancel'
+        label_cancel: 'Cancel',
+        info_application_password: 'This password is not the same of your WordPress admin.',
+        label_learn_more_here: 'Learn more here'
     },
     pt: {
         collections: "Coleções",
@@ -40,8 +42,8 @@ export const translationStrings = {
         placeholder_site_url: 'https://meu-acervo-tainacan.com',
         label_user_name: 'Nome de usuário',
         placeholder_user_name: 'seu nome de usuário aqui',
-        label_user_password: 'Senha do usuário',
-        placeholder_user_password: 'sua senha de usuário aqui',
+        label_user_password: 'Senha do usuário da aplicação',
+        placeholder_user_password: 'sua senha de usuário da aplicação aqui',
         label_access_archive: 'Acessar acervo',
         label_item_without_title: 'Item sem título',
         label_collection_without_name: 'Coleção sem nome',
@@ -53,6 +55,8 @@ export const translationStrings = {
         label_option_multiple_items: 'Vários itens a partir de uma seleção de arquivos',
         label_option_multiple_attachments: 'Um item com documento e anexos provenientes de ums seleção de aquivos',
         label_option_single_item: 'Um item vazio',
-        label_cancel: 'Cancelar'
+        label_cancel: 'Cancelar',
+        info_application_password: 'Esta senha não é a mesma do seu painel admin do WordPress.',
+        label_learn_more_here: 'Saiba mais aqui.'
     }
 }

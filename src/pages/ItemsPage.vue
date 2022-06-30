@@ -24,7 +24,8 @@ import {
     IonLoading,
     IonRefresher,
     IonRefresherContent,
-    IonInfiniteScroll
+    IonInfiniteScroll,
+    IonInfiniteScrollContent
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import { ref } from 'vue';
@@ -36,7 +37,8 @@ export default {
         BaseLayout,
         IonRefresher,
         IonRefresherContent,
-        IonInfiniteScroll
+        IonInfiniteScroll,
+        IonInfiniteScrollContent
     },
     setup() {
         const isLoading = ref(false);
