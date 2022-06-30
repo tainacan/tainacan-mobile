@@ -36,6 +36,13 @@
                                 :icon="arrowForwardOutline"
                             ></ion-icon>
                         </ion-button>
+                        <ion-button @click="fakeLogin" color="danger" fill="clear">
+                            Testes sem login
+                            <ion-icon
+                                slot="end"
+                                :icon="arrowForwardOutline"
+                            ></ion-icon>
+                        </ion-button>
                     </form>
                 </ion-col>
             </ion-row>
@@ -136,6 +143,14 @@ export default {
                 }
             }
         },
+        fakeLogin() {
+            this.wpStore.login(
+                'https://rcteste.tainacan.org',
+                '',
+                ''
+            );
+            this.$router.push("/home");
+        }
     },
 };
 </script>
