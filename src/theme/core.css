@@ -1,0 +1,7 @@
+ion-spinner {
+    display: block;
+    margin: auto;
+}
+.results-not-found {
+    text-align: center;
+}

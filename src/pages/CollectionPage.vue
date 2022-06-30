@@ -6,13 +6,20 @@
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <ion-toolbar>
-             <ion-searchbar :placeholder="$t('label_search')" @ionChange="handleSearch($event)" @ionCancel="handleCancelSearch($event)"></ion-searchbar>
+             <ion-searchbar debounce="500" :placeholder="$t('label_search')" @ionChange="handleSearch($event)"></ion-searchbar>
         </ion-toolbar>
         <ion-loading
             :is-open="isLoading"
             :message="$t('label_loading')"
         >
         </ion-loading>
+        <ion-spinner v-if="isSearching" name="bubbles"></ion-spinner>
+        <div 
+            v-if="!isSearching && (!tainacanStore.totalCollectionItems || tainacanStore.totalCollectionItems == '0')" 
+            class="results-not-found"
+        >
+            <span> {{$t('label_no_results_found')}} </span>
+        </div>
         <items-list :items="tainacanStore.collectionItems"></items-list>
             <ion-infinite-scroll ref="infiniteScroll" threshold="5%" @ionInfinite="loadItemsByCollection">
                 <ion-infinite-scroll-content>
@@ -43,7 +50,8 @@ import {
     actionSheetController,
     IonInfiniteScroll,
     IonToolbar,
-    IonSearchbar
+    IonSearchbar,
+    IonSpinner,
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import ItemsList from '@/components/lists/ItemsList.vue';
@@ -58,7 +66,8 @@ export default defineComponent({
         IonButton,
         IonInfiniteScroll,
         IonToolbar,
-        IonSearchbar
+        IonSearchbar,
+        IonSpinner,
     },
     props: {
         id: String,
@@ -66,9 +75,11 @@ export default defineComponent({
     },
     setup(props) {
         const isLoading = ref(false);
+        const isSearching = ref(false)
         const search = ref();
         const infiniteScroll = ref();
         const setIsLoading = (state: boolean) => isLoading.value = state;
+        const setIsSearching = (state: boolean) => isSearching.value = state;
         const setSearch = (value: string) => search.value = value;
         const loadItemsByCollection = async (event: any, reset: boolean) => {
             await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
@@ -78,21 +89,22 @@ export default defineComponent({
             if (!hasMoreCollectionsItems){
                 infiniteScroll.value.$el.disabled = true;
             }
+        }    
+        const cancelSearch = async () => {
+            await loadItemsByCollection(null, true);
         }
         const handleSearch = async (event: any) => {
             let search = event && event.detail && event.detail.value;
-            if(search) {
-                setSearch(search);
+
+            setSearch(search);
+            setIsSearching(true);
+
+            if(search !== '') {   
                 await loadItemsByCollection(null, true);
             } else {
-                setSearch('');
+                await cancelSearch();
             }
-        }
-        const handleCancelSearch = async (event: any) => {
-            if (event.cancelable) {
-                event.preventDefault();
-            }
-            loadItemsByCollection(null, true);
+            setIsSearching(false);
         }
         const doRefresh = async (event: any) => {
             await loadItemsByCollection({}, true);
@@ -153,6 +165,7 @@ export default defineComponent({
         let tainacanStore = useTainacanStore();
         return {
             isLoading,
+            isSearching,
             tainacanStore,
             setIsLoading,
             loadItemsByCollection,
@@ -164,7 +177,6 @@ export default defineComponent({
             collectionObject,
             infiniteScroll,
             handleSearch,
-            handleCancelSearch
         }
     },
     async created() {
