@@ -68,7 +68,7 @@ export default {
     },
     methods: {
         async logOff(){
-            await this.wpStore.userLogOff();
+            await this.wpStore.logoff();
             this.$router.go();
         }
     }

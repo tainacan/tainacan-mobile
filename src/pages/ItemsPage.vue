@@ -36,6 +36,7 @@ import {
     IonToolbar,
     IonSearchbar,
     IonSpinner,
+    IonInfiniteScrollContent
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
 import { ref } from 'vue';
@@ -51,6 +52,7 @@ export default {
         IonToolbar,
         IonSearchbar,
         IonSpinner,        
+        IonInfiniteScrollContent
     },
     setup() {
         const isLoading = ref(false);

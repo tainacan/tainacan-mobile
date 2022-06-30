@@ -1,77 +1,57 @@
-<template>  
+<template>
     <ion-page>
         <ion-content class="login-form-content" fullscreen>
             <ion-row class="ion-align-items-center ion-justify-content-center">
                 <ion-col>
-                    <ion-img class="login-form-content__tainacan-logo" alt="Logo Tainacan" :src="image" />
-                    <form @submit.prevent="login">
+                    <ion-img
+                        class="login-form-content__tainacan-logo"
+                        alt="Logo Tainacan"
+                        :src="image"
+                    />
+                    <form @submit.prevent="openLoginForm">
                         <ion-list class="ion-no-margin" inset>
                             <ion-item>
                                 <ion-label position="floating">
-                                    {{ $t('label_site_url') }}
+                                    {{ $t("label_site_url") }}
                                 </ion-label>
-                                <ion-input 
-                                        :placeholder="$t('placeholder_site_url')" 
-                                        autofocus="true" 
-                                        id="siteUrl"
-                                        type="url"
-                                        name="siteUrl"
-                                        v-model.trim="siteUrl"
-                                        required="true"
-                                        autocomplete="url"
-                                        enterkeyhint="next">
-                                </ion-input>
-                            </ion-item>
-                            <ion-item>
-                                <ion-label position="floating">
-                                    {{ $t('label_user_name') }}
-                                </ion-label>
-                                <ion-input 
-                                        :placeholder="$t('placeholder_user_name')"
-                                        id="userLogin"
-                                        type="text"
-                                        name="userLogin"
-                                        v-model="userLogin"
-                                        required="true"
-                                        autocomplete="username"
-                                        enterkeyhint="next"
-                                        inputmode="url">
-                                </ion-input>            
-                            </ion-item>
-                            <ion-item>
-                                <ion-label position="floating">
-                                    {{ $t('label_user_password') }}
-                                </ion-label>
-                                <ion-input 
-                                        :placeholder="$t('placeholder_user_password')" 
-                                        id="userPassword"
-                                        type="password"
-                                        name="userPassword"
-                                        v-model="userPassword"
-                                        required="true"
-                                        autocomplete="new-password"
-                                        enterkeyhint="done">
+                                <ion-input
+                                    :placeholder="$t('placeholder_site_url')"
+                                    autofocus="true"
+                                    id="siteUrl"
+                                    type="url"
+                                    name="siteUrl"
+                                    v-model.trim="siteUrl"
+                                    required="true"
+                                    autocomplete="url"
+                                    enterkeyhint="next"
+                                >
                                 </ion-input>
                             </ion-item>
                         </ion-list>
-                        <br>
+                        <br />
                         <ion-button type="submit" fill="clear">
-                            {{ $t('label_access_archive') }}
-                            <ion-icon slot="end" :icon="arrowForwardOutline"></ion-icon>
+                            {{ $t("label_access_archive") }}
+                            <ion-icon
+                                slot="end"
+                                :icon="arrowForwardOutline"
+                            ></ion-icon>
                         </ion-button>
                     </form>
                 </ion-col>
             </ion-row>
+            <app-password-modal />
         </ion-content>
     </ion-page>
 </template>
 
 <script lang="ts">
-import { useTainacanStore } from '../store/storeTainacan';
-import { useWpStore } from '../store/storeWp';
+import { useTainacanStore } from "../store/storeTainacan";
+import { useWpStore } from "../store/storeWp";
 import { arrowForwardOutline } from "ionicons/icons";
+import AppPasswordModal from "../components/modals/AppPasswordModal.vue";
 
 import {
+    IonIcon,
     IonImg,
     IonPage,
     IonList,
@@ -81,12 +61,15 @@ import {
     IonLabel,
     IonRow,
     IonCol,
-    IonContent
-} from '@ionic/vue';
-import { computed } from 'vue';
+    IonContent,
+} from "@ionic/vue";
+import { computed } from "vue";
+import { InAppBrowserEvent } from "@awesome-cordova-plugins/in-app-browser/index";
+
 export default {
-    props: ['pageTitle', 'pageDefaultBackLink'],
+    props: ["pageTitle", "pageDefaultBackLink"],
     components: {
+        IonIcon,
         IonImg,
         IonPage,
         IonList,
@@ -96,32 +79,65 @@ export default {
         IonLabel,
         IonRow,
         IonCol,
-        IonContent
+        IonContent,
+        AppPasswordModal,
     },
-    data(){
+    data() {
         return {
-            siteUrl: '',
-            userLogin: '',
-            userPassword: '',
-        }
+            siteUrl: "",
+        };
     },
-    setup(){
-        const image = computed (() => require('../assets/logo_square.png'));
+    setup() {
+        const image = computed(() => require("../assets/logo_square.png"));
         let tainacanStore = useTainacanStore();
         let wpStore = useWpStore();
-        return { image, tainacanStore, wpStore, arrowForwardOutline }
+        return { image, tainacanStore, wpStore, arrowForwardOutline };
     },
     methods: {
-        async login(){
-            await this.wpStore.userLogin(this.siteUrl);
-            // this.tainacanStore.siteUrl = this.siteUrl;
-            // this.tainacanStore.userLogin = this.userLogin;
-            // this.tainacanStore.userPassword = this.userPassword;
-            this.$router.push('/home');
-        }
-    }
+        async openLoginForm() {
+            this.wpStore.userSiteUrl = this.siteUrl;
+            await this.wpStore.fetchApplicationAuthorization(this.siteUrl);
+            if (this.wpStore.authorizationURL) {
+                this.wpStore.createInAppBrowser('?page=tainacan_mobile_app');
+                this.wpStore.inAppBrowser
+                    .on("loadstop")
+                    .subscribe(this.handleBrowserLoadStop);
+            }
+        },
+        async handleBrowserLoadStop(event: InAppBrowserEvent) {
+            console.log(event)
+            if (
+                event.url &&
+                typeof event.url == "string" &&
+                event.url.split("?") &&
+                event.url.split("?").length >= 2
+            ) {
+                const params = new URLSearchParams(event.url.split("?")[1]);
+     
+                if ( params.get("page") === "tainacan_mobile_app" ) {
+                    const userLogin = params.get("user_login");
+                    let userToken = params.get("password");
 
-}
+                    if (
+                        typeof userToken == "string" &&
+                        userToken.indexOf("#") >= 0
+                    )
+                        userToken = userToken.split("#")[0];
+
+                    if (!!userLogin && !!userToken) {
+                        await this.wpStore.login(
+                            this.siteUrl,
+                            userLogin,
+                            userToken
+                        );
+                        this.$router.push("/home");
+                    }
+                    this.wpStore.inAppBrowser.hide();
+                }
+            }
+        },
+    },
+};
 </script>
 
 <style>

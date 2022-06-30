@@ -16,10 +16,7 @@ const useTainacanStore = defineStore("tainacan", {
       nextItemsByCollectionPage: 1,
       items: [],
       nextItemsPage: 1,
-      totalItems: 0,
-      siteUrl: "",
-      userLogin: "",
-      userPassword: "",
+      totalItems: 0
     };
   },
 
@@ -29,6 +26,7 @@ const useTainacanStore = defineStore("tainacan", {
         const wpStore = useWpStore();
 
         let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collections?`;
+        const authorization = 'Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken);
 
         if (params && params.perPage)
           endpoint += '&perpage=' + params.perPage;
@@ -36,7 +34,11 @@ const useTainacanStore = defineStore("tainacan", {
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
 
-        const response = await axios.get(endpoint);
+        const response = await axios.get(endpoint, {
+          headers: {
+            authorization: authorization
+          }
+        });
 
         this.collections = response.data;
         this.totalCollections = response.headers['x-wp-total'];
@@ -55,8 +57,13 @@ const useTainacanStore = defineStore("tainacan", {
         const wpStore = useWpStore();
 
         const endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collections?perpage=4&orderby=modified`;
+        const authorization = 'Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken);
 
-        const response = await axios.get(endpoint);
+        const response = await axios.get(endpoint, {
+          headers: {
+            authorization: authorization
+          }
+        });
 
         this.homeCollections = response.data;
         this.totalHomeCollections = response.headers['x-wp-total'];
@@ -75,6 +82,7 @@ const useTainacanStore = defineStore("tainacan", {
         const wpStore = useWpStore();
 
         let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail`;
+        const authorization = 'Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken);
 
         if (params && params.perPage)
           endpoint += '&perpage=' + params.perPage;
@@ -96,7 +104,11 @@ const useTainacanStore = defineStore("tainacan", {
 
         endpoint += '&paged=' + this.nextItemsByCollectionPage;
   
-        const response = await axios.get(endpoint);
+        const response = await axios.get(endpoint, {
+          headers: {
+            authorization: authorization
+          }
+        });
 
         this.collectionItems.push(...response.data.items);
         this.totalCollectionItems = response.headers['x-wp-total'];
@@ -120,8 +132,14 @@ const useTainacanStore = defineStore("tainacan", {
         const wpStore = useWpStore();
         
         const endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
+        const authorization = 'Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken);
 
-        const response = await axios.get(endpoint);
+        const response = await axios.get(endpoint, {
+          headers: {
+            authorization: authorization
+          }
+        });
+
         this.homeItems = response.data.items;
         this.totalHomeItems = response.headers['x-wp-total'];
 
@@ -138,6 +156,7 @@ const useTainacanStore = defineStore("tainacan", {
         const wpStore = useWpStore();
         
         let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?fetch_only=id,title,thumbnail`;
+        const authorization = 'Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken);
 
         if (params && params.perPage)
           endpoint += '&perpage=' + params.perPage;
@@ -148,14 +167,19 @@ const useTainacanStore = defineStore("tainacan", {
           if (params && params.search && params.search !== '')
           endpoint += '&search=' + params.search
           
-        if(params.reset){
+        if (params.reset) {
           this.items = [];
           this.nextItemsPage = 1;
         }
 
         endpoint += '&paged=' + this.nextItemsPage;
 
-        const response = await axios.get(endpoint);
+        const response = await axios.get(endpoint, {
+          headers: {
+            authorization: authorization
+          }
+        });
+        
         this.items.push(...response.data.items);
         this.totalItems = response.headers['x-wp-total'];
 
