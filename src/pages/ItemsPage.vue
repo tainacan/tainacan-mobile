@@ -5,10 +5,18 @@
                 :message="$t('label_loading')"
         >
         </ion-loading>
+        <ion-toolbar>
+             <ion-searchbar debounce="500" :placeholder="$t('label_search')" @ionChange="handleSearch($event)"></ion-searchbar>
+        </ion-toolbar>
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
+        <ion-spinner v-if="isSearching"></ion-spinner>
+        <div v-if="!isLoading && !isSearching && (!tainacanStore.totalItems || tainacanStore.totalItems == '0')" class="results-not-found">
+            <span> {{$t('label_no_results_found')}} </span>
+        </div>
         <items-list :items="tainacanStore.items"></items-list>
+        
         <ion-infinite-scroll ref="infiniteScroll" threshold="5%" @ionInfinite="loadItems">
             <ion-infinite-scroll-content>
             </ion-infinite-scroll-content>
@@ -25,6 +33,9 @@ import {
     IonRefresher,
     IonRefresherContent,
     IonInfiniteScroll,
+    IonToolbar,
+    IonSearchbar,
+    IonSpinner,
     IonInfiniteScrollContent
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
@@ -38,19 +49,44 @@ export default {
         IonRefresher,
         IonRefresherContent,
         IonInfiniteScroll,
+        IonToolbar,
+        IonSearchbar,
+        IonSpinner,        
         IonInfiniteScrollContent
     },
     setup() {
         const isLoading = ref(false);
+        const isSearching = ref(false)
+        const search = ref();
         const setIsLoading = (state: boolean) => isLoading.value = state;
+        const setIsSearching = (state: boolean) => isSearching.value = state;
+        const setSearch = (value: string) => search.value = value; 
         const infiniteScroll = ref();
         const loadItems = async (event: any, reset: boolean) => {
-            let hasMoreItems = await tainacanStore.fetchItems({ perPage: '12', orderBy: 'modified', reset: reset});
+            await tainacanStore.fetchItems({ perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
+            let hasMoreItems = tainacanStore.totalItems && tainacanStore.totalItems !== 0;
             if (event && event.target)
                 event.target.complete();
             if (!hasMoreItems){
                 infiniteScroll.value.$el.disabled = true;
             }
+        }    
+        const cancelSearch = async () => {
+            await loadItems(null, true);
+        }
+        const handleSearch = async (event: any) => {
+            let search = event && event.detail && event.detail.value;
+            
+            setSearch(search);
+            setIsSearching(true);
+
+            if(search !== '') {
+                await loadItems(null, true);
+                setIsSearching(false);
+            } else {
+                await cancelSearch();
+            }
+            setIsSearching(false);
         }
         const doRefresh = async (event: any) => {
             await loadItems({}, true);
@@ -62,11 +98,13 @@ export default {
         let tainacanStore = useTainacanStore();
         return {
             isLoading,
+            isSearching,
             setIsLoading,
             tainacanStore,
             doRefresh,
             loadItems,
-            infiniteScroll
+            infiniteScroll,
+            handleSearch
         }
     },
     async created(){
@@ -76,3 +114,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+    ion-spinner {
+        margin-top: 2rem;
+    }
+</style>

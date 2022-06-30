@@ -5,11 +5,21 @@
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
+        <ion-toolbar>
+             <ion-searchbar debounce="500" :placeholder="$t('label_search')" @ionChange="handleSearch($event)"></ion-searchbar>
+        </ion-toolbar>
         <ion-loading
             :is-open="isLoading"
             :message="$t('label_loading')"
         >
         </ion-loading>
+        <ion-spinner v-if="isSearching"></ion-spinner>
+        <div 
+            v-if="!isLoading && !isSearching && (!tainacanStore.totalCollectionItems || tainacanStore.totalCollectionItems == '0')" 
+            class="results-not-found"
+        >
+            <span> {{$t('label_no_results_found')}} </span>
+        </div>
         <items-list :items="tainacanStore.collectionItems"></items-list>
             <ion-infinite-scroll ref="infiniteScroll" threshold="5%" @ionInfinite="loadItemsByCollection">
                 <ion-infinite-scroll-content>
@@ -40,6 +50,9 @@ import {
     IonButton,
     actionSheetController,
     IonInfiniteScroll,
+    IonToolbar,
+    IonSearchbar,
+    IonSpinner,
     IonInfiniteScrollContent
 } from '@ionic/vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
@@ -56,6 +69,9 @@ export default defineComponent({
         IonIcon,
         IonButton,
         IonInfiniteScroll,
+        IonToolbar,
+        IonSearchbar,
+        IonSpinner,
         IonInfiniteScrollContent
     },
     props: {
@@ -64,15 +80,36 @@ export default defineComponent({
     },
     setup(props) {
         const isLoading = ref(false);
+        const isSearching = ref(false)
+        const search = ref();
         const infiniteScroll = ref();
         const setIsLoading = (state: boolean) => isLoading.value = state;
+        const setIsSearching = (state: boolean) => isSearching.value = state;
+        const setSearch = (value: string) => search.value = value;
         const loadItemsByCollection = async (event: any, reset: boolean) => {
-            let hasMoreCollections = await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset});
+            await tainacanStore.fetchItemsByCollection(props.id + '', { perPage: '12', orderBy: 'modified', reset: reset, search: search.value});
+            let hasMoreCollectionsItems = tainacanStore.totalCollectionItems && tainacanStore.totalCollectionItems !== 0;
             if (event && event.target)
                 event.target.complete();
-            if (!hasMoreCollections){
+            if (!hasMoreCollectionsItems){
                 infiniteScroll.value.$el.disabled = true;
             }
+        }    
+        const cancelSearch = async () => {
+            await loadItemsByCollection(null, true);
+        }
+        const handleSearch = async (event: any) => {
+            let search = event && event.detail && event.detail.value;
+
+            setSearch(search);
+            setIsSearching(true);
+
+            if(search !== '') {   
+                await loadItemsByCollection(null, true);
+            } else {
+                await cancelSearch();
+            }
+            setIsSearching(false);
         }
         const doRefresh = async (event: any) => {
             await loadItemsByCollection({}, true);
@@ -146,6 +183,7 @@ export default defineComponent({
         let tainacanStore = useTainacanStore();
         return {
             isLoading,
+            isSearching,
             tainacanStore,
             wpStore,
             setIsLoading,
@@ -156,7 +194,8 @@ export default defineComponent({
             actionSheetLabels,
             setActionSheetLabels,
             collectionObject,
-            infiniteScroll
+            infiniteScroll,
+            handleSearch,
         }
     },
     async created() {
@@ -176,15 +215,18 @@ export default defineComponent({
 </script>
 
 <style>
-.add-items-button {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    height: 52px;
-    --padding-start: 24px;
-    --padding-bottom: 16px;
-    --padding-top: 16px;
-    --padding-end: 24px;
-    --border-radius: 18px;
-}
+    .add-items-button {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        height: 52px;
+        --padding-start: 24px;
+        --padding-bottom: 16px;
+        --padding-top: 16px;
+        --padding-end: 24px;
+        --border-radius: 18px;
+    }
+    ion-spinner {
+        margin-top: 2rem;
+    }
 </style>

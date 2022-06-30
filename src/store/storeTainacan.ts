@@ -77,7 +77,7 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
-    async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string, reset: boolean }) {
+    async fetchItemsByCollection(collectionId: string, params: { perPage: string, orderBy: string, reset?: boolean, search?: string }) {
       try {
         const wpStore = useWpStore();
 
@@ -93,6 +93,9 @@ const useTainacanStore = defineStore("tainacan", {
           endpoint += '&orderby=' + params.orderBy;
         else
           endpoint += '&orderby=modified';
+
+        if (params && params.search && params.search !== '')
+          endpoint += '&search=' + params.search
           
         if (params.reset) {
           this.collectionItems = [];
@@ -110,13 +113,10 @@ const useTainacanStore = defineStore("tainacan", {
         this.collectionItems.push(...response.data.items);
         this.totalCollectionItems = response.headers['x-wp-total'];
 
-        if (!this.totalCollectionItems ||
-          this.totalCollectionItems === "0") {
-          return false;
-        } else {
-          this.nextItemsByCollectionPage++;
-          return true;
+        if (this.totalCollectionItems && this.totalCollectionItems !== "0") {
+            this.nextItemsByCollectionPage++;
         }    
+
       } catch (err) {
         this.collectionItems = [];
         this.totalCollectionItems = 0;
@@ -151,7 +151,7 @@ const useTainacanStore = defineStore("tainacan", {
       }
     },
 
-    async fetchItems(params: { perPage: string, orderBy: string, reset: boolean }) {
+    async fetchItems(params: { perPage: string, orderBy: string, reset?: boolean, search?: string }) {
       try {
         const wpStore = useWpStore();
         
@@ -164,6 +164,9 @@ const useTainacanStore = defineStore("tainacan", {
         if (params && params.orderBy)
           endpoint += '&orderby=' + params.orderBy;
 
+          if (params && params.search && params.search !== '')
+          endpoint += '&search=' + params.search
+          
         if (params.reset) {
           this.items = [];
           this.nextItemsPage = 1;
@@ -180,12 +183,8 @@ const useTainacanStore = defineStore("tainacan", {
         this.items.push(...response.data.items);
         this.totalItems = response.headers['x-wp-total'];
 
-        if (!this.totalItems ||
-          this.totalItems === "0") {
-          return false;
-        } else {
+        if (this.totalItems && this.totalItems !== "0") {
           this.nextItemsPage++;
-          return true;
         } 
 
       } catch (err) {

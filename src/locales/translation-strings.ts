@@ -26,6 +26,8 @@ export const translationStrings = {
         label_option_multiple_attachments: 'Single item with document and attachments from file selection',
         label_option_single_item: 'Single empty item',
         label_cancel: 'Cancel',
+        label_search: 'Search',
+        label_no_results_found: 'No results found',
         info_application_password: 'This password is not the same of your WordPress admin.',
         label_learn_more_here: 'Learn more here'
     },
@@ -56,6 +58,8 @@ export const translationStrings = {
         label_option_multiple_attachments: 'Um item com documento e anexos provenientes de ums seleção de aquivos',
         label_option_single_item: 'Um item vazio',
         label_cancel: 'Cancelar',
+        label_search: 'Buscar',
+        label_no_results_found: 'Nenhum resultado encontrado',
         info_application_password: 'Esta senha não é a mesma do seu painel admin do WordPress.',
         label_learn_more_here: 'Saiba mais aqui.'
     }
