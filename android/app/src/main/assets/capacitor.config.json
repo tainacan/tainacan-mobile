@@ -1,5 +1,5 @@
 {
-	"appId": "org.tainacan.mobile",
+	"appId": "org.tainacan.mobileapp",
 	"appName": "Tainacan",
 	"webDir": "dist",
 	"bundledWebRuntime": false

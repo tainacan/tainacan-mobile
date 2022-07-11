@@ -138,15 +138,23 @@ export default defineComponent({
                         icon: documentsOutline,
                         data: 'multiple-items',  
                         handler: () => {
-                            console.log('Vários iteeeens')
-                        },
-                    },
-                    {
-                        text: actionSheetLabels.value.button2,
-                        icon: documentAttachOutline,
-                        data: 'multiple-attachments',
-                        handler: () => {
-                            console.log('Item com vários anexos')
+                            wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true#/collections/' + props.id + '/bulk-add');
+                            wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
+                                if (event &&
+                                    event.data &&
+                                    (
+                                        (
+                                            event.data.type === 'item_updated' &&
+                                            event.data.item &&
+                                            event.data.item.status !== 'auto-draft'
+                                        )
+                                        || event.data.type === 'exited_from_navigation'
+                                    )
+                                ) {
+                                    wpStore.hideInAppBrowser();
+                                    loadItemsByCollection({}, true);
+                                }
+                            });
                         },
                     },
                     {
@@ -154,7 +162,7 @@ export default defineComponent({
                         icon: documentOutline,
                         data: 'single item',
                         handler: () => {
-                            wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true&itemEditionMode=true#/collections/' + props.id + '/items/new');
+                            wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true#/collections/' + props.id + '/items/new');
                             wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
                                 if (event &&
                                     event.data &&
@@ -216,15 +224,16 @@ export default defineComponent({
 
 <style>
     .add-items-button {
+        text-transform: capitalize;
         position: fixed;
         bottom: 16px;
         right: 16px;
-        height: 52px;
-        --padding-start: 24px;
-        --padding-bottom: 16px;
-        --padding-top: 16px;
-        --padding-end: 24px;
-        --border-radius: 18px;
+        height: 50px;
+        --padding-start: 20px;
+        --padding-bottom: 10px;
+        --padding-top: 10px;
+        --padding-end: 20px;
+        --border-radius: 16px;
     }
     ion-spinner {
         margin-top: 2rem;
