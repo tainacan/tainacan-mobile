@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package org.tainacan.mobile;
 
 import com.getcapacitor.BridgeActivity;
 

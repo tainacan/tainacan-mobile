@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">tainacan-mobile</string>
-    <string name="title_activity_main">tainacan-mobile</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">Tainacan</string>
+    <string name="title_activity_main">Tainacan</string>
+    <string name="package_name">org.tainacan.mobile</string>
+    <string name="custom_url_scheme">org.tainacan.mobile</string>
 </resources>
