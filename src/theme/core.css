@@ -2,6 +2,26 @@ ion-spinner {
     display: block;
     margin: auto;
 }
+
+ion-card {
+    background: rgb(255, 255, 255);
+    border-radius: 0
+}
+
+.collection-list-item{
+    --ion-item-background:#ffffff;
+}
+
 .results-not-found {
     text-align: center;
+}
+
+.searchbar-input {
+    border-radius: 30 !important;
+    border: 10;
+    box-shadow: 0 !important;
+}
+
+.header-md::after {
+    display: none;
 }
