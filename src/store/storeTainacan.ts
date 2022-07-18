@@ -16,7 +16,9 @@ const useTainacanStore = defineStore("tainacan", {
       nextItemsByCollectionPage: 1,
       items: [],
       nextItemsPage: 1,
-      totalItems: 0
+      totalItems: 0,
+      errorMessage: "",
+      errorStatus: false
     };
   },
 
@@ -46,8 +48,9 @@ const useTainacanStore = defineStore("tainacan", {
       } catch (err) {
         this.collections = [];
         this.totalCollections = 0;
-        console.error("Erro no carregamento das coleções:", err);
-
+        this.errorMessage = "error_label_fetch_collections";
+        this.errorStatus = true;
+        console.error("Collections loading error: ", err);
         return err;
       }
     },
@@ -71,8 +74,9 @@ const useTainacanStore = defineStore("tainacan", {
       } catch (err) {
         this.homeCollections = [];
         this.totalHomeCollections = 0;
-        console.error("Erro no carregamento das coleções da home:", err);
-
+        this.errorMessage = "error_label_fetch_collections";
+        this.errorStatus = true;
+        console.error("Home collections loading error: ", err);
         return err;
       }
     },
@@ -121,8 +125,9 @@ const useTainacanStore = defineStore("tainacan", {
         this.collectionItems = [];
         this.totalCollectionItems = 0;
         this.nextItemsByCollectionPage = 1;
-        console.error("Erro no carregamento dos items da coleção:", err);
-
+        this.errorMessage = "error_label_fetch_items_collections";
+        this.errorStatus = true;
+        console.error("Items collections loading error: ", err);
         return false;
       }
     },
@@ -130,7 +135,6 @@ const useTainacanStore = defineStore("tainacan", {
     async fetchHomeItems() {
       try {
         const wpStore = useWpStore();
-        
         const endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?context=edit&fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
         const authorization = (wpStore.userLogin && wpStore.userToken) ? ('Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken)) : null;
 
@@ -142,11 +146,13 @@ const useTainacanStore = defineStore("tainacan", {
 
         this.homeItems = response.data.items;
         this.totalHomeItems = response.headers['x-wp-total'];
-
+      
       } catch (err) {
         this.homeItems = [];
         this.totalHomeItems = 0;
-        console.error("Erro no carregamento dos items da home:", err);
+        this.errorMessage = "error_label_fetch_items_collections";
+        this.errorStatus = true;
+        console.error("Items collections loading error: ", err);
         return err;
       }
     },
@@ -191,7 +197,9 @@ const useTainacanStore = defineStore("tainacan", {
         this.items = [];
         this.totalItems = 0;
         this.nextItemsPage = 1;
-        console.error("Erro no carregamento dos items:", err);
+        this.errorMessage = "error_label_fetch_items";
+        this.errorStatus = true;
+        console.error("Items loading error: ", err);
         return err;
       }
     },

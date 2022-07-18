@@ -19,10 +19,18 @@
         <ion-content fullscreen="true">
             <slot />
         </ion-content>
+        <ion-toast
+            :is-open="tainacanStore.errorStatus"
+            :message="$t(tainacanStore.errorMessage)"
+            :duration="4000"
+            @didDismiss="setOpen(false)"
+            color="danger"
+        >
+        </ion-toast>
     </ion-page>
 </template>
 
-<script>
+<script lang="ts">
 import { logOutOutline } from "ionicons/icons";
 import { 
     useWpStore
@@ -39,8 +47,10 @@ import {
     IonButton,
     IonButtons,
     IonImg,
+    IonToast
 } from '@ionic/vue';
 import { computed } from 'vue';
+import { useTainacanStore } from '@/store/storeTainacan';
 
 export default {
     props: ['pageTitle', 'pageDefaultBackLink'],
@@ -55,15 +65,18 @@ export default {
         IonBackButton,
         IonButtons,
         IonImg,
+        IonToast
     },
     setup(){
         const tainacanLogo = computed (() => require('../../assets/logo.png'))
         let wpStore = useWpStore();
+        let tainacanStore = useTainacanStore();
 
         return {
             tainacanLogo,
             wpStore,
-            logOutOutline
+            logOutOutline,
+            tainacanStore
         }  
     },
     methods: {

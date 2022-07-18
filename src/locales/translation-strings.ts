@@ -32,7 +32,10 @@ export const translationStrings = {
         label_learn_more_here: 'Learn more here',
         label_item_actions: 'Item actions',
         label_option_edit_item: 'Edit item',
-        label_option_delete_item: 'Send item to trash'
+        label_option_delete_item: 'Send item to trash',
+        error_label_fetch_collections: 'Collections loading error',
+        error_label_fetch_items_collections: 'Items collections loading error',
+        error_label_fetch_items: 'Items loading error'
     },
     pt: {
         collections: "Coleções",
@@ -67,6 +70,9 @@ export const translationStrings = {
         label_learn_more_here: 'Saiba mais aqui.',
         label_item_actions: 'Ações para o item',
         label_option_edit_item: 'Editar item',
-        label_option_delete_item: 'Enviar item para lixeira'
+        label_option_delete_item: 'Enviar item para lixeira',
+        error_label_fetch_collections: 'Erro no carregamento das coleções',
+        error_label_fetch_items_collections: 'Erro no carregamento dos itens da coleção',
+        error_label_fetch_items: 'Erro no carregamento dos itens'
     }
 }
