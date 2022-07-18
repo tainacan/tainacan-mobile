@@ -29,7 +29,10 @@ export const translationStrings = {
         label_search: 'Search',
         label_no_results_found: 'No results found',
         info_application_password: 'This password is not the same of your WordPress admin.',
-        label_learn_more_here: 'Learn more here'
+        label_learn_more_here: 'Learn more here',
+        error_label_fetch_collections: 'Collections loading error',
+        error_label_fetch_items_collections: 'Items collections loading error',
+        error_label_fetch_items: 'Items loading error'
     },
     pt: {
         collections: "Coleções",
@@ -61,6 +64,9 @@ export const translationStrings = {
         label_search: 'Buscar',
         label_no_results_found: 'Nenhum resultado encontrado',
         info_application_password: 'Esta senha não é a mesma do seu painel admin do WordPress.',
-        label_learn_more_here: 'Saiba mais aqui.'
+        label_learn_more_here: 'Saiba mais aqui.',
+        error_label_fetch_collections: 'Erro no carregamento das coleções',
+        error_label_fetch_items_collections: 'Erro no carregamento dos itens da coleção',
+        error_label_fetch_items: 'Erro no carregamento dos itens'
     }
 }
