@@ -41,7 +41,7 @@ import {
 } from '../store/storeTainacan';
 import { useWpStore } from '../store/storeWp';
 import { ref, defineComponent } from 'vue';
-import { add, documentOutline, documentAttachOutline, documentsOutline } from "ionicons/icons";
+import { add, documentOutline, documentsOutline } from "ionicons/icons";
 import {
     IonLoading,
     IonRefresher,

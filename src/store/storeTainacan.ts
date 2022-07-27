@@ -81,7 +81,7 @@ const useTainacanStore = defineStore("tainacan", {
       try {
         const wpStore = useWpStore();
 
-        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?fetch_only=id,title,thumbnail`;
+        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/collection/${collectionId}/items?context=edit&fetch_only=id,title,thumbnail`;
         const authorization = (wpStore.userLogin && wpStore.userToken) ? ('Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken)) : null;
 
         if (params && params.perPage)
@@ -131,7 +131,7 @@ const useTainacanStore = defineStore("tainacan", {
       try {
         const wpStore = useWpStore();
         
-        const endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
+        const endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?context=edit&fetch_only=id,title,thumbnail&perpage=12&orderby=modified`;
         const authorization = (wpStore.userLogin && wpStore.userToken) ? ('Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken)) : null;
 
         const response = await axios.get(endpoint, authorization ? {
@@ -155,7 +155,7 @@ const useTainacanStore = defineStore("tainacan", {
       try {
         const wpStore = useWpStore();
         
-        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?fetch_only=id,title,thumbnail`;
+        let endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items?context=edit&fetch_only=id,title,thumbnail`;
         const authorization = (wpStore.userLogin && wpStore.userToken) ? ('Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken)) : null;
 
         if (params && params.perPage)
@@ -195,6 +195,39 @@ const useTainacanStore = defineStore("tainacan", {
         return err;
       }
     },
+
+    async deleteItem(itemId: string|number) {
+      try {
+        const wpStore = useWpStore();
+        
+        const endpoint = `${wpStore.userSiteUrl}/wp-json/tainacan/v2/items/${itemId}`;
+        const authorization = (wpStore.userLogin && wpStore.userToken) ? ('Basic ' + btoa(wpStore.userLogin + ':' + wpStore.userToken)) : null;
+
+        const response = await axios.delete(endpoint, authorization ? {
+          headers: {
+            authorization: authorization
+          }
+        } : {});
+        
+        if (response.data && response.data.id) {
+          const existingItemIndex = this.items.indexOf((anItem: any) => anItem.id == response.data.id);
+          if (existingItemIndex >= 0)
+            this.items.splice(existingItemIndex, 1);
+
+          const existingHomeItemIndex = this.homeItems.indexOf((anItem: any) => anItem.id == response.data.id);
+          if (existingHomeItemIndex >= 0)
+            this.items.splice(existingHomeItemIndex, 1);
+
+          const existingCollectionItemIndex = this.collectionItems.indexOf((anItem: any) => anItem.id == response.data.id);
+          if (existingCollectionItemIndex >= 0)
+            this.items.splice(existingCollectionItemIndex, 1);
+        }
+
+      } catch (err) {
+        console.error("Erro ao deletar item:", err);
+        return err;
+      }
+    }
   },
 });
 export { useTainacanStore };
