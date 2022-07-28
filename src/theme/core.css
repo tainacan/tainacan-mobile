@@ -17,9 +17,8 @@ ion-card {
 }
 
 .searchbar-input {
-    border-radius: 30 !important;
-    border: 10;
-    box-shadow: 0 !important;
+    border-radius: 30px !important;
+    box-shadow: none !important;
 }
 
 .header-md::after {
