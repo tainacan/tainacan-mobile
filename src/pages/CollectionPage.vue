@@ -1,6 +1,6 @@
 <template>
     <base-layout
-            :page-title="(collectionObject && collectionObject.name) ? collectionObject.name : $t('collection')" 
+            :page-title="$t('label_collection_items_list')" 
             page-default-back-link="/collections">
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
@@ -75,8 +75,7 @@ export default defineComponent({
         IonInfiniteScrollContent
     },
     props: {
-        id: String,
-        collection: String
+        id: String
     },
     setup(props) {
         const isLoading = ref(false);
@@ -186,8 +185,7 @@ export default defineComponent({
             const { role, data } = await actionSheet.onDidDismiss();
             console.log('onDidDismiss resolved with role and data', role, data);
         }
-        const collectionObject = props.collection ? JSON.parse(props.collection + '') : false;
-        
+
         let tainacanStore = useTainacanStore();
         return {
             isLoading,
@@ -201,7 +199,6 @@ export default defineComponent({
             add,
             actionSheetLabels,
             setActionSheetLabels,
-            collectionObject,
             infiniteScroll,
             handleSearch,
         }
