@@ -132,30 +132,30 @@ export default defineComponent({
                 header: actionSheetLabels.value.header,
                 cssClass: 'item-creation-action-sheet',
                 buttons: [
-                    {
-                        text: actionSheetLabels.value.button1,
-                        icon: documentsOutline,
-                        data: 'multiple-items',  
-                        handler: () => {
-                            wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true#/collections/' + props.id + '/bulk-add');
-                            wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
-                                if (event &&
-                                    event.data &&
-                                    (
-                                        (
-                                            event.data.type === 'item_updated' &&
-                                            event.data.item &&
-                                            event.data.item.status !== 'auto-draft'
-                                        )
-                                        || event.data.type === 'exited_from_navigation'
-                                    )
-                                ) {
-                                    wpStore.hideInAppBrowser();
-                                    loadItemsByCollection({}, true);
-                                }
-                            });
-                        },
-                    },
+                    // {
+                    //     text: actionSheetLabels.value.button1,
+                    //     icon: documentsOutline,
+                    //     data: 'multiple-items',  
+                    //     handler: () => {
+                    //         wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true#/collections/' + props.id + '/bulk-add');
+                    //         wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
+                    //             if (event &&
+                    //                 event.data &&
+                    //                 (
+                    //                     (
+                    //                         event.data.type === 'item_updated' &&
+                    //                         event.data.item &&
+                    //                         event.data.item.status !== 'auto-draft'
+                    //                     )
+                    //                     || event.data.type === 'exited_from_navigation'
+                    //                 )
+                    //             ) {
+                    //                 wpStore.hideInAppBrowser();
+                    //                 loadItemsByCollection({}, true);
+                    //             }
+                    //         });
+                    //     },
+                    // },
                     {
                         text: actionSheetLabels.value.button3,
                         icon: documentOutline,
