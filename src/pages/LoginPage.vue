@@ -112,7 +112,7 @@ export default {
             }
         },
         async handleBrowserLoadStop(event: InAppBrowserEvent) {
-            console.log(event)
+            // console.log(event)
             if (
                 event.url &&
                 typeof event.url == "string" &&

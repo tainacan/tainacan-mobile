@@ -41,7 +41,7 @@ import {
 } from '../store/storeTainacan';
 import { useWpStore } from '../store/storeWp';
 import { ref, defineComponent } from 'vue';
-import { add, documentOutline, documentsOutline } from "ionicons/icons";
+import { add, documentOutline } from "ionicons/icons";
 import {
     IonLoading,
     IonRefresher,
@@ -182,8 +182,8 @@ export default defineComponent({
                 ],
             });
             await actionSheet.present();
-            const { role, data } = await actionSheet.onDidDismiss();
-            console.log('onDidDismiss resolved with role and data', role, data);
+            //const { role, data } = await actionSheet.onDidDismiss();
+            // console.log('onDidDismiss resolved with role and data', role, data);
         }
 
         let tainacanStore = useTainacanStore();

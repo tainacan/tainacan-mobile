@@ -50,7 +50,7 @@ const useTainacanStore = defineStore("tainacan", {
         this.totalCollections = 0;
         this.errorMessage = "error_label_fetch_collections";
         this.errorStatus = true;
-        console.error("Collections loading error: ", err);
+        // console.error("Collections loading error: ", err);
         return err;
       }
     },
@@ -76,7 +76,7 @@ const useTainacanStore = defineStore("tainacan", {
         this.totalHomeCollections = 0;
         this.errorMessage = "error_label_fetch_collections";
         this.errorStatus = true;
-        console.error("Home collections loading error: ", err);
+        //console.error("Home collections loading error: ", err);
         return err;
       }
     },
@@ -127,7 +127,7 @@ const useTainacanStore = defineStore("tainacan", {
         this.nextItemsByCollectionPage = 1;
         this.errorMessage = "error_label_fetch_items_collections";
         this.errorStatus = true;
-        console.error("Items collections loading error: ", err);
+        //console.error("Items collections loading error: ", err);
         return false;
       }
     },
@@ -152,7 +152,7 @@ const useTainacanStore = defineStore("tainacan", {
         this.totalHomeItems = 0;
         this.errorMessage = "error_label_fetch_items_collections";
         this.errorStatus = true;
-        console.error("Items collections loading error: ", err);
+        //console.error("Items collections loading error: ", err);
         return err;
       }
     },
@@ -199,7 +199,7 @@ const useTainacanStore = defineStore("tainacan", {
         this.nextItemsPage = 1;
         this.errorMessage = "error_label_fetch_items";
         this.errorStatus = true;
-        console.error("Items loading error: ", err);
+        //console.error("Items loading error: ", err);
         return err;
       }
     },
@@ -232,7 +232,10 @@ const useTainacanStore = defineStore("tainacan", {
         }
 
       } catch (err) {
-        console.error("Erro ao deletar item:", err);
+        //console.error("Erro ao deletar item:", err);
+        this.errorMessage = "error_delete_item";
+        this.errorStatus = true;
+
         return err;
       }
     }

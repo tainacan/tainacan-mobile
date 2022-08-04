@@ -36,7 +36,8 @@ export const translationStrings = {
         label_option_delete_item: 'Send item to trash',
         error_label_fetch_collections: 'Collections loading error',
         error_label_fetch_items_collections: 'Items collections loading error',
-        error_label_fetch_items: 'Items loading error'
+        error_label_fetch_items: 'Items loading error',
+        error_delete_item: 'Error while deleting item'
     },
     pt: {
         collections: "Coleções",
@@ -75,6 +76,7 @@ export const translationStrings = {
         label_option_delete_item: 'Enviar item para lixeira',
         error_label_fetch_collections: 'Erro no carregamento das coleções',
         error_label_fetch_items_collections: 'Erro no carregamento dos itens da coleção',
-        error_label_fetch_items: 'Erro no carregamento dos itens'
+        error_label_fetch_items: 'Erro no carregamento dos itens',
+        error_delete_item: 'Erro ao tentar remover item'
     }
 }

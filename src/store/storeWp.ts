@@ -37,7 +37,7 @@ const useWpStore = defineStore("wp", {
         this.userToken = "";
         this.userLogin = "";
         delete this.inAppBrowser;
-        console.error("Erro no login:", err);
+        //console.error("Erro no login:", err);
         return err;
       }
     },
@@ -57,7 +57,7 @@ const useWpStore = defineStore("wp", {
         this.userToken = "";
         this.userToken = "";
         delete this.inAppBrowser;
-        console.error("Erro no logoff:", err);
+        //console.error("Erro no logoff:", err);
         return err;
       }
     },
@@ -80,7 +80,7 @@ const useWpStore = defineStore("wp", {
             ].endpoints.authorization;
         else return false;
       } catch (err) {
-        console.error("Error trying to fetch application authorization");
+        //console.error("Error trying to fetch application authorization");
         return err;
       }
     },
@@ -118,7 +118,7 @@ const useWpStore = defineStore("wp", {
           );
           window.history.go(0);
         } catch(err){
-          console.log('catch', err);
+          //console.log('catch', err);
         }`;
       this.inAppBrowser.executeScript({ code: urlRedirectionScript });
       
