@@ -63,12 +63,11 @@ export default defineComponent({
         const thumbnailPlaceholder = computed (() => require('../../assets/placeholder_square_small.png'))
         const router = useRouter();
         const goToCollectionPage = (collection: any) => {
-            router .push({
+            router.push({
                 name: 'collection',
                 params: {
-                    id: collection.id,
-                    collection: JSON.stringify(collection)
-                }
+                    id: collection.id
+                },
             });
         }
         return {

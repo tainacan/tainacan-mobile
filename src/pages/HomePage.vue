@@ -20,6 +20,10 @@
                 size="small"
                 routerLink="/collections">
             {{ $t('label_view_all_collections', [tainacanStore.totalHomeCollections]) }}
+            <ion-icon
+                slot="end"
+                :icon="arrowForwardOutline"
+            ></ion-icon>
         </ion-button>
         <ion-list>
             <ion-list-header>
@@ -32,6 +36,10 @@
                     size="small"
                     routerLink="/items">
                 {{ $t('label_view_all_items', [tainacanStore.totalHomeItems]) }}
+                <ion-icon
+                    slot="end"
+                    :icon="arrowForwardOutline"
+                ></ion-icon>
             </ion-button>
         </ion-list>
     </base-layout>
@@ -46,7 +54,9 @@ import { ref } from 'vue';
 import CollectionsList from '@/components/lists/CollectionsList.vue';
 import ItemsList from '@/components/lists/ItemsList.vue';
 import BaseLayout from '@/components/base/BaseLayout.vue';
+import { arrowForwardOutline } from "ionicons/icons";
 import {
+    IonIcon,
     IonButton,
     IonLoading,
     IonList,
@@ -57,6 +67,7 @@ import {
 
 export default {
     components: {
+        IonIcon,
         CollectionsList,
         ItemsList,
         BaseLayout,
@@ -83,6 +94,7 @@ export default {
         let tainacanStore = useTainacanStore();
 
         return {
+            arrowForwardOutline,
             tainacanStore,
             isLoading,
             setIsLoading,

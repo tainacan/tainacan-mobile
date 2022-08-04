@@ -19,6 +19,7 @@ ion-card {
 .searchbar-input {
     border-radius: 30px !important;
     box-shadow: none !important;
+    --background: #efefef;
 }
 
 .header-md::after {

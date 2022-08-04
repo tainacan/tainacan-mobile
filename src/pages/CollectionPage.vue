@@ -1,6 +1,6 @@
 <template>
     <base-layout
-            :page-title="(collectionObject && collectionObject.name) ? collectionObject.name : $t('collection')" 
+            :page-title="$t('label_collection_items_list')" 
             page-default-back-link="/collections">
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
@@ -75,8 +75,7 @@ export default defineComponent({
         IonInfiniteScrollContent
     },
     props: {
-        id: String,
-        collection: String
+        id: String
     },
     setup(props) {
         const isLoading = ref(false);
@@ -133,30 +132,30 @@ export default defineComponent({
                 header: actionSheetLabels.value.header,
                 cssClass: 'item-creation-action-sheet',
                 buttons: [
-                    {
-                        text: actionSheetLabels.value.button1,
-                        icon: documentsOutline,
-                        data: 'multiple-items',  
-                        handler: () => {
-                            wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true#/collections/' + props.id + '/bulk-add');
-                            wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
-                                if (event &&
-                                    event.data &&
-                                    (
-                                        (
-                                            event.data.type === 'item_updated' &&
-                                            event.data.item &&
-                                            event.data.item.status !== 'auto-draft'
-                                        )
-                                        || event.data.type === 'exited_from_navigation'
-                                    )
-                                ) {
-                                    wpStore.hideInAppBrowser();
-                                    loadItemsByCollection({}, true);
-                                }
-                            });
-                        },
-                    },
+                    // {
+                    //     text: actionSheetLabels.value.button1,
+                    //     icon: documentsOutline,
+                    //     data: 'multiple-items',  
+                    //     handler: () => {
+                    //         wpStore.openInAppBrowser('?page=tainacan_admin&mobileAppMode=true#/collections/' + props.id + '/bulk-add');
+                    //         wpStore.listenEventInAppBrowser((event: InAppBrowserEvent) => {
+                    //             if (event &&
+                    //                 event.data &&
+                    //                 (
+                    //                     (
+                    //                         event.data.type === 'item_updated' &&
+                    //                         event.data.item &&
+                    //                         event.data.item.status !== 'auto-draft'
+                    //                     )
+                    //                     || event.data.type === 'exited_from_navigation'
+                    //                 )
+                    //             ) {
+                    //                 wpStore.hideInAppBrowser();
+                    //                 loadItemsByCollection({}, true);
+                    //             }
+                    //         });
+                    //     },
+                    // },
                     {
                         text: actionSheetLabels.value.button3,
                         icon: documentOutline,
@@ -186,8 +185,7 @@ export default defineComponent({
             const { role, data } = await actionSheet.onDidDismiss();
             console.log('onDidDismiss resolved with role and data', role, data);
         }
-        const collectionObject = props.collection ? JSON.parse(props.collection + '') : false;
-        
+
         let tainacanStore = useTainacanStore();
         return {
             isLoading,
@@ -201,7 +199,6 @@ export default defineComponent({
             add,
             actionSheetLabels,
             setActionSheetLabels,
-            collectionObject,
             infiniteScroll,
             handleSearch,
         }
