@@ -36,13 +36,13 @@
                                 :icon="arrowForwardOutline"
                             ></ion-icon>
                         </ion-button>
-                        <ion-button @click="fakeLogin" color="danger" fill="clear">
+                        <!--<ion-button @click="fakeLogin" color="danger" fill="clear">
                             Testes sem login
                             <ion-icon
                                 slot="end"
                                 :icon="arrowForwardOutline"
                             ></ion-icon>
-                        </ion-button>
+                        </ion-button>-->
                     </form>
                 </ion-col>
             </ion-row>

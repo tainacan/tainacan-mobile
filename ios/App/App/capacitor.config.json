@@ -1,0 +1,6 @@
+{
+	"appId": "org.tainacan.mobileapp",
+	"appName": "Tainacan",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

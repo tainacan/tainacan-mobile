@@ -218,17 +218,18 @@ const useTainacanStore = defineStore("tainacan", {
         } : {});
         
         if (response.data && response.data.id) {
-          const existingItemIndex = this.items.indexOf((anItem: any) => anItem.id == response.data.id);
+          
+          const existingItemIndex = this.items.findIndex((anItem: any) => anItem.id == response.data.id);
           if (existingItemIndex >= 0)
             this.items.splice(existingItemIndex, 1);
 
-          const existingHomeItemIndex = this.homeItems.indexOf((anItem: any) => anItem.id == response.data.id);
+          const existingHomeItemIndex = this.homeItems.findIndex((anItem: any) => anItem.id == response.data.id);
           if (existingHomeItemIndex >= 0)
-            this.items.splice(existingHomeItemIndex, 1);
+            this.homeItems.splice(existingHomeItemIndex, 1);
 
-          const existingCollectionItemIndex = this.collectionItems.indexOf((anItem: any) => anItem.id == response.data.id);
+          const existingCollectionItemIndex = this.collectionItems.findIndex((anItem: any) => anItem.id == response.data.id);
           if (existingCollectionItemIndex >= 0)
-            this.items.splice(existingCollectionItemIndex, 1);
+            this.collectionItems.splice(existingCollectionItemIndex, 1);
         }
 
       } catch (err) {
