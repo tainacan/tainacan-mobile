@@ -137,7 +137,7 @@ export default {
                             userLogin,
                             userToken
                         );
-                        this.$router.push("/home");
+                        this.$router.replace("/home");
                     }
                     this.wpStore.inAppBrowser.hide();
                 }

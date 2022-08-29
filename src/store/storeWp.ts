@@ -56,6 +56,7 @@ const useWpStore = defineStore("wp", {
         this.userSiteUrl = "";
         this.userToken = "";
         this.userToken = "";
+        this.inAppBrowser.close();
         delete this.inAppBrowser;
         //console.error("Erro no logoff:", err);
         return err;
@@ -95,7 +96,7 @@ const useWpStore = defineStore("wp", {
       let tainacanAdminUrl = this.userSiteUrl + "/wp-admin/admin.php" + url;
       if (!this.userIsLoggedIn && this.authorizationURL) 
         tainacanAdminUrl = this.authorizationURL + "?app_name=TainacanMobileApp&success_url=" + tainacanAdminUrl;
-        
+      
       const anInAppBrowser = InAppBrowser.create(tainacanAdminUrl, '_blank', extraParams);
       this.inAppBrowser = anInAppBrowser;
     },
